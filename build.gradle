@@ -1,7 +1,16 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.7-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.asciidoctor.convert' version '1.5.8'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id "com.epages.restdocs-api-spec" version "0.16.2"
 }
 
 group = 'com.encore'
@@ -20,6 +29,11 @@ repositories {
 	maven { url 'https://repo.spring.io/snapshot' }
 }
 
+ext {
+	set('staticsDir', file('src/main/resources/static'))
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -28,9 +42,55 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+	testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 }
 
 tasks.named('test') {
+	outputs.dir staticsDir
 	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+bootJar {
+	dependsOn(':openapi3')
+}
+
+openapi3 {
+	server = 'http://localhost:8080'
+	title = 'Auction TTang API'
+	description = 'Auction TTang API description'
+	version = '0.1.0'
+	outputFileNamePrefix = 'open-api-3.0.1'
+	format = 'json'
+	outputDirectory = "$staticsDir/docs"
 }
