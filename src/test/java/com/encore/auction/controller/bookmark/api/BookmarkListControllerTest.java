@@ -8,6 +8,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +51,8 @@ class BookmarkListControllerTest {
 	private final String auctionLotNumber = "1004-14";
 	private final String addressDetail = "1004동 1004호";
 	private final Long appraisedValue = 130000000L;
-	private final String auctionStartDate = "2022-12-13 13:00:00";
-	private final String auctionEndDate = "2022-12-24 16:00:00";
+	private final LocalDateTime auctionStartDate = LocalDateTime.parse("2022-12-13T13:00:00");
+	private final LocalDateTime auctionEndDate = LocalDateTime.parse("2022-12-24T16:00:00");
 	private final ItemCategory itemCategory = ItemCategory.APARTMENT;
 	private final Double areaSize = 198.347107;
 	private final Integer auctionFailedCount = 3;

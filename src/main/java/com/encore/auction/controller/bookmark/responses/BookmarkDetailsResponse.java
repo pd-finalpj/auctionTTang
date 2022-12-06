@@ -1,6 +1,9 @@
 package com.encore.auction.controller.bookmark.responses;
 
+import java.time.LocalDateTime;
+
 import com.encore.auction.model.auction.item.ItemCategory;
+import com.encore.auction.utils.validator.LocalDateTimeValidator;
 
 import lombok.Getter;
 
@@ -35,7 +38,7 @@ public final class BookmarkDetailsResponse {
 
 	public BookmarkDetailsResponse(Long auctionItemId, String auctionAddressCode, String auctionItemName,
 		String auctionLocation, String auctionLotNumber, String addressDetail, Long appraisedValue,
-		String auctionStartDate, String auctionEndDate, ItemCategory itemCategory, Double areaSize,
+		LocalDateTime auctionStartDate, LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize,
 		Integer auctionFailedCount, Integer hit) {
 		this.auctionItemId = auctionItemId;
 		this.auctionAddressCode = auctionAddressCode;
@@ -44,8 +47,8 @@ public final class BookmarkDetailsResponse {
 		this.auctionLotNumber = auctionLotNumber;
 		this.addressDetail = addressDetail;
 		this.appraisedValue = appraisedValue;
-		this.auctionStartDate = auctionStartDate;
-		this.auctionEndDate = auctionEndDate;
+		this.auctionStartDate = LocalDateTimeValidator.of().convertLocalDateTimeToString(auctionStartDate);
+		this.auctionEndDate = LocalDateTimeValidator.of().convertLocalDateTimeToString(auctionEndDate);
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
 		this.auctionFailedCount = auctionFailedCount;
