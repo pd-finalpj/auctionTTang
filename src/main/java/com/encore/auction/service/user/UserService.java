@@ -1,6 +1,9 @@
 package com.encore.auction.service.user;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.encore.auction.controller.user.requests.UserLoginRequest;
 import com.encore.auction.controller.user.requests.UserSiginUpRequest;
@@ -25,32 +28,74 @@ public class UserService {
 	}
 
 	public UserIdResponse loginUser(UserLoginRequest userLoginRequest) {
-		User user = userRepository.findById(userLoginRequest.getUserId())
-			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
-
-		if (!isUserPasswordCorrect(userLoginRequest.getPassword(), user))
-			throw new WrongRequestException("User password in correct");
+		User user = checkUserExistAndCheckPasswordIsCorrect(userLoginRequest.getUserId(),
+			userLoginRequest.getPassword());
 
 		return UserMapper.of().entityToUserIdResponse(user);
 	}
 
-	private boolean isUserPasswordCorrect(String password, User user) {
-		return user.getPassword().equals(Encrypt.of().getEncrypt(password, user.getSalt()));
-	}
-
 	public UserDetailsResponse retrieveUser(String userId) {
-		return null;
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		return UserMapper.of().entityToUserDetailsResponse(user);
 	}
 
+	@Transactional
 	public UserIdResponse signUpUser(UserSiginUpRequest userSiginUpRequest) {
-		return null;
+		Optional<User> user = userRepository.findById(userSiginUpRequest.getUserId());
+
+		if (user.isPresent())
+			throw new WrongRequestException("User Id already existed");
+
+		if (userSiginUpRequest.getPassword().equals(userSiginUpRequest.getPasswordCheck()))
+			throw new WrongRequestException("User Password is incorrect with Password check");
+
+		String newSalt = Encrypt.of().getSalt();
+
+		String encryptedPassword = Encrypt.of().getEncrypt(userSiginUpRequest.getPassword(), newSalt);
+
+		User newUser = UserMapper.of().signUpRequestToEntity(userSiginUpRequest, encryptedPassword, newSalt);
+
+		User savedUser = userRepository.save(newUser);
+
+		return UserMapper.of().entityToUserIdResponse(savedUser);
 	}
 
+	@Transactional
 	public UserDetailsResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
-		return null;
+		User user = checkUserExistAndCheckPasswordIsCorrect(userId, userUpdateRequest.getOldPassword());
+
+		if (!userUpdateRequest.getNewPassword().equals(userUpdateRequest.getPasswordCheck()))
+			throw new WrongRequestException("User Password is incorrect with Password check");
+
+		String newSalt = Encrypt.of().getSalt();
+
+		String encryptedPassword = Encrypt.of().getEncrypt(userUpdateRequest.getNewPassword(), newSalt);
+
+		user.updateUser(userUpdateRequest, encryptedPassword, newSalt);
+
+		return UserMapper.of().entityToUserDetailsResponse(user);
 	}
 
 	public UserDeleteResponse deleteUser(String userId, String password) {
-		return null;
+		User user = checkUserExistAndCheckPasswordIsCorrect(userId, password);
+
+		user.deleteUser();
+
+		return UserMapper.of().entityToUserDeleteResponse(user);
+	}
+
+	private User checkUserExistAndCheckPasswordIsCorrect(String userId, String userPassword) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		if (!isUserPasswordCorrect(userPassword, user))
+			throw new WrongRequestException("User password in correct");
+		return user;
+	}
+
+	private boolean isUserPasswordCorrect(String inputPassword, User user) {
+		return user.getPassword().equals(Encrypt.of().getEncrypt(inputPassword, user.getSalt()));
 	}
 }

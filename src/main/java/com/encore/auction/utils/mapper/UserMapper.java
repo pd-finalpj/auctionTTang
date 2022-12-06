@@ -1,5 +1,8 @@
 package com.encore.auction.utils.mapper;
 
+import com.encore.auction.controller.user.requests.UserSiginUpRequest;
+import com.encore.auction.controller.user.responses.UserDeleteResponse;
+import com.encore.auction.controller.user.responses.UserDetailsResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
 import com.encore.auction.model.user.User;
 
@@ -20,5 +23,27 @@ public class UserMapper {
 
 	public UserIdResponse entityToUserIdResponse(User user) {
 		return new UserIdResponse(user.getId());
+	}
+
+	public UserDetailsResponse entityToUserDetailsResponse(User user) {
+		return new UserDetailsResponse(user.getId(), user.getName(), user.getAge(), user.getNickname(),
+			user.getPhoneNumber(), user.getEmail());
+	}
+
+	public User signUpRequestToEntity(UserSiginUpRequest userSiginUpRequest, String encryptedPassword, String newSalt) {
+		return User.builder()
+			.id(userSiginUpRequest.getUserId())
+			.password(encryptedPassword)
+			.salt(newSalt)
+			.age(userSiginUpRequest.getAge())
+			.nickname(userSiginUpRequest.getNickname())
+			.phoneNumber(userSiginUpRequest.getPhoneNumber())
+			.email(userSiginUpRequest.getEmail())
+			.state(false)
+			.build();
+	}
+
+	public UserDeleteResponse entityToUserDeleteResponse(User user) {
+		return new UserDeleteResponse(user.getId(), user.getState());
 	}
 }

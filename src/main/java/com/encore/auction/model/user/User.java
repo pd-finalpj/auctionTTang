@@ -8,6 +8,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.user.requests.UserUpdateRequest;
 import com.encore.auction.model.BaseEntity;
 
 import lombok.AccessLevel;
@@ -95,5 +96,18 @@ public class User extends BaseEntity {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, password, salt, name, age, nickname, phoneNumber, email, state);
+	}
+
+	public void updateUser(UserUpdateRequest userUpdateRequest, String encryptedPassword, String newSalt) {
+		this.password = encryptedPassword;
+		this.salt = newSalt;
+		this.age = userUpdateRequest.getAge();
+		this.nickname = userUpdateRequest.getNickname();
+		this.email = userUpdateRequest.getEmail();
+		this.name = userUpdateRequest.getName();
+	}
+
+	public void deleteUser() {
+		this.state = true;
 	}
 }
