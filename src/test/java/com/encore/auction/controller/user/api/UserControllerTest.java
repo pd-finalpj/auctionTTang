@@ -119,7 +119,8 @@ class UserControllerTest {
 		//given
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userId, name, age, nickname, phoneNumber,
 			email);
-		UserUpdateRequest userUpdateRequest = new UserUpdateRequest(password, passwordCheck, name, age, nickname,
+		UserUpdateRequest userUpdateRequest = new UserUpdateRequest(password, "newPassword", "newPassword", name, age,
+			nickname,
 			phoneNumber, email);
 
 		when(userService.updateUser(anyString(), any(UserUpdateRequest.class))).thenReturn(userDetailsResponse);
