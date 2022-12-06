@@ -1,40 +1,26 @@
 package com.encore.auction.controller.user.requests;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import lombok.Getter;
 
 @Getter
-public final class UserSiginUpRequest {
+public final class UserUpdateRequest {
 
-	@NotEmpty
-	private final String userId;
-
-	@NotEmpty
 	private final String password;
 
-	@NotEmpty
 	private final String passwordCheck;
 
-	@NotEmpty
 	private final String name;
 
-	@NotNull
 	private final Integer age;
 
-	@NotEmpty
 	private final String nickname;
 
-	@NotEmpty
 	private final String phoneNumber;
 
-	@NotEmpty
 	private final String email;
 
-	public UserSiginUpRequest(String userId, String password, String passwordCheck, String name, Integer age,
-		String nickname, String phoneNumber, String email) {
-		this.userId = userId;
+	public UserUpdateRequest(String password, String passwordCheck, String name, Integer age, String nickname,
+		String phoneNumber, String email) {
 		this.password = password;
 		this.passwordCheck = passwordCheck;
 		this.name = name;
