@@ -4,10 +4,33 @@ import org.springframework.stereotype.Service;
 
 import com.encore.auction.controller.user.requests.UserLoginRequest;
 import com.encore.auction.controller.user.responses.UserIdResponse;
+import com.encore.auction.exception.NonExistResourceException;
+import com.encore.auction.exception.WrongRequestException;
+import com.encore.auction.model.user.User;
+import com.encore.auction.repository.UserRepository;
+import com.encore.auction.utils.encrypt.Encrypt;
+import com.encore.auction.utils.mapper.UserMapper;
 
 @Service
 public class UserService {
+
+	private final UserRepository userRepository;
+
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	public UserIdResponse loginUser(UserLoginRequest userLoginRequest) {
-		return null;
+		User user = userRepository.findById(userLoginRequest.getUserId())
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		if (!isUserPasswordCorrect(userLoginRequest.getPassword(), user))
+			throw new WrongRequestException("User password in correct");
+
+		return UserMapper.of().entityToUserIdResponse(user);
+	}
+
+	private boolean isUserPasswordCorrect(String password, User user) {
+		return user.getPassword().equals(Encrypt.of().getEncrypt(password, user.getSalt()));
 	}
 }
