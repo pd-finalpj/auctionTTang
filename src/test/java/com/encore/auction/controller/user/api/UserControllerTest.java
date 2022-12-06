@@ -136,7 +136,8 @@ class UserControllerTest {
 			.andDo(document("update-user",
 				pathParameters(parameterWithName("user-id").description("수정할 user id")),
 				requestFields(
-					fieldWithPath("password").type(JsonFieldType.STRING).description("회원 가입할 유저 password"),
+					fieldWithPath("oldPassword").type(JsonFieldType.STRING).description("회원 가입할 유저 password"),
+					fieldWithPath("newPassword").type(JsonFieldType.STRING).description("회원 가입할 유저 password"),
 					fieldWithPath("passwordCheck").type(JsonFieldType.STRING).description("비밀번호 체크"),
 					fieldWithPath("name").type(JsonFieldType.STRING).description("회원가입할 유저 이름"),
 					fieldWithPath("age").type(JsonFieldType.NUMBER).description("회원 가입할 유저 나이"),
