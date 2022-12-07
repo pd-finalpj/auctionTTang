@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.comment.requests.CommentUpdateRequest;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.user.User;
 
@@ -78,5 +79,13 @@ public class Comment {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, content, state);
+	}
+
+	public void deleteComment() {
+		this.state = true;
+	}
+
+	public void updateComment(CommentUpdateRequest commentUpdateRequest) {
+		this.content = commentUpdateRequest.getContent();
 	}
 }
