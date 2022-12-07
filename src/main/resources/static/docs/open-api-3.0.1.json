@@ -42,6 +42,149 @@
         }
       }
     },
+    "/bidding" : {
+      "post" : {
+        "tags" : [ "bidding" ],
+        "operationId" : "bidding-register",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bidding581704734"
+              },
+              "examples" : {
+                "bidding-register" : {
+                  "value" : "{\"userId\":\"tester1\",\"auctionItemId\":3,\"amount\":160000000}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bidding-2050018348"
+                },
+                "examples" : {
+                  "bidding-register" : {
+                    "value" : "{\"biddingId\":13}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bidding/{bidding-id}" : {
+      "get" : {
+        "tags" : [ "bidding" ],
+        "operationId" : "retrieve-bidding",
+        "parameters" : [ {
+          "name" : "bidding-id",
+          "in" : "path",
+          "description" : "찾고 싶은 입찰 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bidding-bidding-id1543771833"
+                },
+                "examples" : {
+                  "retrieve-bidding" : {
+                    "value" : "{\"biddingId\":13,\"auctionItemId\":3,\"auctionItemName\":\"강남 정정일아파트 1004동 1004호\",\"biddingDate\":\"2022-12-10 13:12:31\",\"amount\":160000000,\"decideDate\":\"UNDEFINED\",\"biddingResult\":\"UNDEFINED\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "bidding" ],
+        "operationId" : "update-bidding",
+        "parameters" : [ {
+          "name" : "bidding-id",
+          "in" : "path",
+          "description" : "수정할 bidding id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bidding-bidding-id-1278447942"
+              },
+              "examples" : {
+                "update-bidding" : {
+                  "value" : "{\"userId\":\"tester1\",\"amount\":160000000}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bidding-bidding-id-1446384136"
+                },
+                "examples" : {
+                  "update-bidding" : {
+                    "value" : "{\"biddingId\":13,\"auctionItemId\":3,\"auctionItemName\":\"강남 정정일아파트 1004동 1004호\",\"biddingDate\":\"2022-12-10 13:12:31\",\"amount\":160000000}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "bidding" ],
+        "operationId" : "delete-bidding",
+        "parameters" : [ {
+          "name" : "bidding-id",
+          "in" : "path",
+          "description" : "수정할 bidding id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bidding-bidding-id126022920"
+                },
+                "examples" : {
+                  "delete-bidding" : {
+                    "value" : "{\"biddingId\":13,\"state\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bidding-list/{user-id}" : {
       "get" : {
         "tags" : [ "bidding-list" ],
@@ -74,6 +217,75 @@
         }
       }
     },
+    "/bookmark" : {
+      "post" : {
+        "tags" : [ "bookmark" ],
+        "operationId" : "bookmark-registration",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/bookmark-973542778"
+              },
+              "examples" : {
+                "bookmark-registration" : {
+                  "value" : "{\"userId\":\"tester1\",\"auctionId\":3}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bookmark267699896"
+                },
+                "examples" : {
+                  "bookmark-registration" : {
+                    "value" : "{\"userId\":\"tester1\",\"auctionId\":3,\"state\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/bookmark/{auction-id}" : {
+      "delete" : {
+        "tags" : [ "bookmark" ],
+        "operationId" : "bookmark-delete",
+        "parameters" : [ {
+          "name" : "auction-id",
+          "in" : "path",
+          "description" : "bookmark 취소할 auction 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/bookmark-auction-id1735477849"
+                },
+                "examples" : {
+                  "bookmark-delete" : {
+                    "value" : "{\"userId\":\"tester1\",\"auctionId\":3,\"state\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bookmark-list/{user-id}" : {
       "get" : {
         "tags" : [ "bookmark-list" ],
@@ -98,6 +310,43 @@
                 "examples" : {
                   "retrieve-bookmark-list" : {
                     "value" : "{\"userId\":\"tester1\",\"bookmarkDetailsResponseList\":[{\"auctionItemId\":1,\"auctionAddressCode\":\"05320\",\"auctionItemName\":\"강남 정정일아파트 1004동 1004호0\",\"auctionLocation\":\"압구정동\",\"auctionLotNumber\":\"1004-140\",\"addressDetail\":\"1004동 1004호0\",\"appraisedValue\":130000000,\"auctionStartDate\":\"2022-12-13 13:00:00\",\"auctionEndDate\":\"2022-12-24 16:00:00\",\"itemCategory\":\"APARTMENT\",\"areaSize\":198.347107,\"auctionFailedCount\":3,\"hit\":137},{\"auctionItemId\":2,\"auctionAddressCode\":\"05320\",\"auctionItemName\":\"강남 정정일아파트 1004동 1004호1\",\"auctionLocation\":\"압구정동\",\"auctionLotNumber\":\"1004-141\",\"addressDetail\":\"1004동 1004호1\",\"appraisedValue\":130000001,\"auctionStartDate\":\"2022-12-13 13:00:00\",\"auctionEndDate\":\"2022-12-24 16:00:00\",\"itemCategory\":\"APARTMENT\",\"areaSize\":199.347107,\"auctionFailedCount\":4,\"hit\":138},{\"auctionItemId\":3,\"auctionAddressCode\":\"05320\",\"auctionItemName\":\"강남 정정일아파트 1004동 1004호2\",\"auctionLocation\":\"압구정동\",\"auctionLotNumber\":\"1004-142\",\"addressDetail\":\"1004동 1004호2\",\"appraisedValue\":130000002,\"auctionStartDate\":\"2022-12-13 13:00:00\",\"auctionEndDate\":\"2022-12-24 16:00:00\",\"itemCategory\":\"APARTMENT\",\"areaSize\":200.347107,\"auctionFailedCount\":5,\"hit\":139},{\"auctionItemId\":4,\"auctionAddressCode\":\"05320\",\"auctionItemName\":\"강남 정정일아파트 1004동 1004호3\",\"auctionLocation\":\"압구정동\",\"auctionLotNumber\":\"1004-143\",\"addressDetail\":\"1004동 1004호3\",\"appraisedValue\":130000003,\"auctionStartDate\":\"2022-12-13 13:00:00\",\"auctionEndDate\":\"2022-12-24 16:00:00\",\"itemCategory\":\"APARTMENT\",\"areaSize\":201.347107,\"auctionFailedCount\":6,\"hit\":140},{\"auctionItemId\":5,\"auctionAddressCode\":\"05320\",\"auctionItemName\":\"강남 정정일아파트 1004동 1004호4\",\"auctionLocation\":\"압구정동\",\"auctionLotNumber\":\"1004-144\",\"addressDetail\":\"1004동 1004호4\",\"appraisedValue\":130000004,\"auctionStartDate\":\"2022-12-13 13:00:00\",\"auctionEndDate\":\"2022-12-24 16:00:00\",\"itemCategory\":\"APARTMENT\",\"areaSize\":202.347107,\"auctionFailedCount\":7,\"hit\":141}]}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comment" : {
+      "post" : {
+        "tags" : [ "comment" ],
+        "operationId" : "comment-registration",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/comment986851133"
+              },
+              "examples" : {
+                "comment-registration" : {
+                  "value" : "{\"userId\":\"tester1\",\"auctionItemId\":3,\"content\":\"돈만 있으면 사고 싶다\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-380970393"
+                },
+                "examples" : {
+                  "comment-registration" : {
+                    "value" : "{\"commentId\":13}"
                   }
                 }
               }
@@ -443,6 +692,176 @@
           }
         }
       },
+      "bookmark-auction-id1735477849" : {
+        "type" : "object",
+        "properties" : {
+          "auctionId" : {
+            "type" : "number",
+            "description" : "삭제한 accommodation의 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "삭제한 bookmark의 상태 false : 정상, true : 삭제"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "삭제한 user의 아이디"
+          }
+        }
+      },
+      "bidding-bidding-id126022920" : {
+        "type" : "object",
+        "properties" : {
+          "biddingId" : {
+            "type" : "number",
+            "description" : "입찰 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "입찰의 상태 false : 정상 true : 삭제됨"
+          }
+        }
+      },
+      "user-user-id541888807" : {
+        "type" : "object",
+        "properties" : {
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "유저 휴대폰 번호"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "유저 닉네임"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "유저 이름"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "유저 아이디"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "유저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "유저 나이"
+          }
+        }
+      },
+      "bookmark267699896" : {
+        "type" : "object",
+        "properties" : {
+          "auctionId" : {
+            "type" : "number",
+            "description" : "등록한 accommodation의 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "등록한 bookmark의 상태 false : 정상, true : 삭제"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "등록한 user의 아이디"
+          }
+        }
+      },
+      "user-user-id1115395414" : {
+        "type" : "object",
+        "properties" : {
+          "state" : {
+            "type" : "boolean",
+            "description" : "유저 상태"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "탈퇴한 유저 아이디"
+          }
+        }
+      },
+      "comment-380970393" : {
+        "type" : "object",
+        "properties" : {
+          "commentId" : {
+            "type" : "number",
+            "description" : "등록한 comment 아이디"
+          }
+        }
+      },
+      "comment986851133" : {
+        "type" : "object",
+        "properties" : {
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "댓글을 달고자 하는 auction item의 아이디"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "댓글을 등록하고자 하는 user의 아이디"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "댓글 내용"
+          }
+        }
+      },
+      "bidding-bidding-id-1446384136" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "description" : "입찰한 금액"
+          },
+          "biddingDate" : {
+            "type" : "string",
+            "description" : "입찰한 시간 날짜"
+          },
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "입찰한 auction item 아이디"
+          },
+          "biddingId" : {
+            "type" : "number",
+            "description" : "입찰 아이디"
+          },
+          "auctionItemName" : {
+            "type" : "string",
+            "description" : "입찰한 auction item 제목"
+          }
+        }
+      },
+      "bidding581704734" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "description" : "입찰 참여할 금액"
+          },
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "입찰 하고자 하는 auction item 아이디"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "입찰을 요청할 User Id"
+          }
+        }
+      },
+      "bidding-bidding-id-1278447942" : {
+        "type" : "object",
+        "properties" : {
+          "amount" : {
+            "type" : "number",
+            "description" : "수정할 입찰 금액"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "입찰한 user 아이디"
+          }
+        }
+      },
       "aft-bidding-list-user-id-1344467451" : {
         "type" : "object",
         "properties" : {
@@ -493,32 +912,12 @@
           }
         }
       },
-      "user-user-id541888807" : {
+      "bidding-2050018348" : {
         "type" : "object",
         "properties" : {
-          "phoneNumber" : {
-            "type" : "string",
-            "description" : "유저 휴대폰 번호"
-          },
-          "nickname" : {
-            "type" : "string",
-            "description" : "유저 닉네임"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "유저 이름"
-          },
-          "userId" : {
-            "type" : "string",
-            "description" : "유저 아이디"
-          },
-          "email" : {
-            "type" : "string",
-            "description" : "유저 이메일"
-          },
-          "age" : {
+          "biddingId" : {
             "type" : "number",
-            "description" : "유저 나이"
+            "description" : "생성된 입찰 Id"
           }
         }
       },
@@ -559,16 +958,36 @@
           }
         }
       },
-      "user-user-id1115395414" : {
+      "bidding-bidding-id1543771833" : {
         "type" : "object",
         "properties" : {
-          "state" : {
-            "type" : "boolean",
-            "description" : "유저 상태"
-          },
-          "userId" : {
+          "decideDate" : {
             "type" : "string",
-            "description" : "탈퇴한 유저 아이디"
+            "description" : "입찰 결과 결정 날짜 시간"
+          },
+          "amount" : {
+            "type" : "number",
+            "description" : "입찰한 금액"
+          },
+          "biddingDate" : {
+            "type" : "string",
+            "description" : "입찰한 시간 날짜"
+          },
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "입찰한 auction item 아이디"
+          },
+          "biddingResult" : {
+            "type" : "string",
+            "description" : "입찰 결과"
+          },
+          "biddingId" : {
+            "type" : "number",
+            "description" : "입찰 아이디"
+          },
+          "auctionItemName" : {
+            "type" : "string",
+            "description" : "입찰한 auction item 제목"
           }
         }
       },
@@ -582,6 +1001,19 @@
           "userId" : {
             "type" : "string",
             "description" : "로그인 할 User Id"
+          }
+        }
+      },
+      "bookmark-973542778" : {
+        "type" : "object",
+        "properties" : {
+          "auctionId" : {
+            "type" : "number",
+            "description" : "bookmark 하고자 하는 auction item의 아이디"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "bookmark를 등록하고자 하는 user의 아이디"
           }
         }
       },
