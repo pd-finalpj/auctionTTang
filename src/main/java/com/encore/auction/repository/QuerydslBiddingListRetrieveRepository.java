@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.encore.auction.controller.bidding.bidding.responses.BiddingDetailsResponse;
 import com.encore.auction.model.auction.item.QAuctionItem;
+import com.encore.auction.model.bidding.aftbidding.QAftBidding;
 import com.encore.auction.model.bidding.bidding.Bidding;
 import com.encore.auction.model.bidding.bidding.QBidding;
 import com.querydsl.core.types.Projections;
@@ -17,6 +18,7 @@ public class QuerydslBiddingListRetrieveRepository extends QuerydslRepositorySup
 
 	private QBidding qBidding = QBidding.bidding;
 	private QAuctionItem qAuctionItem = QAuctionItem.auctionItem;
+	private QAftBidding qAftBidding = QAftBidding.aftBidding;
 
 	public QuerydslBiddingListRetrieveRepository() {
 		super(Bidding.class);
@@ -30,7 +32,10 @@ public class QuerydslBiddingListRetrieveRepository extends QuerydslRepositorySup
 			.leftJoin(qAuctionItem)
 			.fetchJoin()
 			.on(qAuctionItem.id.eq(qBidding.auctionItem.id))
-			.where(qBidding.user.id.eq(userId))
+			.leftJoin(qAftBidding)
+			.fetchJoin()
+			.on(qAftBidding.bidding.id.eq(qBidding.id))
+			.where(qBidding.user.id.eq(userId).and(qAftBidding.id.isNull()))
 			.fetch();
 	}
 }
