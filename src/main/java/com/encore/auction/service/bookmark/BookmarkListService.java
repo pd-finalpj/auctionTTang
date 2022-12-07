@@ -29,7 +29,7 @@ public class BookmarkListService {
 
 		List<BookmarkDetailsResponse> bookmarkDetailsResponseList = bookmarkListRetrieveRepository.retrieveBookmarkListByUserId(
 			user.getId());
-		
+
 		return new BookmarkDetailsListResponse(userId, bookmarkDetailsResponseList);
 	}
 }

@@ -62,7 +62,8 @@ class BookmarkListControllerTest {
 
 		for (int i = 0; i < 5; i++) {
 			bookmarkDetailsResponseList.add(
-				new BookmarkDetailsResponse(auctionItemId + i, auctionAddressCode, auctionItemName + i, auctionLocation,
+				new BookmarkDetailsResponse(auctionItemId + i, auctionAddressCode, auctionItemName + i,
+					auctionLocation,
 					auctionLotNumber + i, addressDetail + i, appraisedValue + i, auctionStartDate, auctionEndDate,
 					itemCategory, areaSize + i, auctionFailedCount + i, hit + i));
 		}
