@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.manager.requests.ManagerUpdateRequest;
 import com.encore.auction.model.BaseEntity;
 
 import lombok.AccessLevel;
@@ -37,6 +38,12 @@ public class Manager extends BaseEntity {
 	@Column(nullable = false, length = 10)
 	private String name;
 
+	@Column(nullable = false)
+	private Integer age;
+
+	@Column(nullable = false, length = 10)
+	private String nickname;
+
 	@Column(nullable = false, length = 13)
 	private String phoneNumber;
 
@@ -50,12 +57,15 @@ public class Manager extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "bit(1) default 0", length = 1)
 	private Boolean state;
 
-	public Manager(String id, String password, String salt, String name, String phoneNumber, String email,
-		ManagerRole managerRole, Boolean state) {
+	public Manager(String id, String password, String salt, String name, Integer age, String nickname,
+		String phoneNumber,
+		String email, ManagerRole managerRole, Boolean state) {
 		this.id = id;
 		this.password = password;
 		this.salt = salt;
 		this.name = name;
+		this.age = age;
+		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.managerRole = managerRole;
@@ -93,4 +103,15 @@ public class Manager extends BaseEntity {
 	public int hashCode() {
 		return Objects.hash(id, password, salt, name, phoneNumber, email, managerRole, state);
 	}
+
+	public void updateManager(ManagerUpdateRequest managerUpdateRequest, String encryptedPassword, String newSalt) {
+		this.password = encryptedPassword;
+		this.salt = newSalt;
+		this.age = managerUpdateRequest.getAge();
+		this.nickname = managerUpdateRequest.getNickname();
+		this.email = managerUpdateRequest.getEmail();
+		this.name = managerUpdateRequest.getName();
+	}
+
+	public void deleteManager() { this.state = true; }
 }

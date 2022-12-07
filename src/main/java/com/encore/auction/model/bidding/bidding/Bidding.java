@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.bidding.bidding.requests.BiddingUpdateRequest;
 import com.encore.auction.model.BaseEntity;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.user.User;
@@ -86,5 +87,14 @@ public class Bidding extends BaseEntity {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, biddingDate, amount, state);
+	}
+
+	public void deleteBidding() {
+		this.state = true;
+	}
+
+	public void updateBidding(BiddingUpdateRequest biddingUpdateRequest) {
+		this.biddingDate = LocalDateTime.now();
+		this.amount = biddingUpdateRequest.getAmount();
 	}
 }
