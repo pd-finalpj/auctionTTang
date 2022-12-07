@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import com.encore.auction.exception.WrongTimeException;
+import com.encore.auction.model.auction.item.AuctionItem;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -33,5 +34,13 @@ public class LocalDateTimeValidator {
 			throw new WrongTimeException("Wrong time request : " + dateTime);
 		}
 		return localDateTime;
+	}
+
+	public boolean isBiddingTimeBeforeAuctionStartDate(AuctionItem auctionItem, LocalDateTime requestTime) {
+		return requestTime.isBefore(auctionItem.getAuctionStartDate());
+	}
+
+	public boolean isBiddingTimeAfterAuctionEndDate(AuctionItem auctionItem, LocalDateTime requestTime) {
+		return requestTime.isAfter(auctionItem.getAuctionEndDate());
 	}
 }
