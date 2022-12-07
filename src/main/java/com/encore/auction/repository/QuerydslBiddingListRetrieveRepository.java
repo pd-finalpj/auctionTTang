@@ -35,7 +35,7 @@ public class QuerydslBiddingListRetrieveRepository extends QuerydslRepositorySup
 			.leftJoin(qAftBidding)
 			.fetchJoin()
 			.on(qAftBidding.bidding.id.eq(qBidding.id))
-			.where(qBidding.user.id.eq(userId).and(qAftBidding.id.isNull()))
+			.where(qBidding.user.id.eq(userId).and(qAftBidding.id.isNull()).and(qBidding.state.isFalse()))
 			.fetch();
 	}
 }

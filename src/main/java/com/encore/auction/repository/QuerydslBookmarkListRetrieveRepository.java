@@ -37,7 +37,7 @@ public class QuerydslBookmarkListRetrieveRepository extends QuerydslRepositorySu
 			.leftJoin(qAddress)
 			.fetchJoin()
 			.on(qAddress.addressCode.eq(qAuctionItem.address.addressCode))
-			.where(qBookmark.bookmarkId.user.id.eq(userId))
+			.where(qBookmark.bookmarkId.user.id.eq(userId).and(qBookmark.state.isFalse()))
 			.fetch();
 	}
 }
