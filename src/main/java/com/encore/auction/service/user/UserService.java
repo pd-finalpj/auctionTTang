@@ -33,7 +33,7 @@ public class UserService {
 
 		return UserMapper.of().entityToUserIdResponse(user);
 	}
-
+	//
 	public UserDetailsResponse retrieveUser(String userId) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
