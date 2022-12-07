@@ -46,7 +46,7 @@ class BiddingListControllerTest {
 	private final Long amount = 136000000L;
 
 	@Test
-	@DisplayName("Retrieve Bookmark List By UserId - Success")
+	@DisplayName("Retrieve Bidding List By UserId - Success")
 	void retrieveBiddingListByUserIdSuccess() throws Exception {
 		//given
 		List<BiddingDetailsResponse> biddingDetailsResponseList = new ArrayList<>();
