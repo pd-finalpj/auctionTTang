@@ -27,7 +27,6 @@ import com.encore.auction.controller.bookmark.responses.BookmarkDetailsListRespo
 import com.encore.auction.controller.bookmark.responses.BookmarkDetailsResponse;
 import com.encore.auction.model.auction.item.ItemCategory;
 import com.encore.auction.service.bookmark.BookmarkListService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(controllers = BookmarkListController.class)
 @AutoConfigureRestDocs
@@ -38,9 +37,6 @@ class BookmarkListControllerTest {
 
 	@MockBean
 	private BookmarkListService bookmarkListService;
-
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	private final String userId = "tester1";
 
@@ -86,7 +82,8 @@ class BookmarkListControllerTest {
 				pathParameters(parameterWithName("user-id").description("북마크 리스트를 찾고 싶은 user id")),
 				responseFields(
 					fieldWithPath("userId").type(JsonFieldType.STRING).description("유저 아이디"),
-					fieldWithPath("bookmarkDetailsResponseList").type(JsonFieldType.ARRAY).description("유저 이름"),
+					fieldWithPath("bookmarkDetailsResponseList").type(JsonFieldType.ARRAY)
+						.description("북마크 auction 리스트"),
 					fieldWithPath("bookmarkDetailsResponseList[].auctionItemId").type(JsonFieldType.NUMBER)
 						.description("북마크 된 auction item id"),
 					fieldWithPath("bookmarkDetailsResponseList[].auctionAddressCode").type(JsonFieldType.STRING)
