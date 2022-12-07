@@ -25,4 +25,8 @@ public class Bookmark {
 		this.bookmarkId = bookmarkId;
 		this.state = state;
 	}
+
+	public void deleteBookmark() {
+		this.state = true;
+	}
 }
