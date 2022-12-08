@@ -29,6 +29,7 @@ public class CommentMapper {
 			.user(user)
 			.auctionItem(auctionItem)
 			.content(commentRegisterRequest.getContent())
+			.state(false)
 			.build();
 	}
 
