@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,8 @@ import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
 import com.encore.auction.controller.auction.responses.AuctionDeleteResponse;
 import com.encore.auction.controller.auction.responses.AuctionDetailsResponse;
 import com.encore.auction.controller.auction.responses.AuctionIdResponse;
+import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
+import com.encore.auction.controller.comment.responses.CommentDetailsResponse;
 import com.encore.auction.model.auction.item.ItemCategory;
 import com.encore.auction.service.auction.AuctionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -115,12 +119,16 @@ class AuctionControllerTest {
 	@DisplayName("Retrieve Auction Item Controller Test - Success")
 	void retrieveAuctionSuccess() throws Exception {
 		// given
-		AuctionDetailsResponse auctionIdResponse = new AuctionDetailsResponse(auctionItemId, addressCode, managerId,
+		List<CommentDetailsResponse> commentDetailsResponseList = new ArrayList<>();
+		commentDetailsResponseList.add(new CommentDetailsResponse("tester1", auctionItemId, "사고 싶네요"));
+
+		AuctionRetrieveResponse auctionRetrieveResponse = new AuctionRetrieveResponse(auctionItemId, addressCode,
+			managerId,
 			auctionItemName,
 			location, lotNumber, addressDetail, appraisedValue, auctionStartDate, auctionEndDate, itemCategory,
-			areaSize, auctionFailedCount, hit);
+			areaSize, auctionFailedCount, hit, commentDetailsResponseList);
 
-		when(auctionService.retrieveAuctionItem(anyLong())).thenReturn(auctionIdResponse);
+		when(auctionService.retrieveAuctionItem(anyLong())).thenReturn(auctionRetrieveResponse);
 		// when
 		ResultActions resultActions = mockMvc.perform(
 			get("/auction/{auction-item-id}", auctionItemId)
@@ -144,7 +152,14 @@ class AuctionControllerTest {
 					fieldWithPath("itemCategory").type(JsonFieldType.STRING).description("건물 종류"),
 					fieldWithPath("areaSize").type(JsonFieldType.NUMBER).description("면적"),
 					fieldWithPath("auctionFailedCount").type(JsonFieldType.NUMBER).description("유찰 횟수"),
-					fieldWithPath("hit").type(JsonFieldType.NUMBER).description("조회수")
+					fieldWithPath("hit").type(JsonFieldType.NUMBER).description("조회수"),
+					fieldWithPath("commentDetailsResponseList").type(JsonFieldType.ARRAY).description("조회수"),
+					fieldWithPath("commentDetailsResponseList[].userId").type(JsonFieldType.STRING)
+						.description("작성한 유저 아이디"),
+					fieldWithPath("commentDetailsResponseList[].auctionItemId").type(JsonFieldType.NUMBER)
+						.description("댓글이 작성돼있는 auction item 아이디"),
+					fieldWithPath("commentDetailsResponseList[].content").type(JsonFieldType.STRING)
+						.description("댓글 내용")
 				)
 			));
 	}
