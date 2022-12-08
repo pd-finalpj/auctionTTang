@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.encore.auction.controller.user.requests.UserLoginRequest;
-import com.encore.auction.controller.user.requests.UserSiginUpRequest;
+import com.encore.auction.controller.user.requests.UserSignUpRequest;
 import com.encore.auction.controller.user.requests.UserUpdateRequest;
 import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
+import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
@@ -33,6 +34,7 @@ public class UserService {
 
 		return UserMapper.of().entityToUserIdResponse(user);
 	}
+
 	//
 	public UserDetailsResponse retrieveUser(String userId) {
 		User user = userRepository.findById(userId)
@@ -42,20 +44,20 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserIdResponse signUpUser(UserSiginUpRequest userSiginUpRequest) {
-		Optional<User> user = userRepository.findById(userSiginUpRequest.getUserId());
+	public UserIdResponse signUpUser(UserSignUpRequest userSignUpRequest) {
+		Optional<User> user = userRepository.findById(userSignUpRequest.getUserId());
 
 		if (user.isPresent())
 			throw new WrongRequestException("User Id already existed");
 
-		if (userSiginUpRequest.getPassword().equals(userSiginUpRequest.getPasswordCheck()))
+		if (userSignUpRequest.getPassword().equals(userSignUpRequest.getPasswordCheck()))
 			throw new WrongRequestException("User Password is incorrect with Password check");
 
 		String newSalt = Encrypt.of().getSalt();
 
-		String encryptedPassword = Encrypt.of().getEncrypt(userSiginUpRequest.getPassword(), newSalt);
+		String encryptedPassword = Encrypt.of().getEncrypt(userSignUpRequest.getPassword(), newSalt);
 
-		User newUser = UserMapper.of().signUpRequestToEntity(userSiginUpRequest, encryptedPassword, newSalt);
+		User newUser = UserMapper.of().signUpRequestToEntity(userSignUpRequest, encryptedPassword, newSalt);
 
 		User savedUser = userRepository.save(newUser);
 
@@ -97,5 +99,9 @@ public class UserService {
 
 	private boolean isUserPasswordCorrect(String inputPassword, User user) {
 		return user.getPassword().equals(Encrypt.of().getEncrypt(inputPassword, user.getSalt()));
+	}
+
+	public UserIdCheckResponse checkUserIdExist(String userId) {
+		return new UserIdCheckResponse(userRepository.findById(userId).isPresent());
 	}
 }

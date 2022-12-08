@@ -20,10 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.encore.auction.controller.user.requests.UserLoginRequest;
-import com.encore.auction.controller.user.requests.UserSiginUpRequest;
+import com.encore.auction.controller.user.requests.UserSignUpRequest;
 import com.encore.auction.controller.user.requests.UserUpdateRequest;
 import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
+import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
 import com.encore.auction.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,15 +83,15 @@ class UserControllerTest {
 	@DisplayName("Sign Up User Controller Test - Success")
 	void signUpUserSuccess() throws Exception {
 		//given
-		UserSiginUpRequest userSiginUpRequest = new UserSiginUpRequest(userId, password, passwordCheck, name, age,
+		UserSignUpRequest userSignUpRequest = new UserSignUpRequest(userId, password, passwordCheck, name, age,
 			nickname, phoneNumber, email);
 		UserIdResponse userIdResponse = new UserIdResponse(userId);
 
-		when(userService.signUpUser(any(UserSiginUpRequest.class))).thenReturn(userIdResponse);
+		when(userService.signUpUser(any(UserSignUpRequest.class))).thenReturn(userIdResponse);
 		//when
 		ResultActions resultActions = mockMvc.perform(
 			post("/user/sign-up")
-				.content(objectMapper.writeValueAsString(userSiginUpRequest))
+				.content(objectMapper.writeValueAsString(userSignUpRequest))
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
 		//then
@@ -204,6 +205,29 @@ class UserControllerTest {
 				responseFields(
 					fieldWithPath("userId").type(JsonFieldType.STRING).description("탈퇴한 유저 아이디"),
 					fieldWithPath("state").type(JsonFieldType.BOOLEAN).description("유저 상태")
+				)
+			));
+	}
+
+	@Test
+	@DisplayName("Check User Id Exist Or Not Controller Test - Success")
+	void checkUserIdExistOrNotSuccess() throws Exception {
+		//given
+		UserIdCheckResponse userIdCheckResponse = new UserIdCheckResponse(false);
+
+		when(userService.checkUserIdExist(anyString())).thenReturn(userIdCheckResponse);
+		//when
+		ResultActions resultActions = mockMvc.perform(
+			get("/user/check-id-exist/{user-id}", userId)
+				.accept(MediaType.APPLICATION_JSON));
+		//then
+		resultActions.andExpect(status().isOk())
+			.andDo(print())
+			.andDo(document("check-id-exist-user",
+				pathParameters(parameterWithName("user-id").description("찾고 싶은 user id")),
+				responseFields(
+					fieldWithPath("userIdExist").type(JsonFieldType.BOOLEAN)
+						.description("존재 하는지 여부 false : 존재하지 않음, true : 존재함")
 				)
 			));
 	}

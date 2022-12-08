@@ -1,9 +1,11 @@
 package com.encore.auction.utils.mapper;
 
+import com.encore.auction.controller.manager.requests.ManagerSignUpRequest;
 import com.encore.auction.controller.manager.responses.ManagerDeleteResponse;
 import com.encore.auction.controller.manager.responses.ManagerDetailsResponse;
 import com.encore.auction.controller.manager.responses.ManagerIdResponse;
 import com.encore.auction.model.manager.Manager;
+import com.encore.auction.model.manager.ManagerRole;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -25,7 +27,7 @@ public class ManagerMapper {
 	}
 
 	public ManagerDetailsResponse entityToManagerDetailsResponse(Manager manager) {
-		return new ManagerDetailsResponse(manager.getId(), manager.getName(), manager.getAge(), manager.getNickname(),
+		return new ManagerDetailsResponse(manager.getId(), manager.getName(), manager.getAge(),
 			manager.getPhoneNumber(), manager.getEmail());
 	}
 
@@ -33,9 +35,18 @@ public class ManagerMapper {
 		return new ManagerDeleteResponse(manager.getId(), manager.getState());
 	}
 
-
-
-
-
-
+	public Manager signUpRequestToEntity(ManagerSignUpRequest managerSignUpRequest, String encryptedPassword,
+		String salt) {
+		return Manager.builder()
+			.id(managerSignUpRequest.getManagerId())
+			.password(encryptedPassword)
+			.salt(salt)
+			.age(managerSignUpRequest.getAge())
+			.name(managerSignUpRequest.getName())
+			.phoneNumber(managerSignUpRequest.getPhoneNumber())
+			.email(managerSignUpRequest.getEmail())
+			.managerRole(ManagerRole.DISAPPROVAL)
+			.state(false)
+			.build();
+	}
 }
