@@ -1,3 +1,13 @@
+server:
+  port: 8282
+  servlet:
+    context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+
+
 spring:
   application:
     name: programmers spring assignments
@@ -5,19 +15,11 @@ spring:
     basename: i18n/messages
     encoding: UTF-8
     cache-duration: PT1H
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:test_db;MODE=MYSQL;DB_CLOSE_DELAY=-1;NON_KEYWORDS=USER
-    username: sa
-    password:
-    hikari:
-      minimum-idle: 1
-      maximum-pool-size: 5
-      pool-name: H2_DB
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul
+    username: auctionTTang
+    password: auctionTTang
   mvc:
     hiddenmethod:
       filter:
@@ -25,3 +27,4 @@ spring:
   profiles:
     active:
       - secret
+
