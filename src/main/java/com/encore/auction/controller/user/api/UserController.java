@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.encore.auction.controller.user.requests.UserLoginRequest;
-import com.encore.auction.controller.user.requests.UserSiginUpRequest;
+import com.encore.auction.controller.user.requests.UserSignUpRequest;
 import com.encore.auction.controller.user.requests.UserUpdateRequest;
 import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
+import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
 import com.encore.auction.service.user.UserService;
 
@@ -32,14 +33,19 @@ public class UserController {
 		this.userService = userService;
 	}
 
+	@GetMapping("/check-id-exist/{user-id}")
+	public ResponseEntity<UserIdCheckResponse> checkUserIdExist(@PathVariable("user-id") String userId) {
+		return ResponseEntity.ok().body(userService.checkUserIdExist(userId));
+	}
+
 	@PostMapping("/login")
 	public ResponseEntity<UserIdResponse> loginUser(@RequestBody UserLoginRequest userLoginRequest) {
 		return ResponseEntity.ok().body(userService.loginUser(userLoginRequest));
 	}
 
 	@PostMapping("/sign-up")
-	public ResponseEntity<UserIdResponse> signUpUser(@Valid @RequestBody UserSiginUpRequest userSiginUpRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSiginUpRequest));
+	public ResponseEntity<UserIdResponse> signUpUser(@Valid @RequestBody UserSignUpRequest userSignUpRequest) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSignUpRequest));
 	}
 
 	@GetMapping("/{user-id}")

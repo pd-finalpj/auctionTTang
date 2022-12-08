@@ -5,19 +5,18 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.encore.auction.controller.manager.requests.ManagerLoginRequest;
+import com.encore.auction.controller.manager.requests.ManagerSignUpRequest;
 import com.encore.auction.controller.manager.requests.ManagerUpdateRequest;
 import com.encore.auction.controller.manager.responses.ManagerDeleteResponse;
 import com.encore.auction.controller.manager.responses.ManagerDetailsResponse;
+import com.encore.auction.controller.manager.responses.ManagerIdCheckResponse;
 import com.encore.auction.controller.manager.responses.ManagerIdResponse;
-import com.encore.auction.controller.user.responses.UserDetailsResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.manager.Manager;
-import com.encore.auction.model.user.User;
 import com.encore.auction.repository.ManagerRepository;
 import com.encore.auction.utils.encrypt.Encrypt;
 import com.encore.auction.utils.mapper.ManagerMapper;
-import com.encore.auction.utils.mapper.UserMapper;
 
 @Service
 public class ManagerService {
@@ -28,14 +27,12 @@ public class ManagerService {
 		this.managerRepository = managerRepository;
 	}
 
-
 	public ManagerIdResponse loginManager(ManagerLoginRequest managerLoginRequest) {
 		Manager manager = checkManagerExistAndCheckPasswordIsCorrect(managerLoginRequest.getManagerId(),
 			managerLoginRequest.getPassword());
 
 		return ManagerMapper.of().entityToManagerIdResponse(manager);
 	}
-	// 이제 할부분
 
 	public ManagerDetailsResponse retrieveManager(String managerId) {
 		Manager manager = managerRepository.findById(managerId)
@@ -45,7 +42,7 @@ public class ManagerService {
 	}
 
 	@Transactional
-	public ManagerDetailsResponse updateManager(String managerId, ManagerUpdateRequest managerUpdateRequest){
+	public ManagerDetailsResponse updateManager(String managerId, ManagerUpdateRequest managerUpdateRequest) {
 		Manager manager = checkManagerExistAndCheckPasswordIsCorrect(managerId, managerUpdateRequest.getOldPassword());
 
 		if (!managerUpdateRequest.getNewPassword().equals(managerUpdateRequest.getPasswordCheck()))
@@ -66,7 +63,22 @@ public class ManagerService {
 		manager.deleteManager();
 
 		return ManagerMapper.of().entityToManagerDeleteResponse(manager);
+	}
 
+	@Transactional
+	public ManagerIdResponse signUpManager(ManagerSignUpRequest managerSignUpRequest) {
+		if (!managerSignUpRequest.getPassword().equals(managerSignUpRequest.getPasswordCheck()))
+			throw new WrongRequestException("Manager Password is incorrect with Password check");
+
+		String salt = Encrypt.of().getSalt();
+
+		String encryptedPassword = Encrypt.of().getEncrypt(managerSignUpRequest.getPassword(), salt);
+
+		Manager manager = ManagerMapper.of().signUpRequestToEntity(managerSignUpRequest, encryptedPassword, salt);
+
+		Manager savedManager = managerRepository.save(manager);
+
+		return ManagerMapper.of().entityToManagerIdResponse(savedManager);
 	}
 
 	private Manager checkManagerExistAndCheckPasswordIsCorrect(String managerId, String managerPassword) {
@@ -75,6 +87,7 @@ public class ManagerService {
 
 		if (!isManagerPasswordCorrect(managerPassword, manager))
 			throw new WrongRequestException("Manager password in correct");
+
 		return manager;
 	}
 
@@ -82,25 +95,7 @@ public class ManagerService {
 		return manager.getPassword().equals(Encrypt.of().getEncrypt(inputPassword, manager.getSalt()));
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	public ManagerIdCheckResponse checkManagerIdExist(String managerId) {
+		return new ManagerIdCheckResponse(managerRepository.findById(managerId).isPresent());
+	}
 }

@@ -1,6 +1,5 @@
 package com.encore.auction.controller.manager.requests;
 
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -25,22 +24,18 @@ public final class ManagerUpdateRequest {
 	private final Integer age;
 
 	@NotEmpty
-	private final String nickname;
-
-	@NotEmpty
 	private final String phoneNumber;
 
 	@NotEmpty
 	private final String email;
 
 	public ManagerUpdateRequest(String oldPassword, String newPassword, String passwordCheck, String name, Integer age,
-		String nickname, String phoneNumber, String email) {
+		String phoneNumber, String email) {
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
 		this.passwordCheck = passwordCheck;
 		this.name = name;
 		this.age = age;
-		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}

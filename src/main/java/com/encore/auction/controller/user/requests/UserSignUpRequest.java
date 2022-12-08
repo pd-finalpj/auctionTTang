@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public final class UserSiginUpRequest {
+public final class UserSignUpRequest {
 
 	@NotEmpty
 	private final String userId;
@@ -32,7 +32,7 @@ public final class UserSiginUpRequest {
 	@NotEmpty
 	private final String email;
 
-	public UserSiginUpRequest(String userId, String password, String passwordCheck, String name, Integer age,
+	public UserSignUpRequest(String userId, String password, String passwordCheck, String name, Integer age,
 		String nickname, String phoneNumber, String email) {
 		this.userId = userId;
 		this.password = password;

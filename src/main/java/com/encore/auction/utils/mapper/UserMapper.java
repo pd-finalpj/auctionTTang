@@ -1,6 +1,6 @@
 package com.encore.auction.utils.mapper;
 
-import com.encore.auction.controller.user.requests.UserSiginUpRequest;
+import com.encore.auction.controller.user.requests.UserSignUpRequest;
 import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
@@ -30,15 +30,15 @@ public class UserMapper {
 			user.getPhoneNumber(), user.getEmail());
 	}
 
-	public User signUpRequestToEntity(UserSiginUpRequest userSiginUpRequest, String encryptedPassword, String newSalt) {
+	public User signUpRequestToEntity(UserSignUpRequest userSignUpRequest, String encryptedPassword, String newSalt) {
 		return User.builder()
-			.id(userSiginUpRequest.getUserId())
+			.id(userSignUpRequest.getUserId())
 			.password(encryptedPassword)
 			.salt(newSalt)
-			.age(userSiginUpRequest.getAge())
-			.nickname(userSiginUpRequest.getNickname())
-			.phoneNumber(userSiginUpRequest.getPhoneNumber())
-			.email(userSiginUpRequest.getEmail())
+			.age(userSignUpRequest.getAge())
+			.nickname(userSignUpRequest.getNickname())
+			.phoneNumber(userSignUpRequest.getPhoneNumber())
+			.email(userSignUpRequest.getEmail())
 			.state(false)
 			.build();
 	}
