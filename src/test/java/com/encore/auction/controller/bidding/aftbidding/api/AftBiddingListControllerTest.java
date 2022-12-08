@@ -51,7 +51,7 @@ class AftBiddingListControllerTest {
 
 	@Test
 	@DisplayName("Retrieve Aft Bidding List By UserId - Success")
-	void retrieveAftBiddingListByUserId() throws Exception {
+	void retrieveAftBiddingListByUserIdSuccess() throws Exception {
 		//given
 		List<AftBiddingDetailsResponse> aftBiddingDetailsResponseList = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {

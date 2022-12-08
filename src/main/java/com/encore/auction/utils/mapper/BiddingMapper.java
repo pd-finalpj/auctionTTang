@@ -32,6 +32,7 @@ public class BiddingMapper {
 			.auctionItem(auctionItem)
 			.amount(biddingRegisterRequest.getAmount())
 			.biddingDate(requestTime)
+			.state(false)
 			.build();
 	}
 

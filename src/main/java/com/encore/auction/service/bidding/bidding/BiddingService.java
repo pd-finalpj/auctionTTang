@@ -47,6 +47,9 @@ public class BiddingService {
 		AuctionItem auctionItem = auctionItemRepository.findById(biddingRegisterRequest.getAuctionItemId())
 			.orElseThrow(() -> new NonExistResourceException("Auction item does not exist"));
 
+		if (biddingRepository.findByUserIdAndAuctionItemId(user.getId(), auctionItem.getId()).isPresent())
+			throw new WrongRequestException("User Already Bidding Auction try Update Bidding");
+
 		LocalDateTime requestTime = LocalDateTime.now();
 
 		checkBiddingDateIsBetweenAuctionStartDateAndEndDate(auctionItem, requestTime);
