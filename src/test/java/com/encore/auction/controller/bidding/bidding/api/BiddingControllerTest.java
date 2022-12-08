@@ -164,7 +164,7 @@ class BiddingControllerTest {
 		resultActions.andExpect(status().isOk())
 			.andDo(print())
 			.andDo(document("delete-bidding",
-				pathParameters(parameterWithName("bidding-id").description("수정할 bidding id")),
+				pathParameters(parameterWithName("bidding-id").description("삭제할 bidding id")),
 				responseFields(
 					fieldWithPath("biddingId").type(JsonFieldType.NUMBER).description("입찰 아이디"),
 					fieldWithPath("state").type(JsonFieldType.BOOLEAN).description("입찰의 상태 false : 정상 true : 삭제됨")
