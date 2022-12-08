@@ -160,7 +160,7 @@
         "parameters" : [ {
           "name" : "bidding-id",
           "in" : "path",
-          "description" : "수정할 bidding id",
+          "description" : "삭제할 bidding id",
           "required" : true,
           "schema" : {
             "type" : "string"
@@ -355,6 +355,435 @@
         }
       }
     },
+    "/comment/{comment-id}" : {
+      "get" : {
+        "tags" : [ "comment" ],
+        "operationId" : "retrieve-comment",
+        "parameters" : [ {
+          "name" : "comment-id",
+          "in" : "path",
+          "description" : "찾고 싶은 댓글 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-comment-id375507647"
+                },
+                "examples" : {
+                  "retrieve-comment" : {
+                    "value" : "{\"userId\":\"tester1\",\"auctionItemId\":3,\"content\":\"돈만 있으면 사고 싶다\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "comment" ],
+        "operationId" : "update-comment",
+        "parameters" : [ {
+          "name" : "comment-id",
+          "in" : "path",
+          "description" : "수정할 댓글 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/comment-comment-id1051313513"
+              },
+              "examples" : {
+                "update-comment" : {
+                  "value" : "{\"userId\":\"tester1\",\"auctionItemId\":3,\"content\":\"돈만 있으면 사고 싶다\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-380970393"
+                },
+                "examples" : {
+                  "update-comment" : {
+                    "value" : "{\"commentId\":13}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "comment" ],
+        "operationId" : "delete-comment",
+        "parameters" : [ {
+          "name" : "comment-id",
+          "in" : "path",
+          "description" : "수정할 bidding id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/comment-comment-id367871439"
+                },
+                "examples" : {
+                  "delete-comment" : {
+                    "value" : "{\"commentId\":13,\"state\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manager/login" : {
+      "post" : {
+        "tags" : [ "manager" ],
+        "operationId" : "manager-login",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/manager-login-616117924"
+              },
+              "examples" : {
+                "manager-login" : {
+                  "value" : "{\"managerId\":\"아이디정정2\",\"password\":\"비번과확인정정2\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/manager-login-1615560128"
+                },
+                "examples" : {
+                  "manager-login" : {
+                    "value" : "{\"managerId\":\"아이디정정2\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manager/sign-up" : {
+      "post" : {
+        "tags" : [ "manager" ],
+        "operationId" : "manager-sign-up",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/manager-sign-up-506197508"
+              },
+              "examples" : {
+                "manager-sign-up" : {
+                  "value" : "{\"managerId\":\"아이디정정2\",\"password\":\"비번과확인정정2\",\"passwordCheck\":\"비번과확인정정2\",\"name\":\"이름정정2\",\"age\":22,\"phoneNumber\":\"01022222222\",\"email\":\"jj1234@gmail.com\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/manager-sign-up1276244519"
+                },
+                "examples" : {
+                  "manager-sign-up" : {
+                    "value" : "{\"managerId\":\"아이디정정2\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/manager/{manager-id}" : {
+      "get" : {
+        "tags" : [ "manager" ],
+        "operationId" : "retrieve-manager",
+        "parameters" : [ {
+          "name" : "manager-id",
+          "in" : "path",
+          "description" : "찾고 싶은 manager id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/manager-manager-id-1835497685"
+                },
+                "examples" : {
+                  "retrieve-manager" : {
+                    "value" : "{\"managerId\":\"아이디정정2\",\"name\":\"이름정정2\",\"age\":22,\"phoneNumber\":\"01022222222\",\"email\":\"jj1234@gmail.com\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "manager" ],
+        "operationId" : "update-manager",
+        "parameters" : [ {
+          "name" : "manager-id",
+          "in" : "path",
+          "description" : "수정할 manager id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/manager-manager-id907207511"
+              },
+              "examples" : {
+                "update-manager" : {
+                  "value" : "{\"oldPassword\":\"비번과확인정정2\",\"newPassword\":\"newPassword\",\"passwordCheck\":\"newPassword\",\"name\":\"이름정정2\",\"age\":22,\"phoneNumber\":\"01022222222\",\"email\":\"jj1234@gmail.com\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/manager-manager-id-1835497685"
+                },
+                "examples" : {
+                  "update-manager" : {
+                    "value" : "{\"managerId\":\"아이디정정2\",\"name\":\"이름정정2\",\"age\":22,\"phoneNumber\":\"01022222222\",\"email\":\"jj1234@gmail.com\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "manager" ],
+        "operationId" : "delete-manager",
+        "parameters" : [ {
+          "name" : "manager-id",
+          "in" : "path",
+          "description" : "탈퇴할 매니저 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/manager-manager-id937946212"
+                },
+                "examples" : {
+                  "delete-manager" : {
+                    "value" : "{\"managerId\":\"아이디정정2\",\"state\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notice" : {
+      "post" : {
+        "tags" : [ "notice" ],
+        "operationId" : "notice-register",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/notice1306268627"
+              },
+              "examples" : {
+                "notice-register" : {
+                  "value" : "{\"managerId\":\"manager1\",\"title\":\"인기있는 매물들은 어떤 특징을 가지고 있을까요?\",\"content\":\"이러이러 해서 이러이러 해요\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/notice-1002636974"
+                },
+                "examples" : {
+                  "notice-register" : {
+                    "value" : "{\"noticeId\":3}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notice/{notice-id}" : {
+      "get" : {
+        "tags" : [ "notice" ],
+        "operationId" : "retrieve-notice",
+        "parameters" : [ {
+          "name" : "notice-id",
+          "in" : "path",
+          "description" : "찾고 싶은 공지사항 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/notice-notice-id817034255"
+                },
+                "examples" : {
+                  "retrieve-notice" : {
+                    "value" : "{\"noticeId\":3,\"managerId\":\"manager1\",\"managerName\":\"정정일\",\"title\":\"인기있는 매물들은 어떤 특징을 가지고 있을까요?\",\"content\":\"이러이러 해서 이러이러 해요\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "notice" ],
+        "operationId" : "update-notice",
+        "parameters" : [ {
+          "name" : "notice-id",
+          "in" : "path",
+          "description" : "수정할 공지사항 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/notice-notice-id-860912449"
+              },
+              "examples" : {
+                "update-notice" : {
+                  "value" : "{\"managerId\":\"manager1\",\"title\":\"인기있는 매물들은 어떤 특징을 가지고 있을까요?\",\"content\":\"이러이러 해서 이러이러 해요\"}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/notice-notice-id1725119912"
+                },
+                "examples" : {
+                  "update-notice" : {
+                    "value" : "{\"noticeId\":3}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "notice" ],
+        "operationId" : "delete-notice",
+        "parameters" : [ {
+          "name" : "notice-id",
+          "in" : "path",
+          "description" : "삭제할 공지사 id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/notice-notice-id-1193198726"
+                },
+                "examples" : {
+                  "delete-notice" : {
+                    "value" : "{\"noticeId\":3,\"state\":true}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/login" : {
       "post" : {
         "tags" : [ "user" ],
@@ -534,44 +963,56 @@
           }
         }
       }
+    },
+    "/user/check-id-exist/{user-id}" : {
+      "get" : {
+        "tags" : [ "user" ],
+        "operationId" : "check-id-exist-user",
+        "parameters" : [ {
+          "name" : "user-id",
+          "in" : "path",
+          "description" : "찾고 싶은 user id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/user-check-id-exist-user-id1428604861"
+                },
+                "examples" : {
+                  "check-id-exist-user" : {
+                    "value" : "{\"userIdExist\":false}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components" : {
     "schemas" : {
-      "user-sign-up574599517" : {
+      "comment-comment-id1051313513" : {
         "type" : "object",
         "properties" : {
-          "password" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 password"
-          },
-          "phoneNumber" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 휴대폰 번호"
-          },
-          "passwordCheck" : {
-            "type" : "string",
-            "description" : "비밀번호 체크"
-          },
-          "nickname" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 닉네임"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "회원가입할 유저 이름"
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "수정할 댓글이 작성된 auction item 아이디"
           },
           "userId" : {
             "type" : "string",
-            "description" : "회원 가입할 유저 아이디"
+            "description" : "수정할 댓글을 작성한 user 아이디"
           },
-          "email" : {
+          "content" : {
             "type" : "string",
-            "description" : "회원 가입할 유저 이메일"
-          },
-          "age" : {
-            "type" : "number",
-            "description" : "회원 가입할 유저 나이"
+            "description" : "수정할 댓글 본문"
           }
         }
       },
@@ -683,12 +1124,333 @@
           }
         }
       },
+      "manager-manager-id937946212" : {
+        "type" : "object",
+        "properties" : {
+          "state" : {
+            "type" : "boolean",
+            "description" : "매니저 상태"
+          },
+          "managerId" : {
+            "type" : "string",
+            "description" : "탈퇴한 매니저 아이디"
+          }
+        }
+      },
+      "manager-manager-id907207511" : {
+        "type" : "object",
+        "properties" : {
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 휴대폰 번호"
+          },
+          "oldPassword" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 password"
+          },
+          "passwordCheck" : {
+            "type" : "string",
+            "description" : "매니저 비밀번호 체크"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "회원가입할 매니저 이름"
+          },
+          "newPassword" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 password"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "회원 가입할 매니저 나이"
+          }
+        }
+      },
       "user-sign-up-952518529" : {
         "type" : "object",
         "properties" : {
           "userId" : {
             "type" : "string",
             "description" : "회원 가입 된 유저 아이디"
+          }
+        }
+      },
+      "bidding-bidding-id126022920" : {
+        "type" : "object",
+        "properties" : {
+          "biddingId" : {
+            "type" : "number",
+            "description" : "입찰 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "입찰의 상태 false : 정상 true : 삭제됨"
+          }
+        }
+      },
+      "bookmark267699896" : {
+        "type" : "object",
+        "properties" : {
+          "auctionId" : {
+            "type" : "number",
+            "description" : "등록한 accommodation의 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "등록한 bookmark의 상태 false : 정상, true : 삭제"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "등록한 user의 아이디"
+          }
+        }
+      },
+      "notice1306268627" : {
+        "type" : "object",
+        "properties" : {
+          "managerId" : {
+            "type" : "string",
+            "description" : "공지사항을 작성할 Manager Id"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "공지사항 타이틀"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "공지사항 본문"
+          }
+        }
+      },
+      "notice-notice-id-860912449" : {
+        "type" : "object",
+        "properties" : {
+          "managerId" : {
+            "type" : "string",
+            "description" : "공지사항을 수정할 매니저의 아이디"
+          },
+          "title" : {
+            "type" : "string",
+            "description" : "수정할 공지사항 제목"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "수정할 공지사항 본문"
+          }
+        }
+      },
+      "aft-bidding-list-user-id-1344467451" : {
+        "type" : "object",
+        "properties" : {
+          "aftBiddingDetailsResponseList" : {
+            "type" : "array",
+            "description" : "유저의 입찰 결과 리스트",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "decideDate" : {
+                  "type" : "string",
+                  "description" : "결과 결정 날짜 및 시간"
+                },
+                "amount" : {
+                  "type" : "number",
+                  "description" : "입찰한 금액"
+                },
+                "biddingDate" : {
+                  "type" : "string",
+                  "description" : "입찰한 날짜 및 시간"
+                },
+                "auctionItemId" : {
+                  "type" : "number",
+                  "description" : "입찰한 auction item id"
+                },
+                "aftBiddingId" : {
+                  "type" : "number",
+                  "description" : "입찰 결과 id"
+                },
+                "biddingResult" : {
+                  "type" : "string",
+                  "description" : "입찰 결과"
+                },
+                "biddingId" : {
+                  "type" : "number",
+                  "description" : "입찰 id"
+                },
+                "auctionItemName" : {
+                  "type" : "string",
+                  "description" : "입찰한 auction item의 제목"
+                }
+              }
+            }
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "유저 아이디"
+          }
+        }
+      },
+      "manager-login-616117924" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "로그인 할 User password"
+          },
+          "managerId" : {
+            "type" : "string",
+            "description" : "로그인 할 User Id"
+          }
+        }
+      },
+      "bidding-2050018348" : {
+        "type" : "object",
+        "properties" : {
+          "biddingId" : {
+            "type" : "number",
+            "description" : "생성된 입찰 Id"
+          }
+        }
+      },
+      "notice-notice-id-1193198726" : {
+        "type" : "object",
+        "properties" : {
+          "state" : {
+            "type" : "boolean",
+            "description" : "공지사항의 상태 false : 정상 true : 삭제됨"
+          },
+          "noticeId" : {
+            "type" : "number",
+            "description" : "삭제한 공지사항 아이디"
+          }
+        }
+      },
+      "user-check-id-exist-user-id1428604861" : {
+        "type" : "object",
+        "properties" : {
+          "userIdExist" : {
+            "type" : "boolean",
+            "description" : "존재 하는지 여부 false : 존재하지 않음, true : 존재함"
+          }
+        }
+      },
+      "user-user-id67547354" : {
+        "type" : "object",
+        "properties" : {
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 휴대폰 번호"
+          },
+          "oldPassword" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 password"
+          },
+          "passwordCheck" : {
+            "type" : "string",
+            "description" : "비밀번호 체크"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 닉네임"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "회원가입할 유저 이름"
+          },
+          "newPassword" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 password"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "회원 가입할 유저 나이"
+          }
+        }
+      },
+      "comment-comment-id375507647" : {
+        "type" : "object",
+        "properties" : {
+          "auctionItemId" : {
+            "type" : "number",
+            "description" : "댓글이 작성돼있는 auction item 아이디"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "작성한 유저 아이디"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "댓글 내용"
+          }
+        }
+      },
+      "user-login-325021314" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "로그인 할 User password"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "로그인 할 User Id"
+          }
+        }
+      },
+      "comment-comment-id367871439" : {
+        "type" : "object",
+        "properties" : {
+          "commentId" : {
+            "type" : "number",
+            "description" : "삭제한 댓글 아이디"
+          },
+          "state" : {
+            "type" : "boolean",
+            "description" : "댓글의 상태 false : 정상 true : 삭제됨"
+          }
+        }
+      },
+      "user-sign-up574599517" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 password"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 휴대폰 번호"
+          },
+          "passwordCheck" : {
+            "type" : "string",
+            "description" : "비밀번호 체크"
+          },
+          "nickname" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 닉네임"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "회원가입할 유저 이름"
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 아이디"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "회원 가입할 유저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "회원 가입할 유저 나이"
           }
         }
       },
@@ -709,16 +1471,36 @@
           }
         }
       },
-      "bidding-bidding-id126022920" : {
+      "manager-sign-up-506197508" : {
         "type" : "object",
         "properties" : {
-          "biddingId" : {
-            "type" : "number",
-            "description" : "입찰 아이디"
+          "password" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 password"
           },
-          "state" : {
-            "type" : "boolean",
-            "description" : "입찰의 상태 false : 정상 true : 삭제됨"
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 휴대폰 번호"
+          },
+          "passwordCheck" : {
+            "type" : "string",
+            "description" : "비밀번호 체크"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "회원가입할 매니저 이름"
+          },
+          "managerId" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 아이디"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "회원 가입할 매니저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "회원 가입할 매니저 나이"
           }
         }
       },
@@ -751,23 +1533,6 @@
           }
         }
       },
-      "bookmark267699896" : {
-        "type" : "object",
-        "properties" : {
-          "auctionId" : {
-            "type" : "number",
-            "description" : "등록한 accommodation의 아이디"
-          },
-          "state" : {
-            "type" : "boolean",
-            "description" : "등록한 bookmark의 상태 false : 정상, true : 삭제"
-          },
-          "userId" : {
-            "type" : "string",
-            "description" : "등록한 user의 아이디"
-          }
-        }
-      },
       "user-user-id1115395414" : {
         "type" : "object",
         "properties" : {
@@ -787,6 +1552,15 @@
           "commentId" : {
             "type" : "number",
             "description" : "등록한 comment 아이디"
+          }
+        }
+      },
+      "notice-1002636974" : {
+        "type" : "object",
+        "properties" : {
+          "noticeId" : {
+            "type" : "number",
+            "description" : "생성된 공지사항 Id"
           }
         }
       },
@@ -849,6 +1623,40 @@
           }
         }
       },
+      "manager-manager-id-1835497685" : {
+        "type" : "object",
+        "properties" : {
+          "phoneNumber" : {
+            "type" : "string",
+            "description" : "매니저 휴대폰 번호"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "매니저 이름"
+          },
+          "managerId" : {
+            "type" : "string",
+            "description" : "매니저 아이디"
+          },
+          "email" : {
+            "type" : "string",
+            "description" : "매니저 이메일"
+          },
+          "age" : {
+            "type" : "number",
+            "description" : "매니저 나이"
+          }
+        }
+      },
+      "manager-login-1615560128" : {
+        "type" : "object",
+        "properties" : {
+          "managerId" : {
+            "type" : "string",
+            "description" : "로그인 된 Manager Id"
+          }
+        }
+      },
       "bidding-bidding-id-1278447942" : {
         "type" : "object",
         "properties" : {
@@ -862,99 +1670,21 @@
           }
         }
       },
-      "aft-bidding-list-user-id-1344467451" : {
+      "manager-sign-up1276244519" : {
         "type" : "object",
         "properties" : {
-          "aftBiddingDetailsResponseList" : {
-            "type" : "array",
-            "description" : "유저의 입찰 결과 리스트",
-            "items" : {
-              "type" : "object",
-              "properties" : {
-                "decideDate" : {
-                  "type" : "string",
-                  "description" : "결과 결정 날짜 및 시간"
-                },
-                "amount" : {
-                  "type" : "number",
-                  "description" : "입찰한 금액"
-                },
-                "biddingDate" : {
-                  "type" : "string",
-                  "description" : "입찰한 날짜 및 시간"
-                },
-                "auctionItemId" : {
-                  "type" : "number",
-                  "description" : "입찰한 auction item id"
-                },
-                "aftBiddingId" : {
-                  "type" : "number",
-                  "description" : "입찰 결과 id"
-                },
-                "biddingResult" : {
-                  "type" : "string",
-                  "description" : "입찰 결과"
-                },
-                "biddingId" : {
-                  "type" : "number",
-                  "description" : "입찰 id"
-                },
-                "auctionItemName" : {
-                  "type" : "string",
-                  "description" : "입찰한 auction item의 제목"
-                }
-              }
-            }
-          },
-          "userId" : {
+          "managerId" : {
             "type" : "string",
-            "description" : "유저 아이디"
+            "description" : "회원 가입 된 매니저 아이디"
           }
         }
       },
-      "bidding-2050018348" : {
+      "notice-notice-id1725119912" : {
         "type" : "object",
         "properties" : {
-          "biddingId" : {
+          "noticeId" : {
             "type" : "number",
-            "description" : "생성된 입찰 Id"
-          }
-        }
-      },
-      "user-user-id67547354" : {
-        "type" : "object",
-        "properties" : {
-          "phoneNumber" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 휴대폰 번호"
-          },
-          "oldPassword" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 password"
-          },
-          "passwordCheck" : {
-            "type" : "string",
-            "description" : "비밀번호 체크"
-          },
-          "nickname" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 닉네임"
-          },
-          "name" : {
-            "type" : "string",
-            "description" : "회원가입할 유저 이름"
-          },
-          "newPassword" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 password"
-          },
-          "email" : {
-            "type" : "string",
-            "description" : "회원 가입할 유저 이메일"
-          },
-          "age" : {
-            "type" : "number",
-            "description" : "회원 가입할 유저 나이"
+            "description" : "수정된 공지사항 아이디"
           }
         }
       },
@@ -991,16 +1721,28 @@
           }
         }
       },
-      "user-login-325021314" : {
+      "notice-notice-id817034255" : {
         "type" : "object",
         "properties" : {
-          "password" : {
+          "managerId" : {
             "type" : "string",
-            "description" : "로그인 할 User password"
+            "description" : "공지사항을 작성한 매니저 아이디"
           },
-          "userId" : {
+          "title" : {
             "type" : "string",
-            "description" : "로그인 할 User Id"
+            "description" : "공지사항 제목"
+          },
+          "managerName" : {
+            "type" : "string",
+            "description" : "공지사항을 작성한 매니저 이름"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "공지사항 본문"
+          },
+          "noticeId" : {
+            "type" : "number",
+            "description" : "공지사항 아이디"
           }
         }
       },
