@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
 import com.encore.auction.model.BaseEntity;
 import com.encore.auction.model.address.Address;
 import com.encore.auction.model.manager.Manager;
@@ -141,9 +142,27 @@ public class AuctionItem extends BaseEntity {
 			that.hit) && Objects.equals(state, that.state);
 	}
 
+	public void updateAuctionItem(AuctionUpdateRequest auctionUpdateRequest, Manager manager, Address address) {
+		this.address = address;
+		this.manager = manager;
+		this.auctionItemName = auctionUpdateRequest.getAuctionItemName();
+		this.location = auctionUpdateRequest.getLocation();
+		this.lotNumber = auctionUpdateRequest.getLocation();
+		this.addressDetail = auctionUpdateRequest.getAddressDetail();
+		this.appraisedValue = auctionUpdateRequest.getAppraisedValue();
+		this.auctionStartDate = auctionUpdateRequest.getAuctionStartDate();
+		this.auctionEndDate = auctionUpdateRequest.getAuctionEndDate();
+		this.itemCategory = auctionUpdateRequest.getItemCategory();
+		this.areaSize = auctionUpdateRequest.getAreaSize();
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, auctionItemName, location, lotNumber, addressDetail, appraisedValue, auctionStartDate,
 			auctionEndDate, itemCategory, areaSize, auctionFailedCount, hit, state);
+	}
+
+	public void deleteAuctionItem() {
+		this.state = true;
 	}
 }

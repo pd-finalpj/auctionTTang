@@ -19,6 +19,7 @@ import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
 import com.encore.auction.controller.auction.responses.AuctionDeleteResponse;
 import com.encore.auction.controller.auction.responses.AuctionDetailsResponse;
 import com.encore.auction.controller.auction.responses.AuctionIdResponse;
+import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
 import com.encore.auction.service.auction.AuctionService;
 
 @RestController
@@ -38,7 +39,7 @@ public class AuctionController {
 	}
 
 	@GetMapping("/{auction-item-id}")
-	public ResponseEntity<AuctionDetailsResponse> retrieveAuctionItem(
+	public ResponseEntity<AuctionRetrieveResponse> retrieveAuctionItem(
 		@PathVariable("auction-item-id") Long auctionItemId) {
 		return ResponseEntity.ok().body(auctionService.retrieveAuctionItem(auctionItemId));
 	}
