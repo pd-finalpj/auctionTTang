@@ -8,6 +8,10 @@ import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.comment.Comment;
 import com.encore.auction.model.user.User;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CommentMapper {
 
 	private static CommentMapper commentMapper = null;
