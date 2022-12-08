@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Where;
 
+import com.encore.auction.controller.notice.requests.NoticeUpdateRequest;
 import com.encore.auction.model.BaseEntity;
 import com.encore.auction.model.manager.Manager;
 
@@ -78,5 +79,16 @@ public class Notice extends BaseEntity {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, title, content, state);
+	}
+
+	public void updateNotice(NoticeUpdateRequest noticeUpdateRequest, Manager manager) {
+		this.manager = manager;
+		this.title = noticeUpdateRequest.getTitle();
+		this.content = noticeUpdateRequest.getContent();
+	}
+
+	public void deleteNotice(Manager manager) {
+		this.state = true;
+		this.manager = manager;
 	}
 }
