@@ -37,6 +37,7 @@ public class AuctionMapper {
 			.address(address)
 			.auctionItemName(auctionCreateRequest.getAuctionItemName())
 			.location(auctionCreateRequest.getLocation())
+			.lotNumber(auctionCreateRequest.getLotNumber())
 			.addressDetail(auctionCreateRequest.getAddressDetail())
 			.appraisedValue(auctionCreateRequest.getAppraisedValue())
 			.auctionStartDate(auctionCreateRequest.getAuctionStartDate())

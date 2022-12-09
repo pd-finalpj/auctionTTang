@@ -45,14 +45,9 @@ public class AuctionService {
 
 	@Transactional
 	public AuctionIdResponse createAuctionItem(AuctionCreateRequest auctionCreateRequest) {
-		Manager manager = managerRepository.findById(auctionCreateRequest.getManagerId())
-			.orElseThrow(() -> new NonExistResourceException("Manager does not exist"));
+		Manager manager = checkManagerExistAndCheckRole(auctionCreateRequest.getManagerId());
 
-		if (manager.getManagerRole().equals(ManagerRole.DISAPPROVAL))
-			throw new WrongRequestException("You do not have permission");
-
-		Address address = addressRepository.findById(auctionCreateRequest.getAddressCode())
-			.orElseThrow(() -> new NonExistResourceException("Address does not exist"));
+		Address address = checkAddressExistAndGetAddress(auctionCreateRequest.getAddressCode());
 
 		AuctionItem newAuctionItem = AuctionMapper.of()
 			.createRequestToEntity(auctionCreateRequest, manager, address);
@@ -62,9 +57,9 @@ public class AuctionService {
 		return AuctionMapper.of().entityToAuctionItemIdResponse(savedAuctionItem);
 	}
 
+	@Transactional
 	public AuctionRetrieveResponse retrieveAuctionItem(Long auctionItemId) {
-		AuctionItem auctionItem = auctionRepository.findById(auctionItemId)
-			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
+		AuctionItem auctionItem = checkAuctionExistAndGetAuctionItem(auctionItemId);
 
 		List<Comment> commentList = commentRepository.findByAuctionItemId(auctionItemId);
 
@@ -72,22 +67,18 @@ public class AuctionService {
 			.map(e -> CommentMapper.of().entityToCommentDetilasResponse(e))
 			.collect(Collectors.toList());
 
+		auctionItem.increaseHit();
+
 		return AuctionMapper.of().entityToAuctionRetrieveResponse(auctionItem, commentDetailsResponseList);
 	}
 
 	@Transactional
 	public AuctionDetailsResponse updateAuctionItem(Long auctionItemId, AuctionUpdateRequest auctionupdateRequest) {
-		AuctionItem auctionItem = auctionRepository.findById(auctionItemId)
-			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
+		AuctionItem auctionItem = checkAuctionExistAndGetAuctionItem(auctionItemId);
 
-		Manager manager = managerRepository.findById(auctionupdateRequest.getManagerId())
-			.orElseThrow(() -> new NonExistResourceException("Manager does not exist"));
+		Manager manager = checkManagerExistAndCheckRole(auctionupdateRequest.getManagerId());
 
-		if (manager.getManagerRole().equals(ManagerRole.DISAPPROVAL))
-			throw new WrongRequestException("You do not have permission");
-
-		Address address = addressRepository.findById(auctionupdateRequest.getAddressCode())
-			.orElseThrow(() -> new NonExistResourceException("Address does not exist"));
+		Address address = checkAddressExistAndGetAddress(auctionupdateRequest.getAddressCode());
 
 		auctionItem.updateAuctionItem(auctionupdateRequest, manager, address);
 
@@ -96,17 +87,31 @@ public class AuctionService {
 
 	@Transactional
 	public AuctionDeleteResponse deleteAuctionItem(Long auctionItemId, String managerId) {
-		AuctionItem auctionItem = auctionRepository.findById(auctionItemId)
-			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
+		AuctionItem auctionItem = checkAuctionExistAndGetAuctionItem(auctionItemId);
 
+		Manager manager = checkManagerExistAndCheckRole(managerId);
+
+		auctionItem.deleteAuctionItem();
+
+		return AuctionMapper.of().entityToAuctionDeleteResponse(auctionItem);
+	}
+
+	private Manager checkManagerExistAndCheckRole(String managerId) {
 		Manager manager = managerRepository.findById(managerId)
 			.orElseThrow(() -> new NonExistResourceException("Manager does not exist"));
 
 		if (manager.getManagerRole().equals(ManagerRole.DISAPPROVAL))
 			throw new WrongRequestException("You do not have permission");
+		return manager;
+	}
 
-		auctionItem.deleteAuctionItem();
+	private Address checkAddressExistAndGetAddress(String addressCode) {
+		return addressRepository.findById(addressCode)
+			.orElseThrow(() -> new NonExistResourceException("Address does not exist"));
+	}
 
-		return AuctionMapper.of().entityToAuctionDeleteResponse(auctionItem);
+	private AuctionItem checkAuctionExistAndGetAuctionItem(Long auctionItemId) {
+		return auctionRepository.findById(auctionItemId)
+			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
 	}
 }
