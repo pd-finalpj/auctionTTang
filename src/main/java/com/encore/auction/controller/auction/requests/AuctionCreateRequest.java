@@ -15,7 +15,7 @@ import lombok.Getter;
 public class AuctionCreateRequest {
 
 	@NotEmpty
-	@Pattern(regexp = "^[A-Za-z0-9]{2,12}$")
+	@Pattern(regexp = "^[A-Za-z0-9]{2,12}$", message = "아이디는 2~12자로 영문 대소문자, 숫자만 사용할 수 있습니다.")
 	private final String managerId;
 
 	@NotEmpty
