@@ -11,7 +11,7 @@ public final class UserLoginRequest {
 	@Pattern(regexp = "^[0-9A-Za-z]{2,12}$")
 	private final String userId;
 	@NotEmpty
-	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$")
+	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "비밀번호는 영문 숫자 특수문자 포함 8자리 이상이여야합니다")
 	private final String password;
 
 	public UserLoginRequest(String userId, String password) {

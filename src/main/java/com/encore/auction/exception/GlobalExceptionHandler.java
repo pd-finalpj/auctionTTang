@@ -2,6 +2,7 @@ package com.encore.auction.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -33,6 +34,15 @@ public class GlobalExceptionHandler {
 		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
 			.code("Wrong Time Exception")
 			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	protected ResponseEntity<ExceptionResponse> validException(MethodArgumentNotValidException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Validation Exception - Bad Request")
+			.message(e.getBindingResult().getAllErrors().get(0).getDefaultMessage())
 			.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
