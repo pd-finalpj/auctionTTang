@@ -13,7 +13,7 @@ public class FilteringItemsResponse {
 
 	private final String managerId;
 
-	private final String stateName;
+	private final String addressCode;
 
 	private final String auctionItemName;
 
@@ -39,14 +39,14 @@ public class FilteringItemsResponse {
 
 	private final Boolean state;
 
-	public FilteringItemsResponse(Long auctionItemId, String managerId, String stateName, String auctionItemName,
+	public FilteringItemsResponse(Long auctionItemId, String managerId, String addressCode, String auctionItemName,
 		String location, String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
 		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount,
 		Integer hit,
 		Boolean state) {
 		this.auctionItemId = auctionItemId;
 		this.managerId = managerId;
-		this.stateName = stateName;
+		this.addressCode = addressCode;
 		this.auctionItemName = auctionItemName;
 		this.location = location;
 		this.lotNumber = lotNumber;
