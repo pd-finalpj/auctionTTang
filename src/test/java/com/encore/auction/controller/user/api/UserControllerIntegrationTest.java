@@ -19,7 +19,7 @@ import com.encore.auction.controller.user.responses.UserIdResponse;
 
 @SpringBootTest
 @Transactional
-public class UserControllerIntegrationTest {
+class UserControllerIntegrationTest {
 
 	@Autowired
 	private UserController userController;
@@ -30,7 +30,7 @@ public class UserControllerIntegrationTest {
 	private final String newUserId = "newUserTestId1";
 	private final String newUserPassword = "newUserTestId1";
 	private final String newUserPasswordCheck = "newUserTestId1";
-	private final String newUserName = "테스트";
+	private final String newUserName = "유저테스트";
 	private final Integer newUserAge = 25;
 	private final String newUserNickname = "테스트계정입니다";
 	private final String newUserPhoneNumber = "01098006069";
