@@ -116,7 +116,7 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Update User Controller Test - Success")
-	void updateUser() throws Exception {
+	void updateUserSuccess() throws Exception {
 		//given
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userId, name, age, nickname, phoneNumber,
 			email);
@@ -159,7 +159,7 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Retrieve User Controller Test - Success")
-	void retrieveUser() throws Exception {
+	void retrieveUserSuccess() throws Exception {
 		//given
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userId, name, age, nickname, phoneNumber,
 			email);
@@ -187,7 +187,7 @@ class UserControllerTest {
 
 	@Test
 	@DisplayName("Delete User Controller Test - Success")
-	void deleteUser() throws Exception {
+	void deleteUserSuccess() throws Exception {
 		//given
 		UserDeleteResponse userDeleteResponse = new UserDeleteResponse(userId, true);
 
