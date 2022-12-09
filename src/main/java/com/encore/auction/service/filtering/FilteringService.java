@@ -34,7 +34,7 @@ public class FilteringService {
 		return new FilteringItemsListResponse(auctionItemList);
 	}
 
-	public FilteringItemsListResponse getFilteredAucitonItemList(String address, String date, String category,
+	public FilteringItemsListResponse getFilteredAuctionItemList(String address, String date, String category,
 		Integer auctionFailedCount) {
 		return new FilteringItemsListResponse(
 			filteringAuctionItemListRepository.filteringAuctionItemList(address, date, category, auctionFailedCount));

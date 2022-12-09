@@ -30,7 +30,7 @@ public class FilteringController {
 		@PathVariable("item-category") String category,
 		@PathVariable("auction-failed-count") Integer auctionFailedCount) {
 		return ResponseEntity.ok()
-			.body(filteringService.getFilteredAucitonItemList(address, date, category, auctionFailedCount));
+			.body(filteringService.getFilteredAuctionItemList(address, date, category, auctionFailedCount));
 	}
 
 }

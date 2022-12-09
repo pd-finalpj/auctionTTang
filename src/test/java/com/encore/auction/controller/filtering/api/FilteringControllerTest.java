@@ -149,7 +149,7 @@ class FilteringControllerTest {
 		filteringItems.add(filteringItemsResponse2);
 		FilteringItemsListResponse filteringItemsListResponse = new FilteringItemsListResponse(filteringItems);
 
-		when(filteringService.getFilteredAucitonItemList(anyString(), anyString(), anyString(), anyInt()))
+		when(filteringService.getFilteredAuctionItemList(anyString(), anyString(), anyString(), anyInt()))
 			.thenReturn(filteringItemsListResponse);
 		// when
 		ResultActions resultActions = mockMvc.perform(
