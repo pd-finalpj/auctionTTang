@@ -50,7 +50,7 @@ public class UserService {
 		if (user.isPresent())
 			throw new WrongRequestException("User Id already existed");
 
-		if (userSignUpRequest.getPassword().equals(userSignUpRequest.getPasswordCheck()))
+		if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getPasswordCheck()))
 			throw new WrongRequestException("User Password is incorrect with Password check");
 
 		String newSalt = Encrypt.of().getSalt();
