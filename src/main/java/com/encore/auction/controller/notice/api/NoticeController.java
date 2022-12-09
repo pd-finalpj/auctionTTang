@@ -1,5 +1,7 @@
 package com.encore.auction.controller.notice.api;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +33,7 @@ public class NoticeController {
 
 	@PostMapping
 	public ResponseEntity<NoticeIdResponse> registerNotice(
-		@RequestBody NoticeRegisterRequest noticeRegisterRequest) {
+		@Valid @RequestBody NoticeRegisterRequest noticeRegisterRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(noticeService.registerNotice(noticeRegisterRequest));
 	}
 
@@ -42,7 +44,7 @@ public class NoticeController {
 
 	@PutMapping("/{notice-id}")
 	public ResponseEntity<NoticeIdResponse> updateNotice(@PathVariable("notice-id") Long noticeId,
-		@RequestBody NoticeUpdateRequest noticeUpdateRequest) {
+		@Valid @RequestBody NoticeUpdateRequest noticeUpdateRequest) {
 		return ResponseEntity.ok().body(noticeService.updateNotice(noticeId, noticeUpdateRequest));
 	}
 

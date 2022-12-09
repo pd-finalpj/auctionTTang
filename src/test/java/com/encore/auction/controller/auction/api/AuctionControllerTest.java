@@ -49,9 +49,9 @@ class AuctionControllerTest {
 
 	private final Long auctionItemId = 13L;
 
-	private final String addressCode = "안녕";
+	private final String addressCode = "11310";
 
-	private final String managerId = "규리종현정일재현지영";
+	private final String managerId = "tester2";
 
 	private final String auctionItemName = "엔코아노트북";
 
@@ -79,7 +79,7 @@ class AuctionControllerTest {
 	@DisplayName("Create Auction Item Controller Test - Success")
 	void createAuctionSuccess() throws Exception {
 		// given
-		AuctionCreateRequest auctionCreateRequest = new AuctionCreateRequest(addressCode, managerId, auctionItemName,
+		AuctionCreateRequest auctionCreateRequest = new AuctionCreateRequest(managerId, addressCode, auctionItemName,
 			location, lotNumber, addressDetail, appraisedValue, auctionStartDate, auctionEndDate, itemCategory,
 			areaSize);
 
@@ -168,7 +168,7 @@ class AuctionControllerTest {
 	@DisplayName("Update Auction Item Controller Test - Success")
 	void updateAuctionSuccess() throws Exception {
 		//given
-		AuctionUpdateRequest auctionUpdateRequest = new AuctionUpdateRequest(addressCode, managerId,
+		AuctionUpdateRequest auctionUpdateRequest = new AuctionUpdateRequest(managerId, addressCode,
 			auctionItemName,
 			location, lotNumber, addressDetail, appraisedValue, auctionStartDate, auctionEndDate, itemCategory,
 			areaSize);

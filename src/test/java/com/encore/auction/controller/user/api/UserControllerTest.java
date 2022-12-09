@@ -43,8 +43,10 @@ class UserControllerTest {
 	private ObjectMapper objectMapper;
 
 	private final String userId = "tester1";
-	private final String password = "tester123";
-	private final String passwordCheck = "tester123";
+	private final String password = "tester1!";
+	private final String passwordCheck = "tester1!";
+	private final String newPassword = "tester2!";
+	private final String newPasswordCheck = "tester2!";
 	private final String name = "정정일";
 	private final Integer age = 25;
 	private final String nickname = "정일짱짱맨";
@@ -120,7 +122,7 @@ class UserControllerTest {
 		//given
 		UserDetailsResponse userDetailsResponse = new UserDetailsResponse(userId, name, age, nickname, phoneNumber,
 			email);
-		UserUpdateRequest userUpdateRequest = new UserUpdateRequest(password, "newPassword", "newPassword", name, age,
+		UserUpdateRequest userUpdateRequest = new UserUpdateRequest(password, newPassword, newPasswordCheck, name, age,
 			nickname,
 			phoneNumber, email);
 

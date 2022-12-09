@@ -39,12 +39,13 @@ public class ManagerController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<ManagerIdResponse> loginManager(@RequestBody ManagerLoginRequest managerLoginRequest) {
+	public ResponseEntity<ManagerIdResponse> loginManager(@Valid @RequestBody ManagerLoginRequest managerLoginRequest) {
 		return ResponseEntity.ok().body(managerService.loginManager(managerLoginRequest));
 	}
 
 	@PostMapping("/sign-up")
-	public ResponseEntity<ManagerIdResponse> signUpManager(@RequestBody ManagerSignUpRequest managerSignUpRequest) {
+	public ResponseEntity<ManagerIdResponse> signUpManager(
+		@Valid @RequestBody ManagerSignUpRequest managerSignUpRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(managerService.signUpManager(managerSignUpRequest));
 	}
 

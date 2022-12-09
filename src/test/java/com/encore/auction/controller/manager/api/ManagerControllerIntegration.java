@@ -25,11 +25,11 @@ class ManagerControllerIntegration {
 	private ManagerController managerController;
 
 	private final String managerId = "tester2";
-	private final String password = "tester2";
+	private final String password = "tester2!";
 
 	private final String newManagerId = "newManagerTestId1";
-	private final String newManagerPassword = "newManagerTestId1";
-	private final String newManagerPasswordCheck = "newManagerTestId1";
+	private final String newManagerPassword = "newManagerTestId1!";
+	private final String newManagerPasswordCheck = "newManagerTestId1!";
 	private final String newManagerName = "매니저테스트";
 	private final Integer newManagerAge = 24;
 	private final String newManagerPhoneNumber = "01022222222";
