@@ -9,8 +9,6 @@ import lombok.Getter;
 @Getter
 public class AuctionUpdateRequest {
 
-	private final Long auctionItemId;
-
 	private final String managerId;
 
 	private final String addressCode;
@@ -33,15 +31,9 @@ public class AuctionUpdateRequest {
 
 	private final Double areaSize;
 
-	private final Integer auctionFailedCount;
-
-	private final Integer hit;
-
-	public AuctionUpdateRequest(long auctionItemId, String managerId, String addressCode, String auctionItemName,
+	public AuctionUpdateRequest(String managerId, String addressCode, String auctionItemName,
 		String location, String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
-		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount,
-		Integer hit) {
-		this.auctionItemId = auctionItemId;
+		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize) {
 		this.managerId = managerId;
 		this.addressCode = addressCode;
 		this.auctionItemName = auctionItemName;
@@ -53,7 +45,5 @@ public class AuctionUpdateRequest {
 		this.auctionEndDate = auctionEndDate;
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
-		this.auctionFailedCount = auctionFailedCount;
-		this.hit = hit;
 	}
 }

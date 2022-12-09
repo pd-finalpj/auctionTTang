@@ -168,10 +168,10 @@ class AuctionControllerTest {
 	@DisplayName("Update Auction Item Controller Test - Success")
 	void updateAuctionSuccess() throws Exception {
 		//given
-		AuctionUpdateRequest auctionUpdateRequest = new AuctionUpdateRequest(auctionItemId, addressCode, managerId,
+		AuctionUpdateRequest auctionUpdateRequest = new AuctionUpdateRequest(addressCode, managerId,
 			auctionItemName,
 			location, lotNumber, addressDetail, appraisedValue, auctionStartDate, auctionEndDate, itemCategory,
-			areaSize, auctionFailedCount, hit);
+			areaSize);
 
 		AuctionDetailsResponse auctionDetailsResponse = new AuctionDetailsResponse(auctionItemId, addressCode,
 			managerId,
@@ -193,7 +193,6 @@ class AuctionControllerTest {
 			.andDo(document("auction-update",
 				pathParameters(parameterWithName("auction-item-id").description("수정할 Auction Item Id")),
 				requestFields(
-					fieldWithPath("auctionItemId").type(JsonFieldType.NUMBER).description("매물 등록할 물건 번호"),
 					fieldWithPath("managerId").type(JsonFieldType.STRING).description("매물 등록할 매니저 아이디"),
 					fieldWithPath("addressCode").type(JsonFieldType.STRING).description("매물 주소 코드"),
 					fieldWithPath("auctionItemName").type(JsonFieldType.STRING).description("매물 이름"),
@@ -204,9 +203,7 @@ class AuctionControllerTest {
 					fieldWithPath("auctionStartDate").type(JsonFieldType.STRING).description("경매 시작일"),
 					fieldWithPath("auctionEndDate").type(JsonFieldType.STRING).description("경매 종료일"),
 					fieldWithPath("itemCategory").type(JsonFieldType.STRING).description("건물 종류"),
-					fieldWithPath("areaSize").type(JsonFieldType.NUMBER).description("면적"),
-					fieldWithPath("auctionFailedCount").type(JsonFieldType.NUMBER).description("유찰 횟수"),
-					fieldWithPath("hit").type(JsonFieldType.NUMBER).description("조회수")
+					fieldWithPath("areaSize").type(JsonFieldType.NUMBER).description("면적")
 				),
 				responseFields(
 					fieldWithPath("auctionItemId").type(JsonFieldType.NUMBER).description("매물 등록할 물건 번호"),

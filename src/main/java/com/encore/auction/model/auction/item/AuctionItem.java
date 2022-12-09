@@ -165,4 +165,8 @@ public class AuctionItem extends BaseEntity {
 	public void deleteAuctionItem() {
 		this.state = true;
 	}
+
+	public void increaseHit() {
+		this.hit++;
+	}
 }
