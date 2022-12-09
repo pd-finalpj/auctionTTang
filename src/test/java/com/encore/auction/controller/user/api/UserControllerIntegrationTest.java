@@ -25,11 +25,11 @@ class UserControllerIntegrationTest {
 	private UserController userController;
 
 	private final String userId = "tester1";
-	private final String password = "tester1";
+	private final String password = "tester1!";
 
 	private final String newUserId = "newUserTestId1";
-	private final String newUserPassword = "newUserTestId1";
-	private final String newUserPasswordCheck = "newUserTestId1";
+	private final String newUserPassword = "newUserTestId1!";
+	private final String newUserPasswordCheck = "newUserTestId1!";
 	private final String newUserName = "유저테스트";
 	private final Integer newUserAge = 25;
 	private final String newUserNickname = "테스트계정입니다";

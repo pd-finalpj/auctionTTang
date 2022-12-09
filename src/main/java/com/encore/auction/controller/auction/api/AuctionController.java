@@ -46,7 +46,8 @@ public class AuctionController {
 
 	@PutMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionDetailsResponse> updateAuctionItem(
-		@PathVariable("auction-item-id") Long auctionItemId, @RequestBody AuctionUpdateRequest auctionUpdateRequest) {
+		@PathVariable("auction-item-id") Long auctionItemId,
+		@Valid @RequestBody AuctionUpdateRequest auctionUpdateRequest) {
 		return ResponseEntity.ok().body(auctionService.updateAuctionItem(auctionItemId, auctionUpdateRequest));
 	}
 

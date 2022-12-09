@@ -280,11 +280,11 @@ VALUES ('11','서울특별시',null),
 
 INSERT INTO user (id, password, salt, name, age, nickname, phone_number, email, state)
 VALUES ('jji0428','dnklanwkqnlrewiiqiodsoa2124','31109291fioadnjwlajlknk2qad4121', '정정일', 25, '정정일짱짱맨', '01098006069', 'jji042842@gmail.com', false),
-       ('tester1','523b0cbe903fe0e3d4ff18a3e6029d5bcfbdc166285192eaf9ec83f0ab214dbc','ff8c8f9cae2b1e6a26f9d19b8c579095d1c7abd8', '정정일일', 26, '정정일짱', '01098006070', 'tester1@gmail.com', false);
+       ('tester1','721af600446faaccaf31c5aa37a755104d6cf743dc32501924e47fca09c69ccb','c3dbc8928f31e473f4ddd641cdf9dd96a3443518', '정정일일', 26, '정정일짱', '01098006070', 'tester1@gmail.com', false);
 
 INSERT INTO manager (id, password, salt, name, age, phone_number, manager_role, email, state)
 VALUES ('jji042842','dnjqwlkenqwifiso131','1231642ndfklgld','정정이',25,'01098006069','MANAGER', 'jji042842@gmail.com', false),
-       ('tester2','3077634eafbf5df1d633da02b5b13c0f551b3a485b059883022dca8553b5f4a1','5337fee2605cba77ae312d973fde72ebfeb3c987','정정삼',24,'01098006068','MANAGER', 'tester2@gmail.com', false);
+       ('tester2','8a7309f4db92ae2a13dcee612a38105e94f38d3b42921750169aaa8f398fc50f','b384b4d8b9550be99c65ecbd32fd3813cd2cf84e','정정삼',24,'01098006068','MANAGER', 'tester2@gmail.com', false);
 
 INSERT INTO auction_item (manager_id, address_code, auction_item_name, location, lot_number, address_detail, appraised_value, auction_start_date, auction_end_date, item_category, area_size, auction_failed_count, hit, state)
 VALUES ('tester2', '39010', '제주도 경치 좋은 주택입니다', '어쩌구동', '1004-14', '정일주택 2층', 130000000, '2032-12-12 14:00:00', '2032-12-23 16:00:00', 'HOUSE', 193.23, 3, 1245, false),

@@ -42,13 +42,15 @@ class ManagerControllerTest {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	private final String managerId = "아이디정정2";
+	private final String managerId = "tester2";
 
-	private final String password = "비번과확인정정2";
+	private final String password = "tester2!";
 
-	private final String passwordCheck = "비번과확인정정2";
+	private final String passwordCheck = "tester2!";
+	private final String newPassword = "tester3!";
+	private final String newPasswordCheck = "tester3!";
 
-	private final String name = "이름정정2";
+	private final String name = "이름정정";
 
 	private final Integer age = 22;
 
@@ -126,7 +128,7 @@ class ManagerControllerTest {
 		ManagerDetailsResponse managerDetailsResponse = new ManagerDetailsResponse(managerId, name, age,
 			phoneNumber,
 			email);
-		ManagerUpdateRequest managerUpdateRequest = new ManagerUpdateRequest(password, "newPassword", "newPassword",
+		ManagerUpdateRequest managerUpdateRequest = new ManagerUpdateRequest(password, newPassword, newPasswordCheck,
 			name, age,
 			phoneNumber, email);
 
