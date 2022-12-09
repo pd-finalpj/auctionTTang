@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport
 import org.springframework.stereotype.Repository;
 
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
+import com.encore.auction.model.address.QAddress;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.auction.item.ItemCategory;
 import com.encore.auction.model.auction.item.QAuctionItem;
@@ -19,17 +20,18 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 	implements FilteringAuctionItemListRepository {
 
 	private QAuctionItem qAuctionItem = QAuctionItem.auctionItem;
+	private QAddress qAddress = QAddress.address;
 
 	public QuerydslFilteringAuctionItemListRepository() {
 		super(AuctionItem.class);
 	}
 
-	public List<FilteringItemsResponse> filteringAuctionItemList(String address, String date, String category,
+	public List<FilteringItemsResponse> filteringAuctionItemList(String stateName, String date, String category,
 		Integer auctionFailedCount) {
 
 		return from(qAuctionItem)
-			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qAuctionItem.manager,
-				qAuctionItem.address,
+			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qAuctionItem.manager.id,
+				qAuctionItem.address.stateName,
 				qAuctionItem.auctionItemName,
 				qAuctionItem.location, qAuctionItem.lotNumber, qAuctionItem.addressDetail,
 				qAuctionItem.appraisedValue, qAuctionItem.auctionStartDate,
@@ -37,17 +39,23 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 				qAuctionItem.auctionFailedCount,
 				qAuctionItem.hit,
 				qAuctionItem.state))
-			.where(eqAddress(address), loeDate(date), eqCategory(category), loeAuctionFailedCount(auctionFailedCount))
+			.leftJoin(qAddress).on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
+			.where(eqStateName(stateName), loeDate(date), eqCategory(category),
+				loeAuctionFailedCount(auctionFailedCount))
 			.orderBy(qAuctionItem.id.desc())
 			.fetch();
 	}
 
-	public BooleanExpression eqAddress(String address) {
-		return address != null ? qAuctionItem.address.cityName.contains(address) : null;
+	public BooleanExpression eqStateName(String stateName) {
+		return stateName != null ? qAuctionItem.address.stateName.eq(stateName) : null;
 	}
 
 	public BooleanExpression loeDate(String date) {
-		return date != null ? qAuctionItem.auctionEndDate.goe(LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE)) :
+		return date != null ?
+			qAuctionItem.auctionEndDate.between(LocalDateTime.parse(date,
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).minusHours(3),
+				LocalDateTime.parse(date,
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) :
 			null;
 	}
 
