@@ -26,6 +26,7 @@ import com.encore.auction.repository.CommentRepository;
 import com.encore.auction.repository.ManagerRepository;
 import com.encore.auction.utils.mapper.AuctionMapper;
 import com.encore.auction.utils.mapper.CommentMapper;
+import com.encore.auction.utils.token.JwtProvider;
 
 @Service
 public class AuctionService {
@@ -34,18 +35,22 @@ public class AuctionService {
 	private final AuctionRepository auctionRepository;
 	private final AddressRepository addressRepository;
 	private final CommentRepository commentRepository;
+	private final JwtProvider jwtProvider;
 
 	public AuctionService(ManagerRepository managerRepository, AuctionRepository auctionRepository,
-		AddressRepository addressRepository, CommentRepository commentRepository) {
+		AddressRepository addressRepository, CommentRepository commentRepository, JwtProvider jwtProvider) {
 		this.managerRepository = managerRepository;
 		this.auctionRepository = auctionRepository;
 		this.addressRepository = addressRepository;
 		this.commentRepository = commentRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	@Transactional
-	public AuctionIdResponse createAuctionItem(AuctionCreateRequest auctionCreateRequest) {
-		Manager manager = checkManagerExistAndCheckRole(auctionCreateRequest.getManagerId());
+	public AuctionIdResponse createAuctionItem(AuctionCreateRequest auctionCreateRequest, String token) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
+		Manager manager = checkManagerExistAndCheckRole(managerId);
 
 		Address address = checkAddressExistAndGetAddress(auctionCreateRequest.getAddressCode());
 
@@ -73,10 +78,13 @@ public class AuctionService {
 	}
 
 	@Transactional
-	public AuctionDetailsResponse updateAuctionItem(Long auctionItemId, AuctionUpdateRequest auctionupdateRequest) {
+	public AuctionDetailsResponse updateAuctionItem(Long auctionItemId, AuctionUpdateRequest auctionupdateRequest,
+		String token) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
 		AuctionItem auctionItem = checkAuctionExistAndGetAuctionItem(auctionItemId);
 
-		Manager manager = checkManagerExistAndCheckRole(auctionupdateRequest.getManagerId());
+		Manager manager = checkManagerExistAndCheckRole(managerId);
 
 		Address address = checkAddressExistAndGetAddress(auctionupdateRequest.getAddressCode());
 
@@ -86,10 +94,12 @@ public class AuctionService {
 	}
 
 	@Transactional
-	public AuctionDeleteResponse deleteAuctionItem(Long auctionItemId, String managerId) {
+	public AuctionDeleteResponse deleteAuctionItem(Long auctionItemId, String token) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
 		AuctionItem auctionItem = checkAuctionExistAndGetAuctionItem(auctionItemId);
 
-		Manager manager = checkManagerExistAndCheckRole(managerId);
+		checkManagerExistAndCheckRole(managerId);
 
 		auctionItem.deleteAuctionItem();
 
@@ -113,5 +123,11 @@ public class AuctionService {
 	private AuctionItem checkAuctionExistAndGetAuctionItem(Long auctionItemId) {
 		return auctionRepository.findById(auctionItemId)
 			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
+	}
+
+	private String checkTokenIsManagerAndGetManagerID(String token) {
+		if (jwtProvider.getAudience(token).equals("user"))
+			throw new WrongRequestException("User Token can't do manager's thing");
+		return jwtProvider.getSubject(token);
 	}
 }

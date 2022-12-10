@@ -33,9 +33,10 @@ public class AuctionController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<AuctionIdResponse> createAuctionItem(
+	public ResponseEntity<AuctionIdResponse> createAuctionItem(@RequestHeader("Token") String token,
 		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(auctionService.createAuctionItem(auctionCreateRequest));
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(auctionService.createAuctionItem(auctionCreateRequest, token));
 	}
 
 	@GetMapping("/{auction-item-id}")
@@ -47,13 +48,13 @@ public class AuctionController {
 	@PutMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionDetailsResponse> updateAuctionItem(
 		@PathVariable("auction-item-id") Long auctionItemId,
-		@Valid @RequestBody AuctionUpdateRequest auctionUpdateRequest) {
-		return ResponseEntity.ok().body(auctionService.updateAuctionItem(auctionItemId, auctionUpdateRequest));
+		@Valid @RequestBody AuctionUpdateRequest auctionUpdateRequest, @RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(auctionService.updateAuctionItem(auctionItemId, auctionUpdateRequest, token));
 	}
 
 	@DeleteMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionDeleteResponse> deleteAuctionItem(@PathVariable("auction-item-id") Long auctionItemId,
-		@RequestHeader("managerId") String managerId) {
-		return ResponseEntity.ok().body(auctionService.deleteAuctionItem(auctionItemId, managerId));
+		@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(auctionService.deleteAuctionItem(auctionItemId, token));
 	}
 }

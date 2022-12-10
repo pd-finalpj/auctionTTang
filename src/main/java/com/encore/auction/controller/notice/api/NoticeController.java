@@ -32,25 +32,27 @@ public class NoticeController {
 	}
 
 	@PostMapping
-	public ResponseEntity<NoticeIdResponse> registerNotice(
+	public ResponseEntity<NoticeIdResponse> registerNotice(@RequestHeader("Token") String token,
 		@Valid @RequestBody NoticeRegisterRequest noticeRegisterRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(noticeService.registerNotice(noticeRegisterRequest));
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(noticeService.registerNotice(token, noticeRegisterRequest));
 	}
 
-	@GetMapping("/{notice-id}")
+	@GetMapping("/get/{notice-id}")
 	public ResponseEntity<NoticeDetailsResponse> retrieveNotice(@PathVariable("notice-id") Long noticeId) {
 		return ResponseEntity.ok().body(noticeService.retrieveNotice(noticeId));
 	}
 
 	@PutMapping("/{notice-id}")
 	public ResponseEntity<NoticeIdResponse> updateNotice(@PathVariable("notice-id") Long noticeId,
+		@RequestHeader("Token") String token,
 		@Valid @RequestBody NoticeUpdateRequest noticeUpdateRequest) {
-		return ResponseEntity.ok().body(noticeService.updateNotice(noticeId, noticeUpdateRequest));
+		return ResponseEntity.ok().body(noticeService.updateNotice(noticeId, token, noticeUpdateRequest));
 	}
 
 	@DeleteMapping("/{notice-id}")
 	public ResponseEntity<NoticeDeleteResponse> deleteNotice(@PathVariable("notice-id") Long noticeId,
-		@RequestHeader("managerId") String managerId) {
-		return ResponseEntity.ok().body(noticeService.deleteNotice(noticeId, managerId));
+		@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(noticeService.deleteNotice(noticeId, token));
 	}
 }

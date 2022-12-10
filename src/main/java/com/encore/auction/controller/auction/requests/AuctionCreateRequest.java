@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.encore.auction.model.auction.item.ItemCategory;
@@ -13,10 +12,6 @@ import lombok.Getter;
 
 @Getter
 public class AuctionCreateRequest {
-
-	@NotEmpty
-	@Pattern(regexp = "^[A-Za-z0-9]{2,12}$")
-	private final String managerId;
 
 	@NotEmpty
 	@Size(max = 5)
@@ -52,11 +47,9 @@ public class AuctionCreateRequest {
 	@NotNull
 	private final Double areaSize;
 
-	public AuctionCreateRequest(String managerId, String addressCode, String auctionItemName, String location,
-		String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
-		LocalDateTime auctionEndDate,
+	public AuctionCreateRequest(String addressCode, String auctionItemName, String location, String lotNumber,
+		String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate, LocalDateTime auctionEndDate,
 		ItemCategory itemCategory, Double areaSize) {
-		this.managerId = managerId;
 		this.addressCode = addressCode;
 		this.auctionItemName = auctionItemName;
 		this.location = location;
@@ -68,5 +61,4 @@ public class AuctionCreateRequest {
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
 	}
-
 }

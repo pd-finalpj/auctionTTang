@@ -27,16 +27,16 @@ public class BookmarkController {
 
 	@PostMapping
 	public ResponseEntity<BookmarkRegisterResponse> registerBookmark(
-		@RequestBody BookmarkRegisterRequest bookmarkRegisterRequest) {
+		@RequestBody BookmarkRegisterRequest bookmarkRegisterRequest, @RequestHeader("Token") String token) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(bookmarkService.registerBookmark(bookmarkRegisterRequest));
+			.body(bookmarkService.registerBookmark(bookmarkRegisterRequest, token));
 	}
 
 	@DeleteMapping("/{auction-id}")
 	public ResponseEntity<BookmarkDeleteResponse> deleteBookmark(
 		@PathVariable("auction-id") Long auctionId,
-		@RequestHeader("userId") String userId) {
-		return ResponseEntity.ok().body(bookmarkService.deleteBookmark(auctionId, userId));
+		@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(bookmarkService.deleteBookmark(auctionId, token));
 	}
 
 }

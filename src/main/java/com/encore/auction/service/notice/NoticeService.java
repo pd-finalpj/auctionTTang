@@ -16,21 +16,27 @@ import com.encore.auction.model.notice.Notice;
 import com.encore.auction.repository.ManagerRepository;
 import com.encore.auction.repository.NoticeRepository;
 import com.encore.auction.utils.mapper.NoticeMapper;
+import com.encore.auction.utils.token.JwtProvider;
 
 @Service
 public class NoticeService {
 
 	private final NoticeRepository noticeRepository;
 	private final ManagerRepository managerRepository;
+	private final JwtProvider jwtProvider;
 
-	public NoticeService(NoticeRepository noticeRepository, ManagerRepository managerRepository) {
+	public NoticeService(NoticeRepository noticeRepository, ManagerRepository managerRepository,
+		JwtProvider jwtProvider) {
 		this.noticeRepository = noticeRepository;
 		this.managerRepository = managerRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	@Transactional
-	public NoticeIdResponse registerNotice(NoticeRegisterRequest noticeRegisterRequest) {
-		Manager manager = checkManagerExistAndRoleAndGetManager(noticeRegisterRequest.getManagerId());
+	public NoticeIdResponse registerNotice(String token, NoticeRegisterRequest noticeRegisterRequest) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
+		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
 		Notice notice = NoticeMapper.of().registerRequestToEntity(noticeRegisterRequest, manager);
 
@@ -46,8 +52,10 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public NoticeIdResponse updateNotice(Long noticeId, NoticeUpdateRequest noticeUpdateRequest) {
-		Manager manager = checkManagerExistAndRoleAndGetManager(noticeUpdateRequest.getManagerId());
+	public NoticeIdResponse updateNotice(Long noticeId, String token, NoticeUpdateRequest noticeUpdateRequest) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
+		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
 		Notice notice = checkNoticeExistAndGetNotice(noticeId);
 
@@ -57,7 +65,9 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public NoticeDeleteResponse deleteNotice(Long noticeId, String managerId) {
+	public NoticeDeleteResponse deleteNotice(Long noticeId, String token) {
+		String managerId = checkTokenIsManagerAndGetManagerID(token);
+
 		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
 		Notice notice = checkNoticeExistAndGetNotice(noticeId);
@@ -80,5 +90,11 @@ public class NoticeService {
 	private Notice checkNoticeExistAndGetNotice(Long noticeId) {
 		return noticeRepository.findById(noticeId)
 			.orElseThrow(() -> new NonExistResourceException("Notice does not exit"));
+	}
+
+	private String checkTokenIsManagerAndGetManagerID(String token) {
+		if (jwtProvider.getAudience(token).equals("user"))
+			throw new WrongRequestException("User Token can't do manager's thing");
+		return jwtProvider.getSubject(token);
 	}
 }

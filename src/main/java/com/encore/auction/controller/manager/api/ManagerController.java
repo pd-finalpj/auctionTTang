@@ -21,6 +21,7 @@ import com.encore.auction.controller.manager.responses.ManagerDeleteResponse;
 import com.encore.auction.controller.manager.responses.ManagerDetailsResponse;
 import com.encore.auction.controller.manager.responses.ManagerIdCheckResponse;
 import com.encore.auction.controller.manager.responses.ManagerIdResponse;
+import com.encore.auction.controller.manager.responses.ManagerTokenResponse;
 import com.encore.auction.service.manager.ManagerService;
 
 @RestController
@@ -39,7 +40,8 @@ public class ManagerController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<ManagerIdResponse> loginManager(@Valid @RequestBody ManagerLoginRequest managerLoginRequest) {
+	public ResponseEntity<ManagerTokenResponse> loginManager(
+		@Valid @RequestBody ManagerLoginRequest managerLoginRequest) {
 		return ResponseEntity.ok().body(managerService.loginManager(managerLoginRequest));
 	}
 
@@ -49,21 +51,21 @@ public class ManagerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(managerService.signUpManager(managerSignUpRequest));
 	}
 
-	@GetMapping("/{manager-id}")
-	public ResponseEntity<ManagerDetailsResponse> retrieveManager(@PathVariable("manager-id") String managerId) {
-		return ResponseEntity.ok().body(managerService.retrieveManager(managerId));
+	@GetMapping
+	public ResponseEntity<ManagerDetailsResponse> retrieveManager(@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(managerService.retrieveManager(token));
 	}
 
-	@PutMapping("/{manager-id}")
-	public ResponseEntity<ManagerDetailsResponse> updateManager(@PathVariable("manager-id") String managerId,
+	@PutMapping
+	public ResponseEntity<ManagerDetailsResponse> updateManager(@RequestHeader("Token") String token,
 		@Valid @RequestBody
 		ManagerUpdateRequest managerUpdateRequest) {
-		return ResponseEntity.ok().body(managerService.updateManager(managerId, managerUpdateRequest));
+		return ResponseEntity.ok().body(managerService.updateManager(token, managerUpdateRequest));
 	}
 
-	@DeleteMapping("/{manager-id}")
-	public ResponseEntity<ManagerDeleteResponse> deleteManager(@PathVariable("manager-id") String managerId,
+	@DeleteMapping
+	public ResponseEntity<ManagerDeleteResponse> deleteManager(@RequestHeader("Token") String token,
 		@RequestHeader("password") String password) {
-		return ResponseEntity.ok().body(managerService.deleteManager(managerId, password));
+		return ResponseEntity.ok().body(managerService.deleteManager(token, password));
 	}
 }

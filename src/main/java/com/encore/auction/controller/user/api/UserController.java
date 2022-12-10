@@ -21,6 +21,7 @@ import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
 import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
+import com.encore.auction.controller.user.responses.UserTokenResponse;
 import com.encore.auction.service.user.UserService;
 
 @RestController
@@ -39,7 +40,7 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<UserIdResponse> loginUser(@Valid @RequestBody UserLoginRequest userLoginRequest) {
+	public ResponseEntity<UserTokenResponse> loginUser(@Valid @RequestBody UserLoginRequest userLoginRequest) {
 		return ResponseEntity.ok().body(userService.loginUser(userLoginRequest));
 	}
 
@@ -48,20 +49,20 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSignUpRequest));
 	}
 
-	@GetMapping("/{user-id}")
-	public ResponseEntity<UserDetailsResponse> retrieveUser(@PathVariable("user-id") String userId) {
-		return ResponseEntity.ok().body(userService.retrieveUser(userId));
+	@GetMapping
+	public ResponseEntity<UserDetailsResponse> retrieveUser(@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(userService.retrieveUser(token));
 	}
 
-	@PutMapping("/{user-id}")
-	public ResponseEntity<UserDetailsResponse> updateUser(@PathVariable("user-id") String userId, @Valid @RequestBody
+	@PutMapping
+	public ResponseEntity<UserDetailsResponse> updateUser(@RequestHeader("Token") String token, @Valid @RequestBody
 	UserUpdateRequest userUpdateRequest) {
-		return ResponseEntity.ok().body(userService.updateUser(userId, userUpdateRequest));
+		return ResponseEntity.ok().body(userService.updateUser(token, userUpdateRequest));
 	}
 
-	@DeleteMapping("/{user-id}")
-	public ResponseEntity<UserDeleteResponse> deleteUser(@PathVariable("user-id") String userId,
+	@DeleteMapping
+	public ResponseEntity<UserDeleteResponse> deleteUser(@RequestHeader("Token") String token,
 		@RequestHeader("password") String password) {
-		return ResponseEntity.ok().body(userService.deleteUser(userId, password));
+		return ResponseEntity.ok().body(userService.deleteUser(token, password));
 	}
 }

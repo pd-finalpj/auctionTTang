@@ -12,31 +12,39 @@ import com.encore.auction.controller.user.responses.UserDeleteResponse;
 import com.encore.auction.controller.user.responses.UserDetailsResponse;
 import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
+import com.encore.auction.controller.user.responses.UserTokenResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
 import com.encore.auction.repository.UserRepository;
 import com.encore.auction.utils.encrypt.Encrypt;
 import com.encore.auction.utils.mapper.UserMapper;
+import com.encore.auction.utils.token.JwtProvider;
 
 @Service
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final JwtProvider jwtProvider;
 
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, JwtProvider jwtProvider) {
 		this.userRepository = userRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
-	public UserIdResponse loginUser(UserLoginRequest userLoginRequest) {
+	public UserTokenResponse loginUser(UserLoginRequest userLoginRequest) {
 		User user = checkUserExistAndCheckPasswordIsCorrect(userLoginRequest.getUserId(),
 			userLoginRequest.getPassword());
 
-		return UserMapper.of().entityToUserIdResponse(user);
+		String token = jwtProvider.createToken(user.getId(), "user");
+
+		return new UserTokenResponse(token, "Bearer");
 	}
 
 	//
-	public UserDetailsResponse retrieveUser(String userId) {
+	public UserDetailsResponse retrieveUser(String token) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
 
@@ -65,7 +73,9 @@ public class UserService {
 	}
 
 	@Transactional
-	public UserDetailsResponse updateUser(String userId, UserUpdateRequest userUpdateRequest) {
+	public UserDetailsResponse updateUser(String token, UserUpdateRequest userUpdateRequest) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		User user = checkUserExistAndCheckPasswordIsCorrect(userId, userUpdateRequest.getOldPassword());
 
 		if (!userUpdateRequest.getNewPassword().equals(userUpdateRequest.getPasswordCheck()))
@@ -80,7 +90,9 @@ public class UserService {
 		return UserMapper.of().entityToUserDetailsResponse(user);
 	}
 
-	public UserDeleteResponse deleteUser(String userId, String password) {
+	public UserDeleteResponse deleteUser(String token, String password) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		User user = checkUserExistAndCheckPasswordIsCorrect(userId, password);
 
 		user.deleteUser();
@@ -103,5 +115,11 @@ public class UserService {
 
 	public UserIdCheckResponse checkUserIdExist(String userId) {
 		return new UserIdCheckResponse(userRepository.findById(userId).isPresent());
+	}
+
+	private String checkTokenIsUserAndGetUserID(String token) {
+		if (jwtProvider.getAudience(token).equals("manager"))
+			throw new WrongRequestException("Manager Token can't do user's thing");
+		return jwtProvider.getSubject(token);
 	}
 }

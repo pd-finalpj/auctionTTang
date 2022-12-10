@@ -34,8 +34,9 @@ public class BiddingController {
 
 	@PostMapping
 	public ResponseEntity<BiddingIdResponse> registerBidding(
-		@Valid @RequestBody BiddingRegisterRequest biddingRegisterRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(biddingService.registerBidding(biddingRegisterRequest));
+		@Valid @RequestBody BiddingRegisterRequest biddingRegisterRequest, @RequestHeader("Token") String token) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(biddingService.registerBidding(biddingRegisterRequest, token));
 	}
 
 	@GetMapping("/{bidding-id}")
@@ -46,13 +47,13 @@ public class BiddingController {
 	@PutMapping("/{bidding-id}")
 	public ResponseEntity<BiddingDetailsResponse> updateBidding(@PathVariable("bidding-id") Long biddingId,
 		@Valid @RequestBody
-		BiddingUpdateRequest biddingUpdateRequest) {
-		return ResponseEntity.ok().body(biddingService.updateBidding(biddingId, biddingUpdateRequest));
+		BiddingUpdateRequest biddingUpdateRequest, @RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(biddingService.updateBidding(biddingId, biddingUpdateRequest, token));
 	}
 
 	@DeleteMapping("/{bidding-id}")
 	public ResponseEntity<BiddingDeleteResponse> deleteBidding(@PathVariable("bidding-id") Long biddingId,
-		@RequestHeader("userId") String userId) {
-		return ResponseEntity.ok().body(biddingService.deleteBidding(biddingId, userId));
+		@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(biddingService.deleteBidding(biddingId, token));
 	}
 }
