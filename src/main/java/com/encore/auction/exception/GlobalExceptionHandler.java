@@ -86,4 +86,13 @@ public class GlobalExceptionHandler {
 			.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}
+
+	@ExceptionHandler(SchedulerThreadException.class)
+	protected ResponseEntity<ExceptionResponse> schedulerThreadException(SchedulerThreadException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Scheduler Thread Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+	}
 }

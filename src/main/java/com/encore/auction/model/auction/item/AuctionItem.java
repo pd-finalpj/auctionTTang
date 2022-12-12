@@ -47,6 +47,9 @@ public class AuctionItem extends BaseEntity {
 	@JoinColumn(nullable = false, name = "address_code")
 	private Address address;
 
+	@Column(nullable = false, length = 20)
+	private String auctionItemCaseNumber;
+
 	@Column(nullable = false, length = 100)
 	private String auctionItemName;
 
@@ -79,18 +82,26 @@ public class AuctionItem extends BaseEntity {
 	private Integer auctionFailedCount;
 
 	@Column(nullable = false, columnDefinition = "int default 0")
+	private Integer bookmarkCount;
+
+	@Column(nullable = false, columnDefinition = "int default 0")
 	private Integer hit;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ItemSoldState itemSoldState;
 
 	@Column(nullable = false, columnDefinition = "bit(1) default 0", length = 1)
 	private Boolean state;
 
-	public AuctionItem(Long id, Manager manager, Address address, String auctionItemName, String location,
-		String lotNumber,
-		String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate, LocalDateTime auctionEndDate,
-		ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount, Integer hit, Boolean state) {
+	public AuctionItem(Long id, Manager manager, Address address, String auctionItemCaseNumber, String auctionItemName,
+		String location, String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
+		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount,
+		Integer bookmarkCount, Integer hit, ItemSoldState itemSoldState, Boolean state) {
 		this.id = id;
 		this.manager = manager;
 		this.address = address;
+		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
 		this.location = location;
 		this.lotNumber = lotNumber;
@@ -101,7 +112,9 @@ public class AuctionItem extends BaseEntity {
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
 		this.auctionFailedCount = auctionFailedCount;
+		this.bookmarkCount = bookmarkCount;
 		this.hit = hit;
+		this.itemSoldState = itemSoldState;
 		this.state = state;
 	}
 
@@ -109,6 +122,7 @@ public class AuctionItem extends BaseEntity {
 	public String toString() {
 		return "AuctionItem{" +
 			"id=" + id +
+			", auctionItemCaseNumber='" + auctionItemCaseNumber + '\'' +
 			", auctionItemName='" + auctionItemName + '\'' +
 			", location='" + location + '\'' +
 			", lotNumber='" + lotNumber + '\'' +
@@ -119,7 +133,9 @@ public class AuctionItem extends BaseEntity {
 			", itemCategory=" + itemCategory +
 			", areaSize=" + areaSize +
 			", auctionFailedCount=" + auctionFailedCount +
+			", bookmarkCount=" + bookmarkCount +
 			", hit=" + hit +
+			", itemSoldState=" + itemSoldState +
 			", state=" + state +
 			'}';
 	}
@@ -132,34 +148,25 @@ public class AuctionItem extends BaseEntity {
 			return false;
 		AuctionItem that = (AuctionItem)o;
 		return Objects.equals(id, that.id) && Objects.equals(manager, that.manager)
-			&& Objects.equals(address, that.address) && Objects.equals(auctionItemName,
-			that.auctionItemName) && Objects.equals(location, that.location) && Objects.equals(
-			lotNumber, that.lotNumber) && Objects.equals(addressDetail, that.addressDetail)
-			&& Objects.equals(appraisedValue, that.appraisedValue) && Objects.equals(auctionStartDate,
-			that.auctionStartDate) && Objects.equals(auctionEndDate, that.auctionEndDate)
-			&& itemCategory == that.itemCategory && Objects.equals(areaSize, that.areaSize)
-			&& Objects.equals(auctionFailedCount, that.auctionFailedCount) && Objects.equals(hit,
-			that.hit) && Objects.equals(state, that.state);
-	}
-
-	public void updateAuctionItem(AuctionUpdateRequest auctionUpdateRequest, Manager manager, Address address) {
-		this.address = address;
-		this.manager = manager;
-		this.auctionItemName = auctionUpdateRequest.getAuctionItemName();
-		this.location = auctionUpdateRequest.getLocation();
-		this.lotNumber = auctionUpdateRequest.getLocation();
-		this.addressDetail = auctionUpdateRequest.getAddressDetail();
-		this.appraisedValue = auctionUpdateRequest.getAppraisedValue();
-		this.auctionStartDate = auctionUpdateRequest.getAuctionStartDate();
-		this.auctionEndDate = auctionUpdateRequest.getAuctionEndDate();
-		this.itemCategory = auctionUpdateRequest.getItemCategory();
-		this.areaSize = auctionUpdateRequest.getAreaSize();
+			&& Objects.equals(address, that.address) && Objects.equals(auctionItemCaseNumber,
+			that.auctionItemCaseNumber) && Objects.equals(auctionItemName, that.auctionItemName)
+			&& Objects.equals(location, that.location) && Objects.equals(lotNumber, that.lotNumber)
+			&& Objects.equals(addressDetail, that.addressDetail) && Objects.equals(appraisedValue,
+			that.appraisedValue) && Objects.equals(auctionStartDate, that.auctionStartDate)
+			&& Objects.equals(auctionEndDate, that.auctionEndDate) && itemCategory == that.itemCategory
+			&& Objects.equals(areaSize, that.areaSize) && Objects.equals(auctionFailedCount,
+			that.auctionFailedCount) && Objects.equals(bookmarkCount, that.bookmarkCount)
+			&& Objects.equals(hit, that.hit) && itemSoldState == that.itemSoldState && Objects.equals(
+			state, that.state);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, auctionItemName, location, lotNumber, addressDetail, appraisedValue, auctionStartDate,
-			auctionEndDate, itemCategory, areaSize, auctionFailedCount, hit, state);
+		return Objects.hash(id, auctionItemCaseNumber, auctionItemName, location, lotNumber, addressDetail,
+			appraisedValue,
+			auctionStartDate, auctionEndDate, itemCategory, areaSize, auctionFailedCount, bookmarkCount, hit,
+			itemSoldState,
+			state);
 	}
 
 	public void deleteAuctionItem() {
@@ -168,5 +175,35 @@ public class AuctionItem extends BaseEntity {
 
 	public void increaseHit() {
 		this.hit++;
+	}
+
+	public void updateAuctionItem(AuctionUpdateRequest auctionupdateRequest, Manager manager, Address address) {
+		this.address = address;
+		this.manager = manager;
+		this.auctionItemName = auctionupdateRequest.getAuctionItemName();
+		this.location = auctionupdateRequest.getLocation();
+		this.lotNumber = auctionupdateRequest.getLotNumber();
+		this.addressDetail = auctionupdateRequest.getAddressDetail();
+		this.appraisedValue = auctionupdateRequest.getAppraisedValue();
+		this.auctionStartDate = auctionupdateRequest.getAuctionStartDate();
+		this.auctionEndDate = auctionupdateRequest.getAuctionEndDate();
+		this.itemCategory = auctionupdateRequest.getItemCategory();
+		this.areaSize = auctionupdateRequest.getAreaSize();
+	}
+
+	public void updateItemSoldState(ItemSoldState state) {
+		this.itemSoldState = state;
+	}
+
+	public void increaseFailCount() {
+		this.auctionFailedCount++;
+	}
+
+	public void increaseBookmark() {
+		this.bookmarkCount++;
+	}
+
+	public void decreaseBookmark() {
+		this.bookmarkCount++;
 	}
 }
