@@ -50,8 +50,8 @@ dependencies {
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
     testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.16.2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -86,18 +86,4 @@ configurations {
 }
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
-}
-
-bootJar {
-    dependsOn(':openapi3')
-}
-
-openapi3 {
-    server = 'http://localhost:8080'
-    title = 'Auction TTang API'
-    description = 'Auction TTang API description'
-    version = '0.1.0'
-    outputFileNamePrefix = 'open-api-3.0.1'
-    format = 'json'
-    outputDirectory = "$staticsDir/docs"
 }

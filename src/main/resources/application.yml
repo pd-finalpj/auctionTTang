@@ -1,5 +1,5 @@
 server:
-  port: 8282
+  port: 8080
   servlet:
     context-path: /
     encoding:
@@ -24,6 +24,8 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+    pathmatch:
+      matching-strategy: ant_path_matcher
   profiles:
     active:
       - secret

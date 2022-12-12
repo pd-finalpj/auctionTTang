@@ -22,6 +22,9 @@ import com.encore.auction.controller.auction.responses.AuctionIdResponse;
 import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
 import com.encore.auction.service.auction.AuctionService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/auction")
 public class AuctionController {
@@ -39,13 +42,15 @@ public class AuctionController {
 			.body(auctionService.createAuctionItem(auctionCreateRequest, token));
 	}
 
-	@GetMapping("/{auction-item-id}")
+	@GetMapping("/get/{auction-item-id}")
 	public ResponseEntity<AuctionRetrieveResponse> retrieveAuctionItem(
 		@PathVariable("auction-item-id") Long auctionItemId) {
 		return ResponseEntity.ok().body(auctionService.retrieveAuctionItem(auctionItemId));
 	}
 
 	@PutMapping("/{auction-item-id}")
+	@ApiOperation(value = "경매 물품 등록", notes = "경매 물품 등록 API")
+	@ApiImplicitParam(name = "token", value = "매니저 Token")
 	public ResponseEntity<AuctionDetailsResponse> updateAuctionItem(
 		@PathVariable("auction-item-id") Long auctionItemId,
 		@Valid @RequestBody AuctionUpdateRequest auctionUpdateRequest, @RequestHeader("Token") String token) {
@@ -53,6 +58,8 @@ public class AuctionController {
 	}
 
 	@DeleteMapping("/{auction-item-id}")
+	@ApiOperation(value = "경매 물품 등록", notes = "경매 물품 등록 API")
+	@ApiImplicitParam(name = "token", value = "매니저 Token")
 	public ResponseEntity<AuctionDeleteResponse> deleteAuctionItem(@PathVariable("auction-item-id") Long auctionItemId,
 		@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(auctionService.deleteAuctionItem(auctionItemId, token));

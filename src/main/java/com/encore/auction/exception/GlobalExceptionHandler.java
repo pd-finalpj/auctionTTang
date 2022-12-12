@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.encore.auction.exception.response.ExceptionResponse;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 
@@ -72,6 +73,15 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ExceptionResponse> signatureException(SignatureException e) {
 		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
 			.code("JWT Signature Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(ExpiredJwtException.class)
+	protected ResponseEntity<ExceptionResponse> expiredJwtException(ExpiredJwtException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("JWT Expired Jwt Exception")
 			.message(e.getMessage())
 			.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
