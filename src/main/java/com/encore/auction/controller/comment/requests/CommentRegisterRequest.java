@@ -10,7 +10,7 @@ public final class CommentRegisterRequest {
 
 	@NotNull
 	private final Long auctionItemId;
-	@Size(max = 3000)
+	@Size(max = 3000, message = "내용은 최대 3000자까지 입력 가능합니다.")
 	private final String content;
 
 	public CommentRegisterRequest(Long auctionItemId, String content) {
