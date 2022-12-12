@@ -10,7 +10,7 @@ import com.encore.auction.controller.filtering.responses.FilteringItemsListRespo
 import com.encore.auction.service.filtering.FilteringService;
 
 @RestController
-@RequestMapping("/auction")
+@RequestMapping("/auction/get/list")
 public class FilteringController {
 
 	private final FilteringService filteringService;
@@ -19,7 +19,7 @@ public class FilteringController {
 		this.filteringService = filteringService;
 	}
 
-	@GetMapping("/list")
+	@GetMapping
 	public ResponseEntity<FilteringItemsListResponse> getAuctionItemList() {
 		return ResponseEntity.ok().body(filteringService.getAuctionItemList());
 	}

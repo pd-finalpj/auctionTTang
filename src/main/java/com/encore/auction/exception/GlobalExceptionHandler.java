@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.encore.auction.exception.response.ExceptionResponse;
 
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -43,6 +46,33 @@ public class GlobalExceptionHandler {
 		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
 			.code("Validation Exception - Bad Request")
 			.message(e.getBindingResult().getAllErrors().get(0).getDefaultMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(MalformedJwtException.class)
+	protected ResponseEntity<ExceptionResponse> malformedJwtException(MalformedJwtException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Malformed Jwt Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	protected ResponseEntity<ExceptionResponse> illegalArgumentException(IllegalArgumentException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Illegal Argument Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(SignatureException.class)
+	protected ResponseEntity<ExceptionResponse> signatureException(SignatureException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("JWT Signature Exception")
+			.message(e.getMessage())
 			.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
 	}

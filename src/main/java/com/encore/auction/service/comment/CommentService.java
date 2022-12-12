@@ -17,6 +17,7 @@ import com.encore.auction.repository.AuctionItemRepository;
 import com.encore.auction.repository.CommentRepository;
 import com.encore.auction.repository.UserRepository;
 import com.encore.auction.utils.mapper.CommentMapper;
+import com.encore.auction.utils.token.JwtProvider;
 
 @Service
 public class CommentService {
@@ -24,17 +25,21 @@ public class CommentService {
 	private final CommentRepository commentRepository;
 	private final UserRepository userRepository;
 	private final AuctionItemRepository auctionItemRepository;
+	private final JwtProvider jwtProvider;
 
 	public CommentService(CommentRepository commentRepository, UserRepository userRepository,
-		AuctionItemRepository auctionItemRepository) {
+		AuctionItemRepository auctionItemRepository, JwtProvider jwtProvider) {
 		this.commentRepository = commentRepository;
 		this.userRepository = userRepository;
 		this.auctionItemRepository = auctionItemRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	@Transactional
-	public CommentIdResponse registerComment(CommentRegisterRequest commentRegisterRequest) {
-		User user = checkUserExistAndGetUser(commentRegisterRequest.getUserId());
+	public CommentIdResponse registerComment(String token, CommentRegisterRequest commentRegisterRequest) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
+		User user = checkUserExistAndGetUser(userId);
 
 		AuctionItem auctionItem = auctionItemRepository.findById(commentRegisterRequest.getAuctionItemId())
 			.orElseThrow(() -> new NonExistResourceException("Auction Item does not exist"));
@@ -53,8 +58,10 @@ public class CommentService {
 	}
 
 	@Transactional
-	public CommentIdResponse updateComment(Long commentId, CommentUpdateRequest commentUpdateRequest) {
-		User user = checkUserExistAndGetUser(commentUpdateRequest.getUserId());
+	public CommentIdResponse updateComment(Long commentId, String token, CommentUpdateRequest commentUpdateRequest) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
+		User user = checkUserExistAndGetUser(userId);
 
 		Comment comment = checkCommentExistAndGetComment(commentId);
 
@@ -67,7 +74,9 @@ public class CommentService {
 	}
 
 	@Transactional
-	public CommentDeleteResponse deleteComment(Long commentId, String userId) {
+	public CommentDeleteResponse deleteComment(Long commentId, String token) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		User user = checkUserExistAndGetUser(userId);
 
 		Comment comment = checkCommentExistAndGetComment(commentId);
@@ -92,5 +101,11 @@ public class CommentService {
 	private Comment checkCommentExistAndGetComment(Long commentId) {
 		return commentRepository.findById(commentId)
 			.orElseThrow(() -> new NonExistResourceException("Comment does not exist"));
+	}
+
+	private String checkTokenIsUserAndGetUserID(String token) {
+		if (jwtProvider.getAudience(token).equals("manager"))
+			throw new WrongRequestException("Manager Token can't do user's thing");
+		return jwtProvider.getSubject(token);
 	}
 }

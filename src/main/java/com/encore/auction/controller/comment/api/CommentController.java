@@ -20,7 +20,7 @@ import com.encore.auction.controller.comment.responses.CommentIdResponse;
 import com.encore.auction.service.comment.CommentService;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/1")
 public class CommentController {
 
 	private final CommentService commentService;
@@ -30,9 +30,10 @@ public class CommentController {
 	}
 
 	@PostMapping
-	public ResponseEntity<CommentIdResponse> registerComment(
+	public ResponseEntity<CommentIdResponse> registerComment(@RequestHeader("Token") String token,
 		@RequestBody CommentRegisterRequest commentRegisterRequest) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(commentService.registerComment(commentRegisterRequest));
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(commentService.registerComment(token, commentRegisterRequest));
 	}
 
 	@GetMapping("/{comment-id}")
@@ -42,13 +43,14 @@ public class CommentController {
 
 	@PutMapping("/{comment-id}")
 	public ResponseEntity<CommentIdResponse> updateComment(@PathVariable("comment-id") Long commentId,
+		@RequestHeader("Token") String token,
 		@RequestBody CommentUpdateRequest commentUpdateRequest) {
-		return ResponseEntity.ok().body(commentService.updateComment(commentId, commentUpdateRequest));
+		return ResponseEntity.ok().body(commentService.updateComment(commentId, token, commentUpdateRequest));
 	}
 
 	@DeleteMapping("/{comment-id}")
 	public ResponseEntity<CommentDeleteResponse> deleteComment(@PathVariable("comment-id") Long commentId,
-		@RequestHeader("userId") String userId) {
-		return ResponseEntity.ok().body(commentService.deleteComment(commentId, userId));
+		@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(commentService.deleteComment(commentId, token));
 	}
 }

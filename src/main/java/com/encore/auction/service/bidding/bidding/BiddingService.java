@@ -21,6 +21,7 @@ import com.encore.auction.repository.BiddingRepository;
 import com.encore.auction.repository.BiddingRetrieveRepository;
 import com.encore.auction.repository.UserRepository;
 import com.encore.auction.utils.mapper.BiddingMapper;
+import com.encore.auction.utils.token.JwtProvider;
 import com.encore.auction.utils.validator.LocalDateTimeValidator;
 
 @Service
@@ -30,18 +31,23 @@ public class BiddingService {
 	private final BiddingRepository biddingRepository;
 	private final AuctionItemRepository auctionItemRepository;
 	private final BiddingRetrieveRepository biddingRetrieveRepository;
+	private final JwtProvider jwtProvider;
 
 	public BiddingService(UserRepository userRepository, BiddingRepository biddingRepository,
-		AuctionItemRepository auctionItemRepository, BiddingRetrieveRepository biddingRetrieveRepository) {
+		AuctionItemRepository auctionItemRepository, BiddingRetrieveRepository biddingRetrieveRepository,
+		JwtProvider jwtProvider) {
 		this.userRepository = userRepository;
 		this.biddingRepository = biddingRepository;
 		this.auctionItemRepository = auctionItemRepository;
 		this.biddingRetrieveRepository = biddingRetrieveRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	@Transactional
-	public BiddingIdResponse registerBidding(BiddingRegisterRequest biddingRegisterRequest) {
-		User user = userRepository.findById(biddingRegisterRequest.getUserId())
+	public BiddingIdResponse registerBidding(BiddingRegisterRequest biddingRegisterRequest, String token) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
+		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
 
 		AuctionItem auctionItem = auctionItemRepository.findById(biddingRegisterRequest.getAuctionItemId())
@@ -69,8 +75,14 @@ public class BiddingService {
 	}
 
 	@Transactional
-	public BiddingDetailsResponse updateBidding(Long biddingId, BiddingUpdateRequest biddingUpdateRequest) {
+	public BiddingDetailsResponse updateBidding(Long biddingId, BiddingUpdateRequest biddingUpdateRequest,
+		String token) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		Bidding bidding = checkBiddingExistAndGetBidding(biddingId);
+
+		if (checkUserNotMatch(userId, bidding))
+			throw new WrongRequestException("User does not match");
 
 		checkAuctionIsAlreadyDone(bidding);
 
@@ -80,7 +92,9 @@ public class BiddingService {
 	}
 
 	@Transactional
-	public BiddingDeleteResponse deleteBidding(Long biddingId, String userId) {
+	public BiddingDeleteResponse deleteBidding(Long biddingId, String token) {
+		String userId = checkTokenIsUserAndGetUserID(token);
+
 		Bidding bidding = checkBiddingExistAndGetBidding(biddingId);
 
 		if (checkUserNotMatch(userId, bidding))
@@ -120,4 +134,9 @@ public class BiddingService {
 		return bidding.getAuctionItem().getAuctionEndDate().isBefore(LocalDateTime.now());
 	}
 
+	private String checkTokenIsUserAndGetUserID(String token) {
+		if (jwtProvider.getAudience(token).equals("manager"))
+			throw new WrongRequestException("Manager Token can't do user's thing");
+		return jwtProvider.getSubject(token);
+	}
 }
