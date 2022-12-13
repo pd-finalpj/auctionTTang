@@ -9,7 +9,9 @@ import com.encore.auction.controller.auction.responses.AuctionIdResponse;
 import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
 import com.encore.auction.controller.comment.responses.CommentDetailsResponse;
 import com.encore.auction.model.address.Address;
+import com.encore.auction.model.auction.failed.log.AuctionFailedLog;
 import com.encore.auction.model.auction.item.AuctionItem;
+import com.encore.auction.model.auction.item.ItemSoldState;
 import com.encore.auction.model.manager.Manager;
 
 import lombok.AccessLevel;
@@ -35,6 +37,7 @@ public class AuctionMapper {
 		return AuctionItem.builder()
 			.manager(manager)
 			.address(address)
+			.auctionItemCaseNumber(auctionCreateRequest.getAuctionItemCaseNumber())
 			.auctionItemName(auctionCreateRequest.getAuctionItemName())
 			.location(auctionCreateRequest.getLocation())
 			.lotNumber(auctionCreateRequest.getLotNumber())
@@ -46,16 +49,22 @@ public class AuctionMapper {
 			.itemCategory(auctionCreateRequest.getItemCategory())
 			.areaSize(auctionCreateRequest.getAreaSize())
 			.state(false)
+			.hit(0)
+			.bookmarkCount(0)
+			.itemSoldState(ItemSoldState.PROCEEDING)
 			.build();
 	}
 
 	public AuctionDetailsResponse entityToAuctionDetailsResponse(AuctionItem auctionItem) {
 		return new AuctionDetailsResponse(auctionItem.getId(), auctionItem.getManager().getId(),
-			auctionItem.getAddress().getAddressCode(), auctionItem.getAuctionItemName(),
+			auctionItem.getAddress().getAddressCode(), auctionItem.getAuctionItemCaseNumber(),
+			auctionItem.getAuctionItemName(),
 			auctionItem.getLocation(), auctionItem.getLotNumber(), auctionItem.getAddressDetail(),
 			auctionItem.getAppraisedValue(), auctionItem.getAuctionStartDate(), auctionItem.getAuctionEndDate(),
 			auctionItem.getItemCategory(),
-			auctionItem.getAreaSize(), auctionItem.getAuctionFailedCount(), auctionItem.getHit());
+			auctionItem.getAreaSize(), auctionItem.getAuctionFailedCount(), auctionItem.getItemSoldState(),
+			auctionItem.getBookmarkCount(),
+			auctionItem.getHit());
 	}
 
 	public AuctionDeleteResponse entityToAuctionDeleteResponse(AuctionItem auctionItem) {
@@ -65,11 +74,23 @@ public class AuctionMapper {
 	public AuctionRetrieveResponse entityToAuctionRetrieveResponse(AuctionItem auctionItem,
 		List<CommentDetailsResponse> commentDetailsResponseList) {
 		return new AuctionRetrieveResponse(auctionItem.getId(), auctionItem.getManager().getId(),
-			auctionItem.getAddress().getAddressCode(), auctionItem.getAuctionItemName(),
+			auctionItem.getAddress().getAddressCode(), auctionItem.getAuctionItemCaseNumber(),
+			auctionItem.getAuctionItemName(),
 			auctionItem.getLocation(), auctionItem.getLotNumber(), auctionItem.getAddressDetail(),
 			auctionItem.getAppraisedValue(), auctionItem.getAuctionStartDate(), auctionItem.getAuctionEndDate(),
 			auctionItem.getItemCategory(),
-			auctionItem.getAreaSize(), auctionItem.getAuctionFailedCount(), auctionItem.getHit(),
+			auctionItem.getAreaSize(), auctionItem.getAuctionFailedCount(), auctionItem.getItemSoldState(),
+			auctionItem.getBookmarkCount(),
+			auctionItem.getHit(),
 			commentDetailsResponseList);
+	}
+
+	public AuctionFailedLog entityToAuctionFailedLog(AuctionItem auctionItem) {
+		return AuctionFailedLog.builder()
+			.auctionItem(auctionItem)
+			.appraisedValue(auctionItem.getAppraisedValue())
+			.auctionStartDate(auctionItem.getAuctionStartDate())
+			.auctionEndDate(auctionItem.getAuctionEndDate())
+			.build();
 	}
 }

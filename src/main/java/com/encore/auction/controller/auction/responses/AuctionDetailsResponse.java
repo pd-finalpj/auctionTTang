@@ -3,6 +3,7 @@ package com.encore.auction.controller.auction.responses;
 import java.time.LocalDateTime;
 
 import com.encore.auction.model.auction.item.ItemCategory;
+import com.encore.auction.model.auction.item.ItemSoldState;
 
 import lombok.Getter;
 
@@ -14,6 +15,8 @@ public class AuctionDetailsResponse {
 	private final String managerId;
 
 	private final String addressCode;
+
+	private final String auctionItemCaseNumber;
 
 	private final String auctionItemName;
 
@@ -35,15 +38,21 @@ public class AuctionDetailsResponse {
 
 	private final Integer auctionFailedCount;
 
+	private final ItemSoldState itemSoldState;
+
+	private final Integer bookmarkCount;
+
 	private final Integer hit;
 
-	public AuctionDetailsResponse(long auctionItemId, String managerId, String addressCode, String auctionItemName,
-		String location, String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
-		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount,
-		Integer hit) {
+	public AuctionDetailsResponse(long auctionItemId, String managerId, String addressCode,
+		String auctionItemCaseNumber,
+		String auctionItemName, String location, String lotNumber, String addressDetail, Long appraisedValue,
+		LocalDateTime auctionStartDate, LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize,
+		Integer auctionFailedCount, ItemSoldState itemSoldState, Integer bookmarkCount, Integer hit) {
 		this.auctionItemId = auctionItemId;
 		this.managerId = managerId;
 		this.addressCode = addressCode;
+		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
 		this.location = location;
 		this.lotNumber = lotNumber;
@@ -54,6 +63,8 @@ public class AuctionDetailsResponse {
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
 		this.auctionFailedCount = auctionFailedCount;
+		this.itemSoldState = itemSoldState;
+		this.bookmarkCount = bookmarkCount;
 		this.hit = hit;
 	}
 }

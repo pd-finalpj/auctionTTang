@@ -18,6 +18,9 @@ public class AuctionCreateRequest {
 	private final String addressCode;
 
 	@NotEmpty
+	private final String auctionItemCaseNumber;
+
+	@NotEmpty
 	private final String auctionItemName;
 
 	@NotEmpty
@@ -47,10 +50,12 @@ public class AuctionCreateRequest {
 	@NotNull
 	private final Double areaSize;
 
-	public AuctionCreateRequest(String addressCode, String auctionItemName, String location, String lotNumber,
-		String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate, LocalDateTime auctionEndDate,
-		ItemCategory itemCategory, Double areaSize) {
+	public AuctionCreateRequest(String addressCode, String auctionItemCaseNumber, String auctionItemName,
+		String location,
+		String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
+		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize) {
 		this.addressCode = addressCode;
+		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
 		this.location = location;
 		this.lotNumber = lotNumber;

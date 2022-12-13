@@ -7,6 +7,8 @@ import com.encore.auction.controller.bidding.bidding.responses.BiddingDeleteResp
 import com.encore.auction.controller.bidding.bidding.responses.BiddingDetailsResponse;
 import com.encore.auction.controller.bidding.bidding.responses.BiddingIdResponse;
 import com.encore.auction.model.auction.item.AuctionItem;
+import com.encore.auction.model.bidding.aftbidding.AftBidding;
+import com.encore.auction.model.bidding.aftbidding.BiddingResult;
 import com.encore.auction.model.bidding.bidding.Bidding;
 import com.encore.auction.model.user.User;
 
@@ -47,5 +49,13 @@ public class BiddingMapper {
 	public BiddingDetailsResponse entityToBiddingDetailsResponse(Bidding bidding) {
 		return new BiddingDetailsResponse(bidding.getId(), bidding.getAuctionItem().getId(), bidding.getAuctionItem()
 			.getAuctionItemName(), bidding.getBiddingDate(), bidding.getAmount());
+	}
+
+	public AftBidding biddingEntityToAftBidding(Bidding maxAmountBidding, BiddingResult result) {
+		return AftBidding.builder()
+			.biddingResult(result)
+			.decideDate(LocalDateTime.now())
+			.bidding(maxAmountBidding)
+			.build();
 	}
 }

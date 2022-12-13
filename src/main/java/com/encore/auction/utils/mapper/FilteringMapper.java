@@ -20,10 +20,12 @@ public class FilteringMapper {
 
 	public FilteringItemsResponse entityToFilteringItemsResponse(AuctionItem auctionItems) {
 		return new FilteringItemsResponse(auctionItems.getId(), auctionItems.getManager().getId(),
-			auctionItems.getAddress().getAddressCode(),
+			auctionItems.getAddress().getAddressCode(), auctionItems.getAuctionItemCaseNumber(),
 			auctionItems.getAuctionItemName(), auctionItems.getLocation(), auctionItems.getLotNumber(),
 			auctionItems.getAddressDetail(), auctionItems.getAppraisedValue(), auctionItems.getAuctionStartDate(),
 			auctionItems.getAuctionEndDate(), auctionItems.getItemCategory(), auctionItems.getAreaSize(),
-			auctionItems.getAuctionFailedCount(), auctionItems.getHit(), auctionItems.getState());
+			auctionItems.getAuctionFailedCount(), auctionItems.getItemSoldState(), auctionItems.getBookmarkCount(),
+			auctionItems.getHit(),
+			auctionItems.getState());
 	}
 }
