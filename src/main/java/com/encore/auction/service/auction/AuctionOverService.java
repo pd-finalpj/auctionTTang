@@ -1,6 +1,5 @@
 package com.encore.auction.service.auction;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,8 +39,6 @@ public class AuctionOverService {
 
 	@Transactional
 	public void setAuctionOverResult(Long auctionItemId) {
-		System.out.println(LocalDateTime.now() + "setAuctionOverResult Method start");
-
 		List<Bidding> biddingList = biddingRepository.findByAuctionItemId(auctionItemId);
 
 		AuctionItem auctionItem = auctionItemRepository.findById(auctionItemId)
@@ -55,8 +52,6 @@ public class AuctionOverService {
 	}
 
 	private void auctionSuccess(AuctionItem auctionItem, List<Bidding> biddingList) {
-		System.out.println(LocalDateTime.now() + "auctionSuccess Method start");
-
 		Bidding maxAmountBidding = biddingList.stream().max(Comparator.comparingLong(Bidding::getAmount)).get();
 
 		AftBidding aftSuccessBidding = BiddingMapper.of().biddingEntityToAftBidding(maxAmountBidding,
@@ -76,8 +71,6 @@ public class AuctionOverService {
 	}
 
 	private void auctionFail(AuctionItem auctionItem) {
-		System.out.println(LocalDateTime.now() + "auctionFail Method start");
-
 		AuctionFailedLog auctionFailedLog = AuctionMapper.of().entityToAuctionFailedLog(auctionItem);
 
 		auctionItem.updateItemSoldState(ItemSoldState.FAIL);
