@@ -1,7 +1,12 @@
 package com.encore.auction.utils.mapper;
 
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+
 import com.encore.auction.controller.notice.requests.NoticeRegisterRequest;
 import com.encore.auction.controller.notice.responses.NoticeDeleteResponse;
+import com.encore.auction.controller.notice.responses.NoticeDetailsListResponse;
 import com.encore.auction.controller.notice.responses.NoticeDetailsResponse;
 import com.encore.auction.controller.notice.responses.NoticeIdResponse;
 import com.encore.auction.model.manager.Manager;
@@ -36,11 +41,18 @@ public class NoticeMapper {
 	}
 
 	public NoticeDetailsResponse entityToNoticeDetailsResponse(Notice notice) {
-		return new NoticeDetailsResponse(notice.getId(), notice.getManager().getId(), notice.getManager().getName(),
-			notice.getTitle(), notice.getContent());
+		return new NoticeDetailsResponse(notice.getId(), notice.getManager().getId(), notice.getTitle(),
+			notice.getContent());
 	}
 
 	public NoticeDeleteResponse entityToNoticeDeleteResponse(Notice notice) {
 		return new NoticeDeleteResponse(notice.getId(), notice.getState());
+	}
+
+	public NoticeDetailsListResponse noticeListToDetailsListResponse(Page<Notice> noticeList) {
+		return new NoticeDetailsListResponse(noticeList.getTotalPages(), noticeList.getNumber() + 1,
+			noticeList.getNumberOfElements(),
+			noticeList.getContent().stream().map(this::entityToNoticeDetailsResponse).collect(
+				Collectors.toList()));
 	}
 }

@@ -7,7 +7,6 @@ server:
       enabled: true
       force: true
 
-
 spring:
   application:
     name: programmers spring assignments
@@ -20,6 +19,20 @@ spring:
     url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul
     username: auctionTTang
     password: auctionTTang
+    platform: mysql
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+    defer-datasource-initialization: true
   mvc:
     hiddenmethod:
       filter:
@@ -32,17 +45,6 @@ spring:
   sql:
     init:
       mode: always
-
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    database: mysql
-    open-in-view: false
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-    defer-datasource-initialization: true
-
+  redis:
+    host: localhost
+    port: 6379

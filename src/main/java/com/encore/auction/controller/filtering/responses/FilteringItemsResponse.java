@@ -20,6 +20,10 @@ public class FilteringItemsResponse {
 
 	private final String auctionItemName;
 
+	private final String stateName;
+
+	private final String cityName;
+
 	private final String location;
 
 	private final String lotNumber;
@@ -40,22 +44,19 @@ public class FilteringItemsResponse {
 
 	private final ItemSoldState itemSoldState;
 
-	private final Integer bookmarkCount;
-
-	private final Integer hit;
-
-	private final Boolean state;
-
 	public FilteringItemsResponse(Long auctionItemId, String managerId, String addressCode,
 		String auctionItemCaseNumber,
-		String auctionItemName, String location, String lotNumber, String addressDetail, Long appraisedValue,
-		LocalDateTime auctionStartDate, LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize,
-		Integer auctionFailedCount, ItemSoldState itemSoldState, Integer bookmarkCount, Integer hit, Boolean state) {
+		String auctionItemName, String stateName, String cityName, String location, String lotNumber,
+		String addressDetail,
+		Long appraisedValue, LocalDateTime auctionStartDate, LocalDateTime auctionEndDate, ItemCategory itemCategory,
+		Double areaSize, Integer auctionFailedCount, ItemSoldState itemSoldState) {
 		this.auctionItemId = auctionItemId;
 		this.managerId = managerId;
 		this.addressCode = addressCode;
 		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
+		this.stateName = stateName;
+		this.cityName = cityName;
 		this.location = location;
 		this.lotNumber = lotNumber;
 		this.addressDetail = addressDetail;
@@ -66,8 +67,5 @@ public class FilteringItemsResponse {
 		this.areaSize = areaSize;
 		this.auctionFailedCount = auctionFailedCount;
 		this.itemSoldState = itemSoldState;
-		this.bookmarkCount = bookmarkCount;
-		this.hit = hit;
-		this.state = state;
 	}
 }

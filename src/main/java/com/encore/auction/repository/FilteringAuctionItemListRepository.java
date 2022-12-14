@@ -1,12 +1,14 @@
 package com.encore.auction.repository;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
+import com.encore.auction.controller.filtering.requests.FilteringAuctionItemRequest;
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
 
 public interface FilteringAuctionItemListRepository {
 
-	public List<FilteringItemsResponse> filteringAuctionItemList(String address, String date, String category,
-		Integer auctionFailedCount);
+	public Slice<FilteringItemsResponse> filteringAuctionItemList(
+		FilteringAuctionItemRequest filteringAuctionItemRequest, Pageable pageable);
 
 }
