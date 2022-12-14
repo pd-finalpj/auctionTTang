@@ -12,9 +12,9 @@ import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.bookmark.Bookmark;
 import com.encore.auction.model.bookmark.BookmarkId;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.AuctionItemRepository;
-import com.encore.auction.repository.BookmarkRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
+import com.encore.auction.repository.bookmark.BookmarkRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.mapper.BookmarkMapper;
 import com.encore.auction.utils.token.JwtProvider;
 

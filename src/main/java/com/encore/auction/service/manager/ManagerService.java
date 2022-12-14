@@ -15,7 +15,7 @@ import com.encore.auction.controller.manager.responses.ManagerTokenResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.manager.Manager;
-import com.encore.auction.repository.ManagerRepository;
+import com.encore.auction.repository.manager.ManagerRepository;
 import com.encore.auction.utils.encrypt.Encrypt;
 import com.encore.auction.utils.mapper.ManagerMapper;
 import com.encore.auction.utils.token.JwtProvider;

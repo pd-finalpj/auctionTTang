@@ -10,9 +10,9 @@ import com.encore.auction.controller.filtering.requests.FilteringAuctionItemRequ
 import com.encore.auction.controller.filtering.responses.FilteringItemsListResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
 import com.encore.auction.model.filtering.Filtering;
-import com.encore.auction.repository.FilteringAuctionItemListRepository;
-import com.encore.auction.repository.FilteringRedisRepository;
-import com.encore.auction.repository.FilteringRepository;
+import com.encore.auction.repository.filtering.FilteringAuctionItemListRepository;
+import com.encore.auction.repository.filtering.FilteringRedisRepository;
+import com.encore.auction.repository.filtering.FilteringRepository;
 import com.encore.auction.utils.mapper.FilteringMapper;
 
 @Service

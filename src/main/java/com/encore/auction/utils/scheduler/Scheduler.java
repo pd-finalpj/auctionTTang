@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.encore.auction.controller.auction.responses.AuctionOverDateResponse;
-import com.encore.auction.repository.AuctionOverRepository;
+import com.encore.auction.repository.auction.AuctionOverRepository;
 import com.encore.auction.service.auction.AuctionOverService;
 
 @Component
