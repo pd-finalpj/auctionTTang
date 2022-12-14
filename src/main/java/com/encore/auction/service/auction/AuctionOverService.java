@@ -9,15 +9,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.model.auction.failed.log.AuctionFailedLog;
+import com.encore.auction.model.auction.failed.log.AuctionFailedLogDetails;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.auction.item.ItemSoldState;
 import com.encore.auction.model.bidding.aftbidding.AftBidding;
 import com.encore.auction.model.bidding.aftbidding.BiddingResult;
 import com.encore.auction.model.bidding.bidding.Bidding;
-import com.encore.auction.repository.AftBiddingRepository;
-import com.encore.auction.repository.AuctionFailedLogRepository;
-import com.encore.auction.repository.AuctionItemRepository;
-import com.encore.auction.repository.BiddingRepository;
+import com.encore.auction.model.biddingdetails.BiddingDetails;
+import com.encore.auction.model.user.User;
+import com.encore.auction.repository.auction.AuctionFailedLogRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
+import com.encore.auction.repository.bidding.aftbidding.AftBiddingRepository;
+import com.encore.auction.repository.bidding.bidding.BiddingRepository;
+import com.encore.auction.repository.mongodb.AuctionFailedLogMongoDBRepository;
+import com.encore.auction.repository.mongodb.BiddingDetailsMongoDBRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.mapper.AuctionMapper;
 import com.encore.auction.utils.mapper.BiddingMapper;
 
@@ -28,13 +34,21 @@ public class AuctionOverService {
 	private final BiddingRepository biddingRepository;
 	private final AftBiddingRepository aftBiddingRepository;
 	private final AuctionFailedLogRepository auctionFailedLogRepository;
+	private final BiddingDetailsMongoDBRepository biddingDetailsMongoDBRepository;
+	private final UserRepository userRepository;
+	private final AuctionFailedLogMongoDBRepository auctionFailedLogMongoDBRepository;
 
 	public AuctionOverService(AuctionItemRepository auctionItemRepository, BiddingRepository biddingRepository,
-		AftBiddingRepository aftBiddingRepository, AuctionFailedLogRepository auctionFailedLogRepository) {
+		AftBiddingRepository aftBiddingRepository, AuctionFailedLogRepository auctionFailedLogRepository,
+		BiddingDetailsMongoDBRepository biddingDetailsMongoDBRepository, UserRepository userRepository,
+		AuctionFailedLogMongoDBRepository auctionFailedLogMongoDBRepository) {
 		this.auctionItemRepository = auctionItemRepository;
 		this.biddingRepository = biddingRepository;
 		this.aftBiddingRepository = aftBiddingRepository;
 		this.auctionFailedLogRepository = auctionFailedLogRepository;
+		this.biddingDetailsMongoDBRepository = biddingDetailsMongoDBRepository;
+		this.userRepository = userRepository;
+		this.auctionFailedLogMongoDBRepository = auctionFailedLogMongoDBRepository;
 	}
 
 	@Transactional
@@ -59,13 +73,19 @@ public class AuctionOverService {
 
 		aftBiddingRepository.save(aftSuccessBidding);
 
+		saveLogDataToMongoDB(auctionItem, maxAmountBidding, aftSuccessBidding);
+
 		biddingList.remove(maxAmountBidding);
 
 		List<AftBidding> failBiddingList = biddingList.stream()
 			.map(e -> BiddingMapper.of().biddingEntityToAftBidding(e, BiddingResult.FAIL))
 			.collect(Collectors.toList());
 
-		aftBiddingRepository.saveAll(failBiddingList);
+		List<AftBidding> aftBiddings = aftBiddingRepository.saveAll(failBiddingList);
+
+		for (int i = 0; i < biddingList.size(); i++) {
+			saveLogDataToMongoDB(auctionItem, biddingList.get(i), aftBiddings.get(i));
+		}
 
 		auctionItem.updateItemSoldState(ItemSoldState.SOLD);
 	}
@@ -77,6 +97,27 @@ public class AuctionOverService {
 
 		auctionItem.increaseFailCount();
 
-		auctionFailedLogRepository.save(auctionFailedLog);
+		AuctionFailedLog savedAuctionFailedLog = auctionFailedLogRepository.save(auctionFailedLog);
+
+		saveAuctionFailLogDataToMongoDB(auctionItem, savedAuctionFailedLog);
+	}
+
+	private void saveLogDataToMongoDB(AuctionItem auctionItem, Bidding bidding, AftBidding aftBidding) {
+		User user = userRepository.findById(bidding.getUser().getId())
+			.orElseThrow(() -> new NonExistResourceException("user does not exist"));
+
+		BiddingDetails biddingDetails = new BiddingDetails(bidding.getId(), user.getId(), user.getAge(),
+			bidding.getBiddingDate(), bidding.getAmount(), aftBidding.getDecideDate(), aftBidding.getBiddingResult(),
+			AuctionMapper.of().entityToAuctionDetailsResponse(auctionItem));
+
+		biddingDetailsMongoDBRepository.save(biddingDetails);
+	}
+
+	private void saveAuctionFailLogDataToMongoDB(AuctionItem auctionItem, AuctionFailedLog auctionFailedLog) {
+		AuctionFailedLogDetails auctionFailedLogDetails = new AuctionFailedLogDetails(auctionFailedLog.getId(),
+			AuctionMapper.of()
+				.entityToAuctionDetailsResponse(auctionItem));
+
+		auctionFailedLogMongoDBRepository.save(auctionFailedLogDetails);
 	}
 }

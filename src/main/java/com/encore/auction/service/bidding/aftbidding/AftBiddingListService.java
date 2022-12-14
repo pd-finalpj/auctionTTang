@@ -9,8 +9,8 @@ import com.encore.auction.controller.bidding.aftbidding.responses.AftBiddingDeta
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.AftBiddingRetrieveRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.bidding.aftbidding.AftBiddingRetrieveRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.token.JwtProvider;
 
 @Service

@@ -13,9 +13,9 @@ import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.comment.Comment;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.AuctionItemRepository;
-import com.encore.auction.repository.CommentRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
+import com.encore.auction.repository.comment.CommentRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.mapper.CommentMapper;
 import com.encore.auction.utils.token.JwtProvider;
 

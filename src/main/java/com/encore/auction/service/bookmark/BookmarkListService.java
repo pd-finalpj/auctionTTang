@@ -9,8 +9,8 @@ import com.encore.auction.controller.bookmark.responses.BookmarkDetailsResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.BookmarkListRetrieveRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.bookmark.BookmarkListRetrieveRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.token.JwtProvider;
 
 @Service
