@@ -2,8 +2,7 @@ package com.encore.auction.controller.imagefile.responses;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-import com.encore.auction.model.auction.item.AuctionItem;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 
@@ -14,18 +13,25 @@ public class ImageFileCreateResponse {
 	private final Long id;
 
 	@NotEmpty
-	private final AuctionItem auctionItem;
+	private final Long auctionItemId;
 
 	@NotEmpty
+	@Size(max = 50)
 	private final String fileName;
 
 	@NotEmpty
-	private final String fileDirectory;
+	private final String fileExtension;
 
-	public ImageFileCreateResponse(Long id, AuctionItem auctionItem, String fileName, String fileDirectory) {
+	@NotEmpty
+	@Size(max = 100)
+	private final String fileLocation;
+
+	public ImageFileCreateResponse(Long id, Long auctionItemId, String fileName, String fileExtension,
+		String fileLocation) {
 		this.id = id;
-		this.auctionItem = auctionItem;
+		this.auctionItemId = auctionItemId;
 		this.fileName = fileName;
-		this.fileDirectory = fileDirectory;
+		this.fileExtension = fileExtension;
+		this.fileLocation = fileLocation;
 	}
 }

@@ -8,10 +8,10 @@ import lombok.Getter;
 public class ImageFileDeleteResponse {
 
 	@NotNull
-	private final Long id;
+	private final boolean isDeleted;
 
-	public ImageFileDeleteResponse(Long id) {
-		this.id = id;
+	public ImageFileDeleteResponse(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }
 
