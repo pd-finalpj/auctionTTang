@@ -33,25 +33,20 @@ public class ImageFile extends BaseEntity {
 	@JoinColumn(nullable = false, name = "auction_item_id")
 	private AuctionItem auctionItem;
 
-	@Column(nullable = false, length = 50)
-	private String fileName;
-
 	@Column(nullable = false, length = 100)
-	private String fileLocation;
+	private String url;
 
-	public ImageFile(Long id, AuctionItem auctionItem, String fileName, String fileLocation) {
+	public ImageFile(Long id, AuctionItem auctionItem, String url) {
 		this.id = id;
 		this.auctionItem = auctionItem;
-		this.fileName = fileName;
-		this.fileLocation = fileLocation;
+		this.url = url;
 	}
 
 	@Override
 	public String toString() {
 		return "ImageFile{" +
 			"id=" + id +
-			", fileName='" + fileName + '\'' +
-			", fileDirectory='" + fileLocation + '\'' +
+			", url='" + url + '\'' +
 			'}';
 	}
 
@@ -63,12 +58,11 @@ public class ImageFile extends BaseEntity {
 			return false;
 		ImageFile imageFile = (ImageFile)o;
 		return Objects.equals(id, imageFile.id) && Objects.equals(auctionItem, imageFile.auctionItem)
-			&& Objects.equals(fileName, imageFile.fileName) && Objects.equals(fileLocation,
-			imageFile.fileLocation);
+			&& Objects.equals(url, imageFile.url);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, fileName, fileLocation);
+		return Objects.hash(id, url);
 	}
 }

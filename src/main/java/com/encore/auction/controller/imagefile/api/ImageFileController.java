@@ -21,7 +21,7 @@ import com.encore.auction.controller.imagefile.responses.ImageFileListCreateResp
 import com.encore.auction.service.imagefile.ImageFileService;
 
 @RestController
-@RequestMapping(value = "/imageFile", consumes = "multipart/form-data")
+@RequestMapping(value = "/image-file", consumes = "multipart/form-data")
 public class ImageFileController {
 
 	private final ImageFileService imageFileService;
@@ -30,7 +30,7 @@ public class ImageFileController {
 		this.imageFileService = imageFileService;
 	}
 
-	@PostMapping("/uploadFile")
+	@PostMapping("/upload-file")
 	public ResponseEntity<ImageFileCreateResponse> storeImageFile(@RequestHeader("Token") String token,
 		@Valid @RequestParam("auction-item-id") String auctionItemId,
 		@Valid @RequestParam("file") MultipartFile file) throws
@@ -39,7 +39,7 @@ public class ImageFileController {
 			.body(imageFileService.storeAndSaveImageFile(auctionItemId, file));
 	}
 
-	@PostMapping("/uploadMultiFile")
+	@PostMapping("/upload-multi-file")
 	public ResponseEntity<ImageFileListCreateResponse> storeImageFiles(@RequestHeader("Token") String token,
 		@Valid @RequestParam("auction-item-id") String auctionItemId,
 		@Valid @RequestParam("file") MultipartFile[] files) throws IOException {
