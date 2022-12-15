@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public final class FilteringAuctionItemRequest {
 
-	private final String address;
+	private final String addressCode;
 
 	private final String date;
 
@@ -16,12 +16,12 @@ public final class FilteringAuctionItemRequest {
 	private final SortCategory sortCategory;
 
 	private final Integer pageNum;
-	
+
 	private final Integer amount;
 
-	public FilteringAuctionItemRequest(String address, String date, String category, Integer auctionFailedCount,
+	public FilteringAuctionItemRequest(String addressCode, String date, String category, Integer auctionFailedCount,
 		SortCategory sortCategory, Integer pageNum, Integer amount) {
-		this.address = address;
+		this.addressCode = addressCode;
 		this.date = date;
 		this.category = category;
 		this.auctionFailedCount = auctionFailedCount;

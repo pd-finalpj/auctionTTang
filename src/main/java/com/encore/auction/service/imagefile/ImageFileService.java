@@ -24,8 +24,8 @@ import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.imagefile.ImageFile;
-import com.encore.auction.repository.AuctionItemRepository;
 import com.encore.auction.repository.ImageFileRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
 import com.encore.auction.utils.mapper.ImageFileMapper;
 
 @Service

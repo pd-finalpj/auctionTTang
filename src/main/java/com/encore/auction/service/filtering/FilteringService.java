@@ -63,8 +63,8 @@ public class FilteringService {
 	private String getRedisId(FilteringAuctionItemRequest filteringAuctionItemRequest) {
 		String redisId = "filtering";
 
-		if (filteringAuctionItemRequest.getAddress() != null)
-			redisId = redisId + filteringAuctionItemRequest.getAddress();
+		if (filteringAuctionItemRequest.getAddressCode() != null)
+			redisId = redisId + filteringAuctionItemRequest.getAddressCode();
 
 		if (filteringAuctionItemRequest.getDate() != null)
 			redisId = redisId + filteringAuctionItemRequest.getDate();
