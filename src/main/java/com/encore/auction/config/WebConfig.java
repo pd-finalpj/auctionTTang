@@ -33,4 +33,12 @@ public class WebConfig implements WebMvcConfigurer {
 			.excludePathPatterns("/swagger-ui.html", "/swagger-resources/**", "/swagger-ui/**", "/v3/api-docs",
 				"/v2/api-docs");
 	}
+
+	// @Bean
+	// public CommonsMultipartResolver multipartResolver() {
+	// 	CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver();
+	// 	commonsMultipartResolver.setDefaultEncoding("UTF-8");
+	// 	commonsMultipartResolver.setMaxUploadSizePerFile(500 * 1024 * 1024);
+	// 	return commonsMultipartResolver;
+	// }
 }

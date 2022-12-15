@@ -6,6 +6,11 @@ server:
       charset: utf-8
       enabled: true
       force: true
+    multipart:
+      enable: true
+      file-size-threshold: 2KB
+      max-file-size: 500MB
+      max-request-size: 515MB
 
 spring:
   application:
