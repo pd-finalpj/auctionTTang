@@ -1,5 +1,6 @@
 package com.encore.auction.exception;
 
+import org.hibernate.LazyInitializationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -85,5 +86,23 @@ public class GlobalExceptionHandler {
 			.message(e.getMessage())
 			.build();
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(SchedulerThreadException.class)
+	protected ResponseEntity<ExceptionResponse> schedulerThreadException(SchedulerThreadException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Scheduler Thread Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(LazyInitializationException.class)
+	protected ResponseEntity<ExceptionResponse> lazyInitializationException(LazyInitializationException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Lazy Initialization Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 	}
 }

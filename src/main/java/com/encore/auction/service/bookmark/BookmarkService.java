@@ -12,9 +12,9 @@ import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.bookmark.Bookmark;
 import com.encore.auction.model.bookmark.BookmarkId;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.AuctionItemRepository;
-import com.encore.auction.repository.BookmarkRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
+import com.encore.auction.repository.bookmark.BookmarkRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.mapper.BookmarkMapper;
 import com.encore.auction.utils.token.JwtProvider;
 
@@ -38,11 +38,19 @@ public class BookmarkService {
 	public BookmarkRegisterResponse registerBookmark(BookmarkRegisterRequest bookmarkRegisterRequest, String token) {
 		String userId = checkTokenIsUserAndGetUserID(token);
 
-		BookmarkId bookmarkId = checkUserAndAuctionAndGetBookmarkId(userId, bookmarkRegisterRequest.getAuctionId());
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		AuctionItem auctionItem = auctionItemRepository.findById(bookmarkRegisterRequest.getAuctionId())
+			.orElseThrow(() -> new NonExistResourceException("Auction item does not exist"));
+
+		BookmarkId bookmarkId = BookmarkMapper.of().requestToBookmarkId(user, auctionItem);
 
 		Bookmark bookmark = BookmarkMapper.of().createBookmarkIfNotExistUpdateBookmarkIfExist(bookmarkId);
 
 		Bookmark savedBookmark = bookmarkRepository.save(bookmark);
+
+		auctionItem.increaseBookmark();
 
 		return BookmarkMapper.of().bookmarkRegisterResponse(savedBookmark);
 	}
@@ -51,24 +59,22 @@ public class BookmarkService {
 	public BookmarkDeleteResponse deleteBookmark(Long auctionId, String token) {
 		String userId = checkTokenIsUserAndGetUserID(token);
 
-		BookmarkId bookmarkId = checkUserAndAuctionAndGetBookmarkId(userId, auctionId);
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		AuctionItem auctionItem = auctionItemRepository.findById(auctionId)
+			.orElseThrow(() -> new NonExistResourceException("Auction item does not exist"));
+
+		BookmarkId bookmarkId = BookmarkMapper.of().requestToBookmarkId(user, auctionItem);
 
 		Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
 			.orElseThrow(() -> new NonExistResourceException("Bookmark could not be found"));
 
 		bookmark.deleteBookmark();
 
+		auctionItem.decreaseBookmark();
+
 		return BookmarkMapper.of().bookmarkToDeleteResponse(bookmark);
-	}
-
-	public BookmarkId checkUserAndAuctionAndGetBookmarkId(String userId, Long auctionItemId) {
-		User user = userRepository.findById(userId)
-			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
-
-		AuctionItem auctionItem = auctionItemRepository.findById(auctionItemId)
-			.orElseThrow(() -> new NonExistResourceException("Auction item does not exist"));
-
-		return BookmarkMapper.of().requestToBookmarkId(user, auctionItem);
 	}
 
 	private String checkTokenIsUserAndGetUserID(String token) {

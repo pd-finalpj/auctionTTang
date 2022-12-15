@@ -12,9 +12,6 @@ server:
       max-file-size: 500MB
       max-request-size: 515MB
 
-file:
-  upload-dir: /uploads
-
 spring:
   application:
     name: programmers spring assignments
@@ -27,6 +24,20 @@ spring:
     url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul
     username: auctionTTang
     password: auctionTTang
+    platform: mysql
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+    defer-datasource-initialization: true
   mvc:
     hiddenmethod:
       filter:
@@ -36,17 +47,13 @@ spring:
   profiles:
     active:
       - secret
-
-  jpa:
-    show-sql: true
-    generate-ddl: true
-    database: mysql
-    open-in-view: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-    defer-datasource-initialization: true
-
+  sql:
+    init:
+      mode: always
+  redis:
+    host: localhost
+    port: 6379
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: auctionTTang

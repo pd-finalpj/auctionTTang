@@ -1,7 +1,10 @@
 package com.encore.auction.utils.mapper;
 
+import org.springframework.data.domain.Slice;
+
+import com.encore.auction.controller.filtering.responses.FilteringItemsListResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
-import com.encore.auction.model.auction.item.AuctionItem;
+import com.encore.auction.model.filtering.Filtering;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -18,12 +21,19 @@ public class FilteringMapper {
 		return filteringMapper;
 	}
 
-	public FilteringItemsResponse entityToFilteringItemsResponse(AuctionItem auctionItems) {
-		return new FilteringItemsResponse(auctionItems.getId(), auctionItems.getManager().getId(),
-			auctionItems.getAddress().getAddressCode(),
-			auctionItems.getAuctionItemName(), auctionItems.getLocation(), auctionItems.getLotNumber(),
-			auctionItems.getAddressDetail(), auctionItems.getAppraisedValue(), auctionItems.getAuctionStartDate(),
-			auctionItems.getAuctionEndDate(), auctionItems.getItemCategory(), auctionItems.getAreaSize(),
-			auctionItems.getAuctionFailedCount(), auctionItems.getHit(), auctionItems.getState());
+	public FilteringItemsListResponse filteringToResponse(Slice<FilteringItemsResponse> filteringAuctionItemList) {
+		return new FilteringItemsListResponse(filteringAuctionItemList.getNumber() + 1,
+			filteringAuctionItemList.hasNext(),
+			filteringAuctionItemList.getContent());
+	}
+
+	public FilteringItemsListResponse redisFilteringToResponse(Filtering filtering) {
+		return new FilteringItemsListResponse(filtering.getPageNum(), filtering.getHasNext(),
+			filtering.getFilteringItemsResponseList());
+	}
+
+	public Filtering filteringToRedisFiltering(String redisId, Slice<FilteringItemsResponse> filteringItemsResponses) {
+		return new Filtering(redisId, filteringItemsResponses.getNumber() + 1, filteringItemsResponses.hasNext(),
+			filteringItemsResponses.getContent());
 	}
 }

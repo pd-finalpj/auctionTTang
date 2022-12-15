@@ -3,6 +3,7 @@ package com.encore.auction.controller.filtering.responses;
 import java.time.LocalDateTime;
 
 import com.encore.auction.model.auction.item.ItemCategory;
+import com.encore.auction.model.auction.item.ItemSoldState;
 
 import lombok.Getter;
 
@@ -15,7 +16,13 @@ public class FilteringItemsResponse {
 
 	private final String addressCode;
 
+	private final String auctionItemCaseNumber;
+
 	private final String auctionItemName;
+
+	private final String stateName;
+
+	private final String cityName;
 
 	private final String location;
 
@@ -35,19 +42,21 @@ public class FilteringItemsResponse {
 
 	private final Integer auctionFailedCount;
 
-	private final Integer hit;
+	private final ItemSoldState itemSoldState;
 
-	private final Boolean state;
-
-	public FilteringItemsResponse(Long auctionItemId, String managerId, String addressCode, String auctionItemName,
-		String location, String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
-		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, Integer auctionFailedCount,
-		Integer hit,
-		Boolean state) {
+	public FilteringItemsResponse(Long auctionItemId, String managerId, String addressCode,
+		String auctionItemCaseNumber,
+		String auctionItemName, String stateName, String cityName, String location, String lotNumber,
+		String addressDetail,
+		Long appraisedValue, LocalDateTime auctionStartDate, LocalDateTime auctionEndDate, ItemCategory itemCategory,
+		Double areaSize, Integer auctionFailedCount, ItemSoldState itemSoldState) {
 		this.auctionItemId = auctionItemId;
 		this.managerId = managerId;
 		this.addressCode = addressCode;
+		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
+		this.stateName = stateName;
+		this.cityName = cityName;
 		this.location = location;
 		this.lotNumber = lotNumber;
 		this.addressDetail = addressDetail;
@@ -57,7 +66,6 @@ public class FilteringItemsResponse {
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
 		this.auctionFailedCount = auctionFailedCount;
-		this.hit = hit;
-		this.state = state;
+		this.itemSoldState = itemSoldState;
 	}
 }

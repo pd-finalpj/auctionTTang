@@ -1,11 +1,16 @@
 package com.encore.auction.service.notice;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.encore.auction.controller.notice.requests.NoticeRegisterRequest;
+import com.encore.auction.controller.notice.requests.NoticeRetrieveRequest;
 import com.encore.auction.controller.notice.requests.NoticeUpdateRequest;
 import com.encore.auction.controller.notice.responses.NoticeDeleteResponse;
+import com.encore.auction.controller.notice.responses.NoticeDetailsListResponse;
 import com.encore.auction.controller.notice.responses.NoticeDetailsResponse;
 import com.encore.auction.controller.notice.responses.NoticeIdResponse;
 import com.encore.auction.exception.NonExistResourceException;
@@ -13,10 +18,12 @@ import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.manager.Manager;
 import com.encore.auction.model.manager.ManagerRole;
 import com.encore.auction.model.notice.Notice;
-import com.encore.auction.repository.ManagerRepository;
-import com.encore.auction.repository.NoticeRepository;
+import com.encore.auction.model.notice.QNotice;
+import com.encore.auction.repository.manager.ManagerRepository;
+import com.encore.auction.repository.notice.NoticeRepository;
 import com.encore.auction.utils.mapper.NoticeMapper;
 import com.encore.auction.utils.token.JwtProvider;
+import com.querydsl.core.BooleanBuilder;
 
 @Service
 public class NoticeService {
@@ -96,5 +103,22 @@ public class NoticeService {
 		if (jwtProvider.getAudience(token).equals("user"))
 			throw new WrongRequestException("User Token can't do manager's thing");
 		return jwtProvider.getSubject(token);
+	}
+
+	public NoticeDetailsListResponse retrieveNoticeList(NoticeRetrieveRequest noticeRetrieveRequest) {
+		int pageNum = noticeRetrieveRequest.getPageNum() != null ? noticeRetrieveRequest.getPageNum() : 1;
+		int amount = noticeRetrieveRequest.getAmount() != null ? noticeRetrieveRequest.getAmount() : 10;
+
+		QNotice qNotice = QNotice.notice;
+
+		BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+		booleanBuilder.and(qNotice.state.isFalse());
+
+		PageRequest pageRequest = PageRequest.of(pageNum - 1, amount, Sort.by("id").descending());
+
+		Page<Notice> noticeList = noticeRepository.findAll(booleanBuilder, pageRequest);
+
+		return NoticeMapper.of().noticeListToDetailsListResponse(noticeList);
 	}
 }

@@ -16,7 +16,7 @@ import com.encore.auction.controller.user.responses.UserTokenResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.user.UserRepository;
 import com.encore.auction.utils.encrypt.Encrypt;
 import com.encore.auction.utils.mapper.UserMapper;
 import com.encore.auction.utils.token.JwtProvider;

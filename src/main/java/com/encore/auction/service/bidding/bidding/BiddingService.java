@@ -14,12 +14,17 @@ import com.encore.auction.controller.bidding.bidding.responses.BiddingRetrieveRe
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.auction.item.AuctionItem;
+import com.encore.auction.model.bidding.aftbidding.BiddingResult;
 import com.encore.auction.model.bidding.bidding.Bidding;
+import com.encore.auction.model.biddingdetails.BiddingDetails;
 import com.encore.auction.model.user.User;
-import com.encore.auction.repository.AuctionItemRepository;
-import com.encore.auction.repository.BiddingRepository;
-import com.encore.auction.repository.BiddingRetrieveRepository;
-import com.encore.auction.repository.UserRepository;
+import com.encore.auction.repository.auction.AuctionItemRepository;
+import com.encore.auction.repository.bidding.bidding.BiddingRepository;
+import com.encore.auction.repository.bidding.bidding.BiddingRetrieveRepository;
+import com.encore.auction.repository.mongodb.AuctionFailedLogMongoDBRepository;
+import com.encore.auction.repository.mongodb.BiddingDetailsMongoDBRepository;
+import com.encore.auction.repository.user.UserRepository;
+import com.encore.auction.utils.mapper.AuctionMapper;
 import com.encore.auction.utils.mapper.BiddingMapper;
 import com.encore.auction.utils.token.JwtProvider;
 import com.encore.auction.utils.validator.LocalDateTimeValidator;
@@ -32,15 +37,18 @@ public class BiddingService {
 	private final AuctionItemRepository auctionItemRepository;
 	private final BiddingRetrieveRepository biddingRetrieveRepository;
 	private final JwtProvider jwtProvider;
+	private final BiddingDetailsMongoDBRepository biddingDetailsMongoDBRepository;
 
 	public BiddingService(UserRepository userRepository, BiddingRepository biddingRepository,
 		AuctionItemRepository auctionItemRepository, BiddingRetrieveRepository biddingRetrieveRepository,
-		JwtProvider jwtProvider) {
+		JwtProvider jwtProvider, BiddingDetailsMongoDBRepository biddingDetailsMongoDBRepository,
+		AuctionFailedLogMongoDBRepository auctionFailedLogMongoDBRepository) {
 		this.userRepository = userRepository;
 		this.biddingRepository = biddingRepository;
 		this.auctionItemRepository = auctionItemRepository;
 		this.biddingRetrieveRepository = biddingRetrieveRepository;
 		this.jwtProvider = jwtProvider;
+		this.biddingDetailsMongoDBRepository = biddingDetailsMongoDBRepository;
 	}
 
 	@Transactional
@@ -64,6 +72,8 @@ public class BiddingService {
 			.registerRequestToEntity(biddingRegisterRequest, user, auctionItem, requestTime);
 
 		Bidding savedBidding = biddingRepository.save(bidding);
+
+		saveLogDataToMongoDB(user, auctionItem, savedBidding);
 
 		return BiddingMapper.of().entityToBiddingIdResponse(savedBidding);
 	}
@@ -138,5 +148,14 @@ public class BiddingService {
 		if (jwtProvider.getAudience(token).equals("manager"))
 			throw new WrongRequestException("Manager Token can't do user's thing");
 		return jwtProvider.getSubject(token);
+	}
+
+	private void saveLogDataToMongoDB(User user, AuctionItem auctionItem, Bidding savedBidding) {
+		BiddingDetails biddingDetails = new BiddingDetails(savedBidding.getId(), user.getId(), user.getAge(),
+			savedBidding.getBiddingDate(),
+			savedBidding.getAmount(), null, BiddingResult.UNDEFINED,
+			AuctionMapper.of().entityToAuctionDetailsResponse(auctionItem));
+
+		biddingDetailsMongoDBRepository.save(biddingDetails);
 	}
 }
