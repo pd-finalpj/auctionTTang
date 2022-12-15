@@ -15,7 +15,6 @@ import com.encore.auction.model.address.QAddress;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.auction.item.ItemCategory;
 import com.encore.auction.model.auction.item.QAuctionItem;
-import com.encore.auction.repository.filtering.FilteringAuctionItemListRepository;
 import com.encore.auction.utils.validator.LocalDateTimeValidator;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -43,7 +42,7 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 				qAuctionItem.auctionEndDate, qAuctionItem.itemCategory, qAuctionItem.areaSize,
 				qAuctionItem.auctionFailedCount, qAuctionItem.itemSoldState))
 			.leftJoin(qAddress).on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
-			.where(eqAddressCode(filteringAuctionItemRequest.getAddress()),
+			.where(eqAddressCode(filteringAuctionItemRequest.getAddressCode()),
 				loeDate(filteringAuctionItemRequest.getDate()), eqCategory(
 					filteringAuctionItemRequest.getCategory()),
 				loeAuctionFailedCount(filteringAuctionItemRequest.getAuctionFailedCount()),
