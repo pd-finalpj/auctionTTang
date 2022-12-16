@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.encore.auction.controller.auction.requests.AuctionCreateRequest;
 import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
@@ -34,15 +36,17 @@ public class AuctionController {
 
 	@PostMapping("/create")
 	public ResponseEntity<AuctionIdResponse> createAuctionItem(@RequestHeader("Token") String token,
-		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest) {
+		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest,
+		@Valid @RequestParam("file") MultipartFile[] files) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(auctionService.createAuctionItem(auctionCreateRequest, token));
+			.body(auctionService.createAuctionItem(auctionCreateRequest, token, files));
 	}
 
 	@GetMapping("/get/{auction-item-id}")
 	public ResponseEntity<AuctionRetrieveResponse> retrieveAuctionItem(
+		@RequestHeader(value = "Token", required = false) String token,
 		@PathVariable("auction-item-id") Long auctionItemId) {
-		return ResponseEntity.ok().body(auctionService.retrieveAuctionItem(auctionItemId));
+		return ResponseEntity.ok().body(auctionService.retrieveAuctionItem(token, auctionItemId));
 	}
 
 	@PutMapping("/{auction-item-id}")

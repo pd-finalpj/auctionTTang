@@ -53,7 +53,7 @@ public class BiddingService {
 
 	@Transactional
 	public BiddingIdResponse registerBidding(BiddingRegisterRequest biddingRegisterRequest, String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
@@ -87,7 +87,7 @@ public class BiddingService {
 	@Transactional
 	public BiddingDetailsResponse updateBidding(Long biddingId, BiddingUpdateRequest biddingUpdateRequest,
 		String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		Bidding bidding = checkBiddingExistAndGetBidding(biddingId);
 
@@ -103,7 +103,7 @@ public class BiddingService {
 
 	@Transactional
 	public BiddingDeleteResponse deleteBidding(Long biddingId, String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		Bidding bidding = checkBiddingExistAndGetBidding(biddingId);
 
@@ -142,12 +142,6 @@ public class BiddingService {
 
 	private boolean isAuctionAlreadyDone(Bidding bidding) {
 		return bidding.getAuctionItem().getAuctionEndDate().isBefore(LocalDateTime.now());
-	}
-
-	private String checkTokenIsUserAndGetUserID(String token) {
-		if (jwtProvider.getAudience(token).equals("manager"))
-			throw new WrongRequestException("Manager Token can't do user's thing");
-		return jwtProvider.getSubject(token);
 	}
 
 	private void saveLogDataToMongoDB(User user, AuctionItem auctionItem, Bidding savedBidding) {

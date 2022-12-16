@@ -41,7 +41,7 @@ public class NoticeService {
 
 	@Transactional
 	public NoticeIdResponse registerNotice(String token, NoticeRegisterRequest noticeRegisterRequest) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
@@ -60,7 +60,7 @@ public class NoticeService {
 
 	@Transactional
 	public NoticeIdResponse updateNotice(Long noticeId, String token, NoticeUpdateRequest noticeUpdateRequest) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
@@ -73,7 +73,7 @@ public class NoticeService {
 
 	@Transactional
 	public NoticeDeleteResponse deleteNotice(Long noticeId, String token) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndRoleAndGetManager(managerId);
 
@@ -97,12 +97,6 @@ public class NoticeService {
 	private Notice checkNoticeExistAndGetNotice(Long noticeId) {
 		return noticeRepository.findById(noticeId)
 			.orElseThrow(() -> new NonExistResourceException("Notice does not exit"));
-	}
-
-	private String checkTokenIsManagerAndGetManagerID(String token) {
-		if (jwtProvider.getAudience(token).equals("user"))
-			throw new WrongRequestException("User Token can't do manager's thing");
-		return jwtProvider.getSubject(token);
 	}
 
 	public NoticeDetailsListResponse retrieveNoticeList(NoticeRetrieveRequest noticeRetrieveRequest) {

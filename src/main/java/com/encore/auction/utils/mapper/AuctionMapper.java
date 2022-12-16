@@ -8,6 +8,7 @@ import com.encore.auction.controller.auction.responses.AuctionDetailsResponse;
 import com.encore.auction.controller.auction.responses.AuctionIdResponse;
 import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
 import com.encore.auction.controller.comment.responses.CommentDetailsResponse;
+import com.encore.auction.controller.imagefile.responses.ImageFileUrlResponse;
 import com.encore.auction.model.address.Address;
 import com.encore.auction.model.auction.failed.log.AuctionFailedLog;
 import com.encore.auction.model.auction.item.AuctionItem;
@@ -71,9 +72,11 @@ public class AuctionMapper {
 		return new AuctionDeleteResponse(auctionItem.getId(), auctionItem.getState());
 	}
 
-	public AuctionRetrieveResponse entityToAuctionRetrieveResponse(AuctionItem auctionItem,
-		List<CommentDetailsResponse> commentDetailsResponseList) {
-		return new AuctionRetrieveResponse(auctionItem.getId(), auctionItem.getManager().getId(),
+	public AuctionRetrieveResponse entityToAuctionRetrieveResponse(AuctionItem auctionItem, boolean isBookmarked,
+		Manager manager,
+		List<CommentDetailsResponse> commentDetailsResponseList, List<ImageFileUrlResponse> imageFileUrlResponses) {
+		return new AuctionRetrieveResponse(auctionItem.getId(), manager.getId(), manager.getName(), manager.getCourt(),
+			manager.getDepartment(),
 			auctionItem.getAddress().getAddressCode(), auctionItem.getAuctionItemCaseNumber(),
 			auctionItem.getAuctionItemName(),
 			auctionItem.getLocation(), auctionItem.getLotNumber(), auctionItem.getAddressDetail(),
@@ -81,7 +84,7 @@ public class AuctionMapper {
 			auctionItem.getItemCategory(),
 			auctionItem.getAreaSize(), auctionItem.getAuctionFailedCount(), auctionItem.getItemSoldState(),
 			auctionItem.getBookmarkCount(),
-			auctionItem.getHit(),
+			auctionItem.getHit(), isBookmarked, imageFileUrlResponses,
 			commentDetailsResponseList);
 	}
 

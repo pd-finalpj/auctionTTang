@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.encore.auction.controller.bookmark.responses.BookmarkDetailsListResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkDetailsResponse;
 import com.encore.auction.exception.NonExistResourceException;
-import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
 import com.encore.auction.repository.bookmark.BookmarkListRetrieveRepository;
 import com.encore.auction.repository.user.UserRepository;
@@ -29,7 +28,7 @@ public class BookmarkListService {
 	}
 
 	public BookmarkDetailsListResponse retrieveBookmarkListByUserId(String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
@@ -38,11 +37,5 @@ public class BookmarkListService {
 			user.getId());
 
 		return new BookmarkDetailsListResponse(userId, bookmarkDetailsResponseList);
-	}
-
-	private String checkTokenIsUserAndGetUserID(String token) {
-		if (jwtProvider.getAudience(token).equals("manager"))
-			throw new WrongRequestException("Manager Token can't do user's thing");
-		return jwtProvider.getSubject(token);
 	}
 }

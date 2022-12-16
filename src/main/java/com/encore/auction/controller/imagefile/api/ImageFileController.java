@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.encore.auction.controller.imagefile.responses.ImageFileCreateResponse;
 import com.encore.auction.controller.imagefile.responses.ImageFileDeleteResponse;
 import com.encore.auction.controller.imagefile.responses.ImageFileListCreateResponse;
 import com.encore.auction.service.imagefile.ImageFileService;
@@ -31,17 +30,8 @@ public class ImageFileController {
 	}
 
 	@PostMapping("/upload-file")
-	public ResponseEntity<ImageFileCreateResponse> storeImageFile(@RequestHeader("Token") String token,
-		@Valid @RequestParam("auction-item-id") String auctionItemId,
-		@Valid @RequestParam("file") MultipartFile file) throws
-		IOException {
-		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(imageFileService.storeAndSaveImageFile(auctionItemId, file));
-	}
-
-	@PostMapping("/upload-multi-file")
 	public ResponseEntity<ImageFileListCreateResponse> storeImageFiles(@RequestHeader("Token") String token,
-		@Valid @RequestParam("auction-item-id") String auctionItemId,
+		@Valid @RequestParam("auction-item-id") Long auctionItemId,
 		@Valid @RequestParam("file") MultipartFile[] files) throws IOException {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(imageFileService.storeAndSaveImageFiles(auctionItemId, files));

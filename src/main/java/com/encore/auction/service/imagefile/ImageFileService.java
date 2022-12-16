@@ -30,9 +30,9 @@ import com.encore.auction.utils.mapper.ImageFileMapper;
 @Service
 public class ImageFileService {
 
-	private AuctionItemRepository auctionItemRepository;
+	private final AuctionItemRepository auctionItemRepository;
 
-	private ImageFileRepository imageFileRepository;
+	private final ImageFileRepository imageFileRepository;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
@@ -50,20 +50,7 @@ public class ImageFileService {
 	}
 
 	@Transactional
-	public ImageFileCreateResponse storeAndSaveImageFile(String auctionItemId, MultipartFile file) throws IOException {
-		String contentType = checkValidationAndGetContentType(file);
-
-		AuctionItem auctionItem = checkAuctionItemExistAndGetAuctionItem(auctionItemId);
-
-		String newFileName = createFileName(auctionItemId, 1, contentType);
-
-		ImageFile savedImageFile = putImageToS3AndGetImageFile(file, auctionItem, newFileName);
-
-		return ImageFileMapper.of().entityToImageFileResponse(savedImageFile);
-	}
-
-	@Transactional
-	public ImageFileListCreateResponse storeAndSaveImageFiles(String auctionItemId, MultipartFile[] files) throws
+	public ImageFileListCreateResponse storeAndSaveImageFiles(Long auctionItemId, MultipartFile[] files) throws
 		IOException {
 		if (files.length > 0)
 			throw new IllegalArgumentException("Files for upload are not selected");
@@ -80,7 +67,7 @@ public class ImageFileService {
 
 			String contentType = checkValidationAndGetContentType(file);
 
-			String newFileName = createFileName(auctionItemId, imageNumber, contentType);
+			String newFileName = createFileName(auctionItemId.toString(), imageNumber, contentType);
 
 			ImageFile savedImageFile = putImageToS3AndGetImageFile(file, auctionItem, newFileName);
 
@@ -129,8 +116,8 @@ public class ImageFileService {
 			+ auctionItemId + number + "." + contentType;
 	}
 
-	private AuctionItem checkAuctionItemExistAndGetAuctionItem(String auctionItemId) {
-		return auctionItemRepository.findById(Long.parseLong(auctionItemId))
+	private AuctionItem checkAuctionItemExistAndGetAuctionItem(Long auctionItemId) {
+		return auctionItemRepository.findById(auctionItemId)
 			.orElseThrow(() -> new NonExistResourceException("The auction item does not exist"));
 	}
 
