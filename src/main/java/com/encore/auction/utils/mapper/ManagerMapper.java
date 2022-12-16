@@ -27,7 +27,8 @@ public class ManagerMapper {
 	}
 
 	public ManagerDetailsResponse entityToManagerDetailsResponse(Manager manager) {
-		return new ManagerDetailsResponse(manager.getId(), manager.getName(), manager.getAge(),
+		return new ManagerDetailsResponse(manager.getId(), manager.getName(), manager.getBirth(), manager.getCourt(),
+			manager.getDepartment(),
 			manager.getPhoneNumber(), manager.getEmail());
 	}
 
@@ -43,7 +44,7 @@ public class ManagerMapper {
 			.salt(salt)
 			.court(managerSignUpRequest.getCourt())
 			.department(managerSignUpRequest.getDepartment())
-			.age(managerSignUpRequest.getAge())
+			.birth(managerSignUpRequest.getBirth())
 			.name(managerSignUpRequest.getName())
 			.phoneNumber(managerSignUpRequest.getPhoneNumber())
 			.email(managerSignUpRequest.getEmail())

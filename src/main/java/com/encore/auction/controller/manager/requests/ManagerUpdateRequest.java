@@ -1,9 +1,7 @@
 package com.encore.auction.controller.manager.requests;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import lombok.Getter;
@@ -33,9 +31,8 @@ public final class ManagerUpdateRequest {
 	@Pattern(regexp = "^[A-Za-zㄱ-ㅎ가-힣]{2,5}$", message = "이름은 2~5자로 사용 가능합니다.")
 	private final String name;
 
-	@NotNull
-	@Max(99)
-	private final Integer age;
+	@NotEmpty
+	private final String birth;
 
 	@NotEmpty
 	@Pattern(regexp = "^[0-9]{11}$", message = "전화번호는 '-'없이 숫자 11자리로 입력해 주세요.")
@@ -46,14 +43,14 @@ public final class ManagerUpdateRequest {
 	private final String email;
 
 	public ManagerUpdateRequest(String oldPassword, String newPassword, String passwordCheck, String court,
-		String department, String name, Integer age, String phoneNumber, String email) {
+		String department, String name, String birth, String phoneNumber, String email) {
 		this.oldPassword = oldPassword;
 		this.newPassword = newPassword;
 		this.passwordCheck = passwordCheck;
 		this.court = court;
 		this.department = department;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}

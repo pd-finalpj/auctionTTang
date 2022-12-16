@@ -45,7 +45,7 @@ public class Manager extends BaseEntity {
 	private String name;
 
 	@Column(nullable = false)
-	private Integer age;
+	private String birth;
 
 	@Column(nullable = false, length = 13)
 	private String phoneNumber;
@@ -60,7 +60,7 @@ public class Manager extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "bit(1) default 0", length = 1)
 	private Boolean state;
 
-	public Manager(String id, String password, String court, String department, String salt, String name, Integer age,
+	public Manager(String id, String password, String court, String department, String salt, String name, String birth,
 		String phoneNumber, String email, ManagerRole managerRole, Boolean state) {
 		this.id = id;
 		this.password = password;
@@ -68,7 +68,7 @@ public class Manager extends BaseEntity {
 		this.department = department;
 		this.salt = salt;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 		this.managerRole = managerRole;
@@ -84,7 +84,7 @@ public class Manager extends BaseEntity {
 			", department='" + department + '\'' +
 			", salt='" + salt + '\'' +
 			", name='" + name + '\'' +
-			", age=" + age +
+			", age=" + birth +
 			", phoneNumber='" + phoneNumber + '\'' +
 			", email='" + email + '\'' +
 			", managerRole=" + managerRole +
@@ -102,14 +102,14 @@ public class Manager extends BaseEntity {
 		return Objects.equals(id, manager.id) && Objects.equals(password, manager.password)
 			&& Objects.equals(court, manager.court) && Objects.equals(department, manager.department)
 			&& Objects.equals(salt, manager.salt) && Objects.equals(name, manager.name)
-			&& Objects.equals(age, manager.age) && Objects.equals(phoneNumber, manager.phoneNumber)
+			&& Objects.equals(birth, manager.birth) && Objects.equals(phoneNumber, manager.phoneNumber)
 			&& Objects.equals(email, manager.email) && managerRole == manager.managerRole
 			&& Objects.equals(state, manager.state);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, password, court, department, salt, name, age, phoneNumber, email, managerRole, state);
+		return Objects.hash(id, password, court, department, salt, name, birth, phoneNumber, email, managerRole, state);
 	}
 
 	public void updateManager(ManagerUpdateRequest managerUpdateRequest, String encryptedPassword, String newSalt) {
@@ -117,7 +117,7 @@ public class Manager extends BaseEntity {
 		this.salt = newSalt;
 		this.court = managerUpdateRequest.getCourt();
 		this.department = managerUpdateRequest.getDepartment();
-		this.age = managerUpdateRequest.getAge();
+		this.birth = managerUpdateRequest.getBirth();
 		this.email = managerUpdateRequest.getEmail();
 		this.name = managerUpdateRequest.getName();
 	}

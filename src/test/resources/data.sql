@@ -278,14 +278,14 @@ VALUES ('11','서울특별시',null),
 ('39010','제주특별자치도','제주시'),
 ('39020','제주특별자치도','서귀포시');
 
-INSERT INTO user (id, password, salt, name, age, nickname, phone_number, email, state)
-VALUES ('jji0428','dnklanwkqnlrewiiqiodsoa2124','31109291fioadnjwlajlknk2qad4121', '정정일', 25, '정정일짱짱맨', '01098006069', 'jji042842@gmail.com', false),
-       ('tester1','721af600446faaccaf31c5aa37a755104d6cf743dc32501924e47fca09c69ccb','c3dbc8928f31e473f4ddd641cdf9dd96a3443518', '정정일일', 26, '정정일짱', '01098006070', 'tester1@gmail.com', false),
-       ('tester3','721af600446faaccaf31c5aa37a755104d6cf743dc32501924e47fca09c69ccb','c3dbc8928f31e473f4ddd641cdf9dd96a3443518', '정정일삼', 27, '정정', '01098006050', 'tester3@gmail.com', false);
+INSERT INTO user (id, password, salt, name, birth, nickname, phone_number, email, state)
+VALUES ('jji0428','dnklanwkqnlrewiiqiodsoa2124','31109291fioadnjwlajlknk2qad4121', '정정일', '980428', '정정일짱짱맨', '01098006069', 'jji042842@gmail.com', false),
+       ('tester1','721af600446faaccaf31c5aa37a755104d6cf743dc32501924e47fca09c69ccb','c3dbc8928f31e473f4ddd641cdf9dd96a3443518', '정정일일', '980428', '정정일짱', '01098006070', 'tester1@gmail.com', false),
+       ('tester3','721af600446faaccaf31c5aa37a755104d6cf743dc32501924e47fca09c69ccb','c3dbc8928f31e473f4ddd641cdf9dd96a3443518', '정정일삼', '980428', '정정', '01098006050', 'tester3@gmail.com', false);
 
-INSERT INTO manager (id, password, salt, name, age, phone_number, manager_role, email, state)
-VALUES ('jji042842','dnjqwlkenqwifiso131','1231642ndfklgld','정정이',25,'01098006069','MANAGER', 'jji042842@gmail.com', false),
-       ('tester2','8a7309f4db92ae2a13dcee612a38105e94f38d3b42921750169aaa8f398fc50f','b384b4d8b9550be99c65ecbd32fd3813cd2cf84e','정정삼',24,'01098006068','MANAGER', 'tester2@gmail.com', false);
+INSERT INTO manager (id, password, salt, name, court, department, birth, phone_number, manager_role, email, state)
+VALUES ('jji042842','dnjqwlkenqwifiso131','1231642ndfklgld','정정이','서울고등법원','정정일전담부서','980428','01098006069','MANAGER', 'jji042842@gmail.com', false),
+       ('tester2','8a7309f4db92ae2a13dcee612a38105e94f38d3b42921750169aaa8f398fc50f','b384b4d8b9550be99c65ecbd32fd3813cd2cf84e','정정삼','서울고등법원','정정일전담부서','980428','01098006068','MANAGER', 'tester2@gmail.com', false);
 
 INSERT INTO auction_item (manager_id, address_code,auction_item_case_number, auction_item_name, location, lot_number, address_detail, appraised_value, auction_start_date, auction_end_date, item_category, area_size, auction_failed_count,bookmark_count, hit,item_sold_state, state)
 VALUES ('tester2', '39010','123가다5121', '제주도 경치 좋은 주택입니다', '어쩌구동', '1004-14', '정일주택 2층', 130000000, '2032-12-12 14:00:00', '2032-12-23 16:00:00', 'HOUSE', 193.23, 3, 0 ,1245,'PROCEEDING', false),

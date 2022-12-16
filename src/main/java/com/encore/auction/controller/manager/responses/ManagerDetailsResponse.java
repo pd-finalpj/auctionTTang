@@ -9,17 +9,23 @@ public class ManagerDetailsResponse {
 
 	private final String name;
 
-	private final Integer age;
+	private final String birth;
+
+	private final String court;
+
+	private final String department;
 
 	private final String phoneNumber;
 
 	private final String email;
 
-	public ManagerDetailsResponse(String managerId, String name, Integer age, String phoneNumber,
-		String email) {
+	public ManagerDetailsResponse(String managerId, String name, String birth, String court, String department,
+		String phoneNumber, String email) {
 		this.managerId = managerId;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
+		this.court = court;
+		this.department = department;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
 	}
