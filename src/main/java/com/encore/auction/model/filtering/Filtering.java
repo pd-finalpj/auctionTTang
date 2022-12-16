@@ -11,7 +11,7 @@ import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
 import lombok.Getter;
 
 @Getter
-@RedisHash(value = "filtering", timeToLive = 3000)
+@RedisHash(value = "filtering", timeToLive = 600)
 public class Filtering {
 
 	@Id

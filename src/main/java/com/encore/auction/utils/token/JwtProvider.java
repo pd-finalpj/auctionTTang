@@ -5,6 +5,8 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.encore.auction.exception.WrongRequestException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -58,4 +60,15 @@ public class JwtProvider {
 		return !claims.getBody().getExpiration().before(new Date());
 	}
 
+	public String checkTokenIsUserAndGetUserID(String token) {
+		if (getAudience(token).equals("manager"))
+			throw new WrongRequestException("Manager Token can't do user's thing");
+		return getSubject(token);
+	}
+
+	public String checkTokenIsManagerAndGetManagerID(String token) {
+		if (getAudience(token).equals("user"))
+			throw new WrongRequestException("User Token can't do manager's thing");
+		return getSubject(token);
+	}
 }

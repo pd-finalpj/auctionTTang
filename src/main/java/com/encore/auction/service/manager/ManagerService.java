@@ -41,7 +41,7 @@ public class ManagerService {
 	}
 
 	public ManagerDetailsResponse retrieveManager(String token) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = managerRepository.findById(managerId)
 			.orElseThrow(() -> new NonExistResourceException("Manager does not exist"));
@@ -51,7 +51,7 @@ public class ManagerService {
 
 	@Transactional
 	public ManagerDetailsResponse updateManager(String token, ManagerUpdateRequest managerUpdateRequest) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndCheckPasswordIsCorrect(managerId, managerUpdateRequest.getOldPassword());
 
@@ -68,7 +68,7 @@ public class ManagerService {
 	}
 
 	public ManagerDeleteResponse deleteManager(String token, String password) {
-		String managerId = checkTokenIsManagerAndGetManagerID(token);
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndCheckPasswordIsCorrect(managerId, password);
 
@@ -109,11 +109,5 @@ public class ManagerService {
 
 	public ManagerIdCheckResponse checkManagerIdExist(String managerId) {
 		return new ManagerIdCheckResponse(managerRepository.findById(managerId).isPresent());
-	}
-
-	private String checkTokenIsManagerAndGetManagerID(String token) {
-		if (jwtProvider.getAudience(token).equals("user"))
-			throw new WrongRequestException("User Token can't do manager's thing");
-		return jwtProvider.getSubject(token);
 	}
 }

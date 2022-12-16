@@ -22,6 +22,10 @@ public final class ManagerSignUpRequest {
 	@NotEmpty
 	@Pattern(regexp = "^[A-Za-zㄱ-ㅎ가-힣]{2,5}$", message = "이름은 2~5자로 사용 가능합니다.")
 	private final String name;
+	@NotEmpty
+	private final String court;
+	@NotEmpty
+	private final String department;
 	@NotNull
 	@Max(99)
 	private final Integer age;
@@ -32,13 +36,14 @@ public final class ManagerSignUpRequest {
 	@Email(message = "이메일 형식에 맞지 않는 메일 주소입니다. 다시 입력해 주세요.")
 	private final String email;
 
-	public ManagerSignUpRequest(String managerId, String password, String passwordCheck, String name, Integer age,
-		String phoneNumber,
-		String email) {
+	public ManagerSignUpRequest(String managerId, String password, String passwordCheck, String name, String court,
+		String department, Integer age, String phoneNumber, String email) {
 		this.managerId = managerId;
 		this.password = password;
 		this.passwordCheck = passwordCheck;
 		this.name = name;
+		this.court = court;
+		this.department = department;
 		this.age = age;
 		this.phoneNumber = phoneNumber;
 		this.email = email;

@@ -37,7 +37,7 @@ public class CommentService {
 
 	@Transactional
 	public CommentIdResponse registerComment(String token, CommentRegisterRequest commentRegisterRequest) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = checkUserExistAndGetUser(userId);
 
@@ -59,7 +59,7 @@ public class CommentService {
 
 	@Transactional
 	public CommentIdResponse updateComment(Long commentId, String token, CommentUpdateRequest commentUpdateRequest) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = checkUserExistAndGetUser(userId);
 
@@ -75,7 +75,7 @@ public class CommentService {
 
 	@Transactional
 	public CommentDeleteResponse deleteComment(Long commentId, String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = checkUserExistAndGetUser(userId);
 
@@ -101,11 +101,5 @@ public class CommentService {
 	private Comment checkCommentExistAndGetComment(Long commentId) {
 		return commentRepository.findById(commentId)
 			.orElseThrow(() -> new NonExistResourceException("Comment does not exist"));
-	}
-
-	private String checkTokenIsUserAndGetUserID(String token) {
-		if (jwtProvider.getAudience(token).equals("manager"))
-			throw new WrongRequestException("Manager Token can't do user's thing");
-		return jwtProvider.getSubject(token);
 	}
 }

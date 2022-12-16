@@ -1,6 +1,7 @@
 package com.encore.auction.utils.mapper;
 
 import com.encore.auction.controller.imagefile.responses.ImageFileCreateResponse;
+import com.encore.auction.controller.imagefile.responses.ImageFileUrlResponse;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.imagefile.ImageFile;
 
@@ -26,5 +27,9 @@ public class ImageFileMapper {
 	public ImageFileCreateResponse entityToImageFileResponse(ImageFile savedImageFile) {
 		return new ImageFileCreateResponse(savedImageFile.getId(), savedImageFile.getAuctionItem().getId(),
 			savedImageFile.getUrl());
+	}
+
+	public ImageFileUrlResponse entityToImageFileUrlResponse(ImageFile e) {
+		return new ImageFileUrlResponse(e.getUrl());
 	}
 }

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.encore.auction.controller.bidding.aftbidding.responses.AftBiddingDetailsListResponse;
 import com.encore.auction.controller.bidding.aftbidding.responses.AftBiddingDetailsResponse;
 import com.encore.auction.exception.NonExistResourceException;
-import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.user.User;
 import com.encore.auction.repository.bidding.aftbidding.AftBiddingRetrieveRepository;
 import com.encore.auction.repository.user.UserRepository;
@@ -29,7 +28,7 @@ public class AftBiddingListService {
 	}
 
 	public AftBiddingDetailsListResponse retrieveAftBiddingListByUserId(String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
@@ -38,11 +37,5 @@ public class AftBiddingListService {
 			user.getId());
 
 		return new AftBiddingDetailsListResponse(user.getId(), aftBiddingDetailsResponseList);
-	}
-
-	private String checkTokenIsUserAndGetUserID(String token) {
-		if (jwtProvider.getAudience(token).equals("manager"))
-			throw new WrongRequestException("Manager Token can't do user's thing");
-		return jwtProvider.getSubject(token);
 	}
 }

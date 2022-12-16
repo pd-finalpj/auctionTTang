@@ -7,7 +7,6 @@ import com.encore.auction.controller.bookmark.requests.BookmarkRegisterRequest;
 import com.encore.auction.controller.bookmark.responses.BookmarkDeleteResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkRegisterResponse;
 import com.encore.auction.exception.NonExistResourceException;
-import com.encore.auction.exception.WrongRequestException;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.bookmark.Bookmark;
 import com.encore.auction.model.bookmark.BookmarkId;
@@ -36,7 +35,7 @@ public class BookmarkService {
 
 	@Transactional
 	public BookmarkRegisterResponse registerBookmark(BookmarkRegisterRequest bookmarkRegisterRequest, String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
@@ -57,7 +56,7 @@ public class BookmarkService {
 
 	@Transactional
 	public BookmarkDeleteResponse deleteBookmark(Long auctionId, String token) {
-		String userId = checkTokenIsUserAndGetUserID(token);
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
 
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
@@ -75,11 +74,5 @@ public class BookmarkService {
 		auctionItem.decreaseBookmark();
 
 		return BookmarkMapper.of().bookmarkToDeleteResponse(bookmark);
-	}
-
-	private String checkTokenIsUserAndGetUserID(String token) {
-		if (jwtProvider.getAudience(token).equals("manager"))
-			throw new WrongRequestException("Manager Token can't do user's thing");
-		return jwtProvider.getSubject(token);
 	}
 }

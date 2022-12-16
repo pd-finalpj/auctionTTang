@@ -105,4 +105,13 @@ public class GlobalExceptionHandler {
 			.build();
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
 	}
+
+	@ExceptionHandler(RuntimeException.class)
+	protected ResponseEntity<ExceptionResponse> runtimeException(RuntimeException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Runtime Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+	}
 }

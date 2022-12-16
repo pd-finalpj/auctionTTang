@@ -41,6 +41,8 @@ public class ManagerMapper {
 			.id(managerSignUpRequest.getManagerId())
 			.password(encryptedPassword)
 			.salt(salt)
+			.court(managerSignUpRequest.getCourt())
+			.department(managerSignUpRequest.getDepartment())
 			.age(managerSignUpRequest.getAge())
 			.name(managerSignUpRequest.getName())
 			.phoneNumber(managerSignUpRequest.getPhoneNumber())
