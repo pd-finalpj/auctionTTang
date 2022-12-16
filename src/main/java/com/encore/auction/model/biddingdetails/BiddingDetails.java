@@ -14,7 +14,7 @@ public class BiddingDetails {
 
 	private String userId;
 
-	private Integer userAge;
+	private String userBirth;
 
 	private LocalDateTime biddingDate;
 
@@ -26,11 +26,11 @@ public class BiddingDetails {
 
 	private AuctionDetailsResponse auctionDetailsResponse;
 
-	public BiddingDetails(Long biddingId, String userId, Integer userAge, LocalDateTime biddingDate, Long amount,
+	public BiddingDetails(Long biddingId, String userId, String userBirth, LocalDateTime biddingDate, Long amount,
 		LocalDateTime decideDate, BiddingResult biddingResult, AuctionDetailsResponse auctionDetailsResponse) {
 		this.biddingId = biddingId;
 		this.userId = userId;
-		this.userAge = userAge;
+		this.userBirth = userBirth;
 		this.biddingDate = biddingDate;
 		this.amount = amount;
 		this.decideDate = decideDate;

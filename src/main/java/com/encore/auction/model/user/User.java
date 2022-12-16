@@ -37,7 +37,7 @@ public class User extends BaseEntity {
 	private String name;
 
 	@Column(nullable = false)
-	private Integer age;
+	private String birth;
 
 	@Column(nullable = false, length = 10)
 	private String nickname;
@@ -51,13 +51,13 @@ public class User extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "bit(1) default 0", length = 1)
 	private Boolean state;
 
-	public User(String id, String password, String salt, String name, Integer age, String nickname, String phoneNumber,
+	public User(String id, String password, String salt, String name, String birth, String nickname, String phoneNumber,
 		String email, Boolean state) {
 		this.id = id;
 		this.password = password;
 		this.salt = salt;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
@@ -71,7 +71,7 @@ public class User extends BaseEntity {
 			", password='" + password + '\'' +
 			", salt='" + salt + '\'' +
 			", name='" + name + '\'' +
-			", age=" + age +
+			", age=" + birth +
 			", nickname='" + nickname + '\'' +
 			", phoneNumber='" + phoneNumber + '\'' +
 			", email='" + email + '\'' +
@@ -88,20 +88,20 @@ public class User extends BaseEntity {
 		User user = (User)o;
 		return Objects.equals(id, user.id) && Objects.equals(password, user.password)
 			&& Objects.equals(salt, user.salt) && Objects.equals(name, user.name)
-			&& Objects.equals(age, user.age) && Objects.equals(nickname, user.nickname)
+			&& Objects.equals(birth, user.birth) && Objects.equals(nickname, user.nickname)
 			&& Objects.equals(phoneNumber, user.phoneNumber) && Objects.equals(email, user.email)
 			&& Objects.equals(state, user.state);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, password, salt, name, age, nickname, phoneNumber, email, state);
+		return Objects.hash(id, password, salt, name, birth, nickname, phoneNumber, email, state);
 	}
 
 	public void updateUser(UserUpdateRequest userUpdateRequest, String encryptedPassword, String newSalt) {
 		this.password = encryptedPassword;
 		this.salt = newSalt;
-		this.age = userUpdateRequest.getAge();
+		this.birth = userUpdateRequest.getBirth();
 		this.nickname = userUpdateRequest.getNickname();
 		this.email = userUpdateRequest.getEmail();
 		this.name = userUpdateRequest.getName();

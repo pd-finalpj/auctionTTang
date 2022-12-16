@@ -26,7 +26,7 @@ public class UserMapper {
 	}
 
 	public UserDetailsResponse entityToUserDetailsResponse(User user) {
-		return new UserDetailsResponse(user.getId(), user.getName(), user.getAge(), user.getNickname(),
+		return new UserDetailsResponse(user.getId(), user.getName(), user.getBirth(), user.getNickname(),
 			user.getPhoneNumber(), user.getEmail());
 	}
 
@@ -35,7 +35,8 @@ public class UserMapper {
 			.id(userSignUpRequest.getUserId())
 			.password(encryptedPassword)
 			.salt(newSalt)
-			.age(userSignUpRequest.getAge())
+			.name(userSignUpRequest.getName())
+			.birth(userSignUpRequest.getBirth())
 			.nickname(userSignUpRequest.getNickname())
 			.phoneNumber(userSignUpRequest.getPhoneNumber())
 			.email(userSignUpRequest.getEmail())
