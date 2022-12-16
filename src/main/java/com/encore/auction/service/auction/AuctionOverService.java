@@ -106,7 +106,7 @@ public class AuctionOverService {
 		User user = userRepository.findById(bidding.getUser().getId())
 			.orElseThrow(() -> new NonExistResourceException("user does not exist"));
 
-		BiddingDetails biddingDetails = new BiddingDetails(bidding.getId(), user.getId(), user.getAge(),
+		BiddingDetails biddingDetails = new BiddingDetails(bidding.getId(), user.getId(), user.getBirth(),
 			bidding.getBiddingDate(), bidding.getAmount(), aftBidding.getDecideDate(), aftBidding.getBiddingResult(),
 			AuctionMapper.of().entityToAuctionDetailsResponse(auctionItem));
 

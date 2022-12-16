@@ -151,7 +151,7 @@ public class BiddingService {
 	}
 
 	private void saveLogDataToMongoDB(User user, AuctionItem auctionItem, Bidding savedBidding) {
-		BiddingDetails biddingDetails = new BiddingDetails(savedBidding.getId(), user.getId(), user.getAge(),
+		BiddingDetails biddingDetails = new BiddingDetails(savedBidding.getId(), user.getId(), user.getBirth(),
 			savedBidding.getBiddingDate(),
 			savedBidding.getAmount(), null, BiddingResult.UNDEFINED,
 			AuctionMapper.of().entityToAuctionDetailsResponse(auctionItem));

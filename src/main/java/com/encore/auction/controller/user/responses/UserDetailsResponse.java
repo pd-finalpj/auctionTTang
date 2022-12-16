@@ -9,7 +9,7 @@ public final class UserDetailsResponse {
 
 	private final String name;
 
-	private final Integer age;
+	private final String birth;
 
 	private final String nickname;
 
@@ -17,11 +17,11 @@ public final class UserDetailsResponse {
 
 	private final String email;
 
-	public UserDetailsResponse(String userId, String name, Integer age, String nickname, String phoneNumber,
+	public UserDetailsResponse(String userId, String name, String birth, String nickname, String phoneNumber,
 		String email) {
 		this.userId = userId;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;

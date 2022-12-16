@@ -1,7 +1,6 @@
 package com.encore.auction.controller.user.requests;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -28,8 +27,7 @@ public final class UserSignUpRequest {
 	private final String name;
 
 	@NotNull
-	@Max(99)
-	private final Integer age;
+	private final String birth;
 
 	@NotEmpty
 	@Pattern(regexp = "^[0-9A-Za-zㄱ-ㅎ가-힣]{2,11}$", message = "닉네임은 2~11자로 영문 대소문자, 한글, 숫자만 사용할 수 있습니다.")
@@ -43,13 +41,13 @@ public final class UserSignUpRequest {
 	@Email(message = "이메일 형식에 맞지 않는 메일 주소입니다. 다시 입력해 주세요.")
 	private final String email;
 
-	public UserSignUpRequest(String userId, String password, String passwordCheck, String name, Integer age,
+	public UserSignUpRequest(String userId, String password, String passwordCheck, String name, String birth,
 		String nickname, String phoneNumber, String email) {
 		this.userId = userId;
 		this.password = password;
 		this.passwordCheck = passwordCheck;
 		this.name = name;
-		this.age = age;
+		this.birth = birth;
 		this.nickname = nickname;
 		this.phoneNumber = phoneNumber;
 		this.email = email;

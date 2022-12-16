@@ -21,14 +21,14 @@ spring:
     cache-duration: PT1H
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul&validationQuery="select 1"
     username: auctionTTang
     password: auctionTTang
     platform: mysql
     initialization-mode: always
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     generate-ddl: true
     database: mysql
@@ -37,7 +37,7 @@ spring:
       hibernate:
         format_sql: true
         use_sql_comments: true
-    defer-datasource-initialization: true
+
   mvc:
     hiddenmethod:
       filter:
@@ -47,9 +47,7 @@ spring:
   profiles:
     active:
       - secret
-  sql:
-    init:
-      mode: always
+
   redis:
     host: localhost
     port: 6379
