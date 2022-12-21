@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.encore.auction.controller.bidding.aftbidding.responses.AftBiddingDetailsListResponse;
 import com.encore.auction.service.bidding.aftbidding.AftBiddingListService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/aft-bidding-list")
@@ -19,6 +20,7 @@ public class AftBiddingListController {
 		this.aftBiddingListService = aftBiddingListService;
 	}
 
+	@Permission
 	@GetMapping("/{user-id}")
 	public ResponseEntity<AftBiddingDetailsListResponse> retrieveAftBiddingListByUserId(
 		@RequestHeader("Token") String token) {

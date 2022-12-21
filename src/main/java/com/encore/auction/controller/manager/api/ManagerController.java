@@ -23,6 +23,7 @@ import com.encore.auction.controller.manager.responses.ManagerIdCheckResponse;
 import com.encore.auction.controller.manager.responses.ManagerIdResponse;
 import com.encore.auction.controller.manager.responses.ManagerTokenResponse;
 import com.encore.auction.service.manager.ManagerService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/manager")
@@ -51,11 +52,13 @@ public class ManagerController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(managerService.signUpManager(managerSignUpRequest));
 	}
 
+	@Permission
 	@GetMapping
 	public ResponseEntity<ManagerDetailsResponse> retrieveManager(@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(managerService.retrieveManager(token));
 	}
 
+	@Permission
 	@PutMapping
 	public ResponseEntity<ManagerDetailsResponse> updateManager(@RequestHeader("Token") String token,
 		@Valid @RequestBody
@@ -63,6 +66,7 @@ public class ManagerController {
 		return ResponseEntity.ok().body(managerService.updateManager(token, managerUpdateRequest));
 	}
 
+	@Permission
 	@DeleteMapping
 	public ResponseEntity<ManagerDeleteResponse> deleteManager(@RequestHeader("Token") String token,
 		@RequestHeader("password") String password) {

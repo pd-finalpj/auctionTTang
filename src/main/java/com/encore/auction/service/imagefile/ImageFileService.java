@@ -52,7 +52,7 @@ public class ImageFileService {
 	@Transactional
 	public ImageFileListCreateResponse storeAndSaveImageFiles(Long auctionItemId, MultipartFile[] files) throws
 		IOException {
-		if (files.length > 0)
+		if (files.length == 0)
 			throw new IllegalArgumentException("Files for upload are not selected");
 
 		AuctionItem auctionItem = checkAuctionItemExistAndGetAuctionItem(auctionItemId);
@@ -62,7 +62,7 @@ public class ImageFileService {
 		int imageNumber = 1;
 
 		for (MultipartFile file : files) {
-			if (!file.isEmpty())
+			if (file.isEmpty())
 				throw new WrongRequestException("The file " + file.getName() + " is empty");
 
 			String contentType = checkValidationAndGetContentType(file);

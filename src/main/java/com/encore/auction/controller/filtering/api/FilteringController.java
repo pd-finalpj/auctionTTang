@@ -11,7 +11,7 @@ import com.encore.auction.controller.filtering.responses.FilteringItemsListRespo
 import com.encore.auction.service.filtering.FilteringService;
 
 @RestController
-@RequestMapping("/auction/get/list")
+@RequestMapping("/auction-list")
 public class FilteringController {
 
 	private final FilteringService filteringService;

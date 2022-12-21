@@ -4,6 +4,7 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -110,6 +111,15 @@ public class GlobalExceptionHandler {
 	protected ResponseEntity<ExceptionResponse> runtimeException(RuntimeException e) {
 		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
 			.code("Runtime Exception")
+			.message(e.getMessage())
+			.build();
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
+	}
+
+	@ExceptionHandler(MissingRequestHeaderException.class)
+	protected ResponseEntity<ExceptionResponse> missingRequestHeaderException(MissingRequestHeaderException e) {
+		final ExceptionResponse exceptionResponse = ExceptionResponse.builder()
+			.code("Missing Request Header Exception")
 			.message(e.getMessage())
 			.build();
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exceptionResponse);
