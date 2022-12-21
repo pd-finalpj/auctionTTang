@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.encore.auction.controller.bidding.bidding.responses.BiddingDetailsListResponse;
 import com.encore.auction.service.bidding.bidding.BiddingListService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/bidding-list")
@@ -19,6 +20,7 @@ public class BiddingListController {
 		this.biddingListService = biddingListService;
 	}
 
+	@Permission
 	@GetMapping("/{user-id}")
 	public ResponseEntity<BiddingDetailsListResponse> retrieveBiddingListByUserId(
 		@RequestHeader("Token") String token) {

@@ -23,6 +23,7 @@ import com.encore.auction.controller.auction.responses.AuctionDetailsResponse;
 import com.encore.auction.controller.auction.responses.AuctionIdResponse;
 import com.encore.auction.controller.auction.responses.AuctionRetrieveResponse;
 import com.encore.auction.service.auction.AuctionService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/auction")
@@ -34,7 +35,8 @@ public class AuctionController {
 		this.auctionService = auctionService;
 	}
 
-	@PostMapping("/create")
+	@Permission
+	@PostMapping
 	public ResponseEntity<AuctionIdResponse> createAuctionItem(@RequestHeader("Token") String token,
 		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest,
 		@Valid @RequestParam("file") MultipartFile[] files) {
@@ -42,13 +44,14 @@ public class AuctionController {
 			.body(auctionService.createAuctionItem(auctionCreateRequest, token, files));
 	}
 
-	@GetMapping("/get/{auction-item-id}")
+	@GetMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionRetrieveResponse> retrieveAuctionItem(
 		@RequestHeader(value = "Token", required = false) String token,
 		@PathVariable("auction-item-id") Long auctionItemId) {
 		return ResponseEntity.ok().body(auctionService.retrieveAuctionItem(token, auctionItemId));
 	}
 
+	@Permission
 	@PutMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionDetailsResponse> updateAuctionItem(
 		@PathVariable("auction-item-id") Long auctionItemId,
@@ -56,6 +59,7 @@ public class AuctionController {
 		return ResponseEntity.ok().body(auctionService.updateAuctionItem(auctionItemId, auctionUpdateRequest, token));
 	}
 
+	@Permission
 	@DeleteMapping("/{auction-item-id}")
 	public ResponseEntity<AuctionDeleteResponse> deleteAuctionItem(@PathVariable("auction-item-id") Long auctionItemId,
 		@RequestHeader("Token") String token) {

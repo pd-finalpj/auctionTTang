@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.encore.auction.controller.bookmark.responses.BookmarkDetailsListResponse;
 import com.encore.auction.service.bookmark.BookmarkListService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/bookmark-list")
@@ -19,6 +20,7 @@ public class BookmarkListController {
 		this.bookmarkListService = bookmarkListService;
 	}
 
+	@Permission
 	@GetMapping("/{user-id}")
 	public ResponseEntity<BookmarkDetailsListResponse> retrieveBookmarkListByUserId(
 		@RequestHeader("Token") String token) {

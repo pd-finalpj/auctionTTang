@@ -23,6 +23,7 @@ import com.encore.auction.controller.user.responses.UserIdCheckResponse;
 import com.encore.auction.controller.user.responses.UserIdResponse;
 import com.encore.auction.controller.user.responses.UserTokenResponse;
 import com.encore.auction.service.user.UserService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/user")
@@ -49,17 +50,20 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.signUpUser(userSignUpRequest));
 	}
 
+	@Permission
 	@GetMapping
 	public ResponseEntity<UserDetailsResponse> retrieveUser(@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(userService.retrieveUser(token));
 	}
 
+	@Permission
 	@PutMapping
 	public ResponseEntity<UserDetailsResponse> updateUser(@RequestHeader("Token") String token, @Valid @RequestBody
 	UserUpdateRequest userUpdateRequest) {
 		return ResponseEntity.ok().body(userService.updateUser(token, userUpdateRequest));
 	}
 
+	@Permission
 	@DeleteMapping
 	public ResponseEntity<UserDeleteResponse> deleteUser(@RequestHeader("Token") String token,
 		@RequestHeader("password") String password) {

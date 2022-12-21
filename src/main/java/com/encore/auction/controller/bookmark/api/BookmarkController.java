@@ -14,6 +14,7 @@ import com.encore.auction.controller.bookmark.requests.BookmarkRegisterRequest;
 import com.encore.auction.controller.bookmark.responses.BookmarkDeleteResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkRegisterResponse;
 import com.encore.auction.service.bookmark.BookmarkService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/bookmark")
@@ -25,6 +26,7 @@ public class BookmarkController {
 		this.bookmarkService = bookmarkService;
 	}
 
+	@Permission
 	@PostMapping
 	public ResponseEntity<BookmarkRegisterResponse> registerBookmark(
 		@RequestBody BookmarkRegisterRequest bookmarkRegisterRequest, @RequestHeader("Token") String token) {
@@ -32,6 +34,7 @@ public class BookmarkController {
 			.body(bookmarkService.registerBookmark(bookmarkRegisterRequest, token));
 	}
 
+	@Permission
 	@DeleteMapping("/{auction-id}")
 	public ResponseEntity<BookmarkDeleteResponse> deleteBookmark(
 		@PathVariable("auction-id") Long auctionId,

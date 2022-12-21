@@ -21,6 +21,7 @@ import com.encore.auction.controller.bidding.bidding.responses.BiddingDetailsRes
 import com.encore.auction.controller.bidding.bidding.responses.BiddingIdResponse;
 import com.encore.auction.controller.bidding.bidding.responses.BiddingRetrieveResponse;
 import com.encore.auction.service.bidding.bidding.BiddingService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/bidding")
@@ -32,6 +33,7 @@ public class BiddingController {
 		this.biddingService = biddingService;
 	}
 
+	@Permission
 	@PostMapping
 	public ResponseEntity<BiddingIdResponse> registerBidding(
 		@Valid @RequestBody BiddingRegisterRequest biddingRegisterRequest, @RequestHeader("Token") String token) {
@@ -44,6 +46,7 @@ public class BiddingController {
 		return ResponseEntity.ok().body(biddingService.retrieveBidding(biddingId));
 	}
 
+	@Permission
 	@PutMapping("/{bidding-id}")
 	public ResponseEntity<BiddingDetailsResponse> updateBidding(@PathVariable("bidding-id") Long biddingId,
 		@Valid @RequestBody
@@ -51,6 +54,7 @@ public class BiddingController {
 		return ResponseEntity.ok().body(biddingService.updateBidding(biddingId, biddingUpdateRequest, token));
 	}
 
+	@Permission
 	@DeleteMapping("/{bidding-id}")
 	public ResponseEntity<BiddingDeleteResponse> deleteBidding(@PathVariable("bidding-id") Long biddingId,
 		@RequestHeader("Token") String token) {

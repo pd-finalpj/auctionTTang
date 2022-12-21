@@ -18,6 +18,7 @@ import com.encore.auction.controller.comment.responses.CommentDeleteResponse;
 import com.encore.auction.controller.comment.responses.CommentDetailsResponse;
 import com.encore.auction.controller.comment.responses.CommentIdResponse;
 import com.encore.auction.service.comment.CommentService;
+import com.encore.auction.utils.security.Permission;
 
 @RestController
 @RequestMapping("/1")
@@ -29,6 +30,7 @@ public class CommentController {
 		this.commentService = commentService;
 	}
 
+	@Permission
 	@PostMapping
 	public ResponseEntity<CommentIdResponse> registerComment(@RequestHeader("Token") String token,
 		@RequestBody CommentRegisterRequest commentRegisterRequest) {
@@ -41,6 +43,7 @@ public class CommentController {
 		return ResponseEntity.ok().body(commentService.retrieveComment(commentId));
 	}
 
+	@Permission
 	@PutMapping("/{comment-id}")
 	public ResponseEntity<CommentIdResponse> updateComment(@PathVariable("comment-id") Long commentId,
 		@RequestHeader("Token") String token,
@@ -48,6 +51,7 @@ public class CommentController {
 		return ResponseEntity.ok().body(commentService.updateComment(commentId, token, commentUpdateRequest));
 	}
 
+	@Permission
 	@DeleteMapping("/{comment-id}")
 	public ResponseEntity<CommentDeleteResponse> deleteComment(@PathVariable("comment-id") Long commentId,
 		@RequestHeader("Token") String token) {
