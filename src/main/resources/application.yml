@@ -21,7 +21,7 @@ spring:
     cache-duration: PT1H
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.17.0.1:3306/auctionTTang?serverTimezone=Asia/Seoul&validationQuery="select 1"
+    url: jdbc:mysql://localhost:3306/auctionTTang?serverTimezone=Asia/Seoul&validationQuery="select 1"
     username: auctionTTang
     password: auctionTTang
     platform: mysql
@@ -44,9 +44,9 @@ spring:
       - secret
 
   redis:
-    host: 172.17.0.1
+    host: localhost
     port: 6379
   data:
     mongodb:
-      uri: mongodb://172.17.0.1:27017
+      uri: mongodb://localhost:27017
       database: auctionTTang

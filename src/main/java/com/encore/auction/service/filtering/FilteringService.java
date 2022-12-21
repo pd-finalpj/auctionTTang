@@ -37,20 +37,31 @@ public class FilteringService {
 		Optional<Filtering> filtering = filteringRedisRepository.findById(redisId);
 
 		if (filtering.isPresent()) {
-			return FilteringMapper.of().redisFilteringToResponse(filtering.get());
+			try {
+				return FilteringMapper.of().redisFilteringToResponse(filtering.get());
+			} catch (Exception e) {
+				return getFilteringItemsListResponse(filteringAuctionItemRequest, redisId);
+			}
 		} else {
-			PageRequest pageRequest = convertPageRequest(filteringAuctionItemRequest);
-
-			Slice<FilteringItemsResponse> filteringItemsResponses = filteringAuctionItemListRepository.filteringAuctionItemList(
-				filteringAuctionItemRequest, pageRequest);
-
-			Filtering filteringCache = FilteringMapper.of().filteringToRedisFiltering(redisId, filteringItemsResponses);
-
-			filteringRedisRepository.save(filteringCache);
-
-			return FilteringMapper.of()
-				.filteringToResponse(filteringItemsResponses);
+			return getFilteringItemsListResponse(filteringAuctionItemRequest, redisId);
 		}
+	}
+
+	private FilteringItemsListResponse getFilteringItemsListResponse(
+		FilteringAuctionItemRequest filteringAuctionItemRequest, String redisId) {
+		PageRequest pageRequest = convertPageRequest(filteringAuctionItemRequest);
+
+		Slice<FilteringItemsResponse> filteringItemsResponses = filteringAuctionItemListRepository.filteringAuctionItemList(
+			filteringAuctionItemRequest, pageRequest);
+
+		Filtering filteringCache = FilteringMapper.of().filteringToRedisFiltering(redisId, filteringItemsResponses);
+		try {
+			filteringRedisRepository.save(filteringCache);
+		} catch (Exception ignored) {
+		}
+		
+		return FilteringMapper.of()
+			.filteringToResponse(filteringItemsResponses);
 	}
 
 	private static PageRequest convertPageRequest(FilteringAuctionItemRequest filteringAuctionItemRequest) {
