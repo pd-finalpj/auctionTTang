@@ -21,7 +21,7 @@ public class BookmarkListController {
 	}
 
 	@Permission
-	@GetMapping("/{user-id}")
+	@GetMapping
 	public ResponseEntity<BookmarkDetailsListResponse> retrieveBookmarkListByUserId(
 		@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(bookmarkListService.retrieveBookmarkListByUserId(token));
