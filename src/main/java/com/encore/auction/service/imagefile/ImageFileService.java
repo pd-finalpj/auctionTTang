@@ -52,6 +52,9 @@ public class ImageFileService {
 	@Transactional
 	public ImageFileListCreateResponse storeAndSaveImageFiles(Long auctionItemId, MultipartFile[] files) throws
 		IOException {
+		if (files == null)
+			throw new WrongRequestException("files are null");
+
 		if (files.length == 0)
 			throw new IllegalArgumentException("Files for upload are not selected");
 

@@ -86,7 +86,7 @@ public class AuctionService {
 		try {
 			imageFileService.storeAndSaveImageFiles(savedAuctionItem.getId(), files);
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new WrongRequestException(e.getMessage());
 		}
 
 		return AuctionMapper.of().entityToAuctionItemIdResponse(savedAuctionItem);
