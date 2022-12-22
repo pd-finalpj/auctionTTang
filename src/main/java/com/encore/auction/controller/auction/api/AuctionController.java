@@ -36,7 +36,7 @@ public class AuctionController {
 	}
 
 	@Permission
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public ResponseEntity<AuctionIdResponse> createAuctionItem(@RequestHeader("Token") String token,
 		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest,
 		@Valid @RequestParam("file") MultipartFile[] files) {
