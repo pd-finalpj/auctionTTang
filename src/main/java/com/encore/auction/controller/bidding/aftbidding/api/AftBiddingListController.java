@@ -21,7 +21,7 @@ public class AftBiddingListController {
 	}
 
 	@Permission
-	@GetMapping("/{user-id}")
+	@GetMapping
 	public ResponseEntity<AftBiddingDetailsListResponse> retrieveAftBiddingListByUserId(
 		@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(aftBiddingListService.retrieveAftBiddingListByUserId(token));
