@@ -1,5 +1,6 @@
 package com.encore.auction.utils.mapper;
 
+import com.encore.auction.controller.bookmark.responses.BookmarkCountResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkDeleteResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkRegisterResponse;
 import com.encore.auction.model.auction.item.AuctionItem;
@@ -39,5 +40,9 @@ public class BookmarkMapper {
 	public BookmarkDeleteResponse bookmarkToDeleteResponse(Bookmark bookmark) {
 		return new BookmarkDeleteResponse(bookmark.getBookmarkId().getUser().getId(),
 			bookmark.getBookmarkId().getAuctionItem().getId(), bookmark.getState());
+	}
+
+	public BookmarkCountResponse bookmarkListToBookmarkCountResponse(int size) {
+		return new BookmarkCountResponse(size);
 	}
 }

@@ -3,6 +3,7 @@ package com.encore.auction.controller.bookmark.api;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.encore.auction.controller.bookmark.requests.BookmarkRegisterRequest;
+import com.encore.auction.controller.bookmark.responses.BookmarkCountResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkDeleteResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkRegisterResponse;
 import com.encore.auction.service.bookmark.BookmarkService;
@@ -42,4 +44,9 @@ public class BookmarkController {
 		return ResponseEntity.ok().body(bookmarkService.deleteBookmark(auctionId, token));
 	}
 
+	@Permission
+	@GetMapping
+	public ResponseEntity<BookmarkCountResponse> countBookmark(@RequestHeader("Token") String token) {
+		return ResponseEntity.ok().body(bookmarkService.countBookmark(token));
+	}
 }

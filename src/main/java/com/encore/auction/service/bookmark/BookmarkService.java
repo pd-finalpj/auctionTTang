@@ -1,9 +1,12 @@
 package com.encore.auction.service.bookmark;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.encore.auction.controller.bookmark.requests.BookmarkRegisterRequest;
+import com.encore.auction.controller.bookmark.responses.BookmarkCountResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkDeleteResponse;
 import com.encore.auction.controller.bookmark.responses.BookmarkRegisterResponse;
 import com.encore.auction.exception.NonExistResourceException;
@@ -74,5 +77,16 @@ public class BookmarkService {
 		auctionItem.decreaseBookmark();
 
 		return BookmarkMapper.of().bookmarkToDeleteResponse(bookmark);
+	}
+
+	public BookmarkCountResponse countBookmark(String token) {
+		String userId = jwtProvider.checkTokenIsUserAndGetUserID(token);
+
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
+
+		List<Bookmark> bookmarkList = bookmarkRepository.findByUserId(user.getId());
+
+		return BookmarkMapper.of().bookmarkListToBookmarkCountResponse(bookmarkList.size());
 	}
 }

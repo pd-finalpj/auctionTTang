@@ -21,7 +21,7 @@ public class BiddingListController {
 	}
 
 	@Permission
-	@GetMapping("/{user-id}")
+	@GetMapping
 	public ResponseEntity<BiddingDetailsListResponse> retrieveBiddingListByUserId(
 		@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(biddingListService.retrieveBiddingListByUserId(token));
