@@ -85,7 +85,7 @@ public class BookmarkService {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new NonExistResourceException("User does not exist"));
 
-		List<Bookmark> bookmarkList = bookmarkRepository.findByUserId(user.getId());
+		List<Bookmark> bookmarkList = bookmarkRepository.findByBookmarkIdUserId(user.getId());
 
 		return BookmarkMapper.of().bookmarkListToBookmarkCountResponse(bookmarkList.size());
 	}

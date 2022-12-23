@@ -397,3 +397,6 @@ VALUES ('tester2', '낙찰 이후 프로세스 입니다', '낙찰에 성공하�
        ('tester2', '1인 1가구 - 지원금을 드립니다', '땅땅땅에서 지원하는 1인 1가구, 입찰에 참여하실 경우 치킨 기프티콘을 드려요!',false),
        ('tester2', '땅땅땅 운영 공지사항', '저희는 모든 사람들이 행복한 집에서 살기를 희망합니다',false),
        ('tester2', '2023년 향후 부동산 예측', '금리 폭등으로 인한 하향세가 지속될 것으로 예상되나 지금이 주택마련에는 적기라 보입니다',false);
+
+INSERT INTO image_file(auction_item_id, url)
+VALUES (1, 'https://thumb.mt.co.kr/06/2020/09/2020091115075836165_1.jpg/dims/optimize/'),
