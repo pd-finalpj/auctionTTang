@@ -10,7 +10,6 @@ import com.encore.auction.model.address.QAddress;
 import com.encore.auction.model.auction.item.QAuctionItem;
 import com.encore.auction.model.bookmark.Bookmark;
 import com.encore.auction.model.bookmark.QBookmark;
-import com.encore.auction.repository.bookmark.BookmarkListRetrieveRepository;
 import com.querydsl.core.types.Projections;
 
 @Repository
@@ -40,5 +39,13 @@ public class QuerydslBookmarkListRetrieveRepository extends QuerydslRepositorySu
 			.on(qAddress.addressCode.eq(qAuctionItem.address.addressCode))
 			.where(qBookmark.bookmarkId.user.id.eq(userId).and(qBookmark.state.isFalse()))
 			.fetch();
+	}
+
+	@Override
+	public Long countBookmark(String userId) {
+		return from(qBookmark)
+			.select(qBookmark.count())
+			.where(qBookmark.bookmarkId.user.id.eq(userId))
+			.fetchOne();
 	}
 }

@@ -42,7 +42,7 @@ public class BookmarkMapper {
 			bookmark.getBookmarkId().getAuctionItem().getId(), bookmark.getState());
 	}
 
-	public BookmarkCountResponse bookmarkListToBookmarkCountResponse(int size) {
+	public BookmarkCountResponse bookmarkListToBookmarkCountResponse(Long size) {
 		return new BookmarkCountResponse(size);
 	}
 }

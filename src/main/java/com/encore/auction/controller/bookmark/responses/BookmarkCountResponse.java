@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public final class BookmarkCountResponse {
 
-	private final Integer bookmarkCount;
+	private final Long bookmarkCount;
 
-	public BookmarkCountResponse(Integer bookmarkCount) {
+	public BookmarkCountResponse(Long bookmarkCount) {
 		this.bookmarkCount = bookmarkCount;
 	}
 }
