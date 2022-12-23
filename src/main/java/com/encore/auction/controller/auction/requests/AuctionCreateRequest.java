@@ -1,6 +1,7 @@
 package com.encore.auction.controller.auction.requests;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -50,10 +51,12 @@ public class AuctionCreateRequest {
 	@NotNull
 	private final Double areaSize;
 
+	private final List<String> imageUrlList;
+
 	public AuctionCreateRequest(String addressCode, String auctionItemCaseNumber, String auctionItemName,
 		String location,
 		String lotNumber, String addressDetail, Long appraisedValue, LocalDateTime auctionStartDate,
-		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize) {
+		LocalDateTime auctionEndDate, ItemCategory itemCategory, Double areaSize, List<String> imageUrlList) {
 		this.addressCode = addressCode;
 		this.auctionItemCaseNumber = auctionItemCaseNumber;
 		this.auctionItemName = auctionItemName;
@@ -65,5 +68,6 @@ public class AuctionCreateRequest {
 		this.auctionEndDate = auctionEndDate;
 		this.itemCategory = itemCategory;
 		this.areaSize = areaSize;
+		this.imageUrlList = imageUrlList;
 	}
 }
