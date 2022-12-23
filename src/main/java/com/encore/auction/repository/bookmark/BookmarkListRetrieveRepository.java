@@ -7,4 +7,6 @@ import com.encore.auction.controller.bookmark.responses.BookmarkDetailsResponse;
 public interface BookmarkListRetrieveRepository {
 
 	public List<BookmarkDetailsResponse> retrieveBookmarkListByUserId(String userId);
+
+	public Long countBookmark(String userId);
 }
