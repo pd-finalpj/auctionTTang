@@ -21,7 +21,7 @@ import com.encore.auction.service.comment.CommentService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/1")
+@RequestMapping("/comment")
 public class CommentController {
 
 	private final CommentService commentService;
