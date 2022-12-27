@@ -37,7 +37,7 @@ jobs:
       run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
         docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
-        docker push jji0482/auctionttang
+        docker push jji0482/auctionttang:latest
         
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
