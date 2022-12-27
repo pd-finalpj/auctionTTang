@@ -15,6 +15,7 @@ import com.encore.auction.model.address.QAddress;
 import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.auction.item.ItemCategory;
 import com.encore.auction.model.auction.item.QAuctionItem;
+import com.encore.auction.model.manager.QManager;
 import com.encore.auction.utils.validator.LocalDateTimeValidator;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
@@ -26,6 +27,7 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 
 	private QAuctionItem qAuctionItem = QAuctionItem.auctionItem;
 	private QAddress qAddress = QAddress.address;
+	private QManager qManager = QManager.manager;
 
 	public QuerydslFilteringAuctionItemListRepository() {
 		super(AuctionItem.class);
@@ -34,14 +36,15 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 	public Slice<FilteringItemsResponse> filteringAuctionItemList(
 		FilteringAuctionItemRequest filteringAuctionItemRequest, Pageable pageable) {
 		List<FilteringItemsResponse> filteringItemsResponseList = from(qAuctionItem)
-			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qAuctionItem.manager.id,
-				qAddress.addressCode, qAuctionItem.auctionItemCaseNumber,
+			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qManager.id,
+				qManager.name, qAddress.addressCode, qAuctionItem.auctionItemCaseNumber,
 				qAuctionItem.auctionItemName, qAddress.stateName, qAddress.cityName,
 				qAuctionItem.location, qAuctionItem.lotNumber, qAuctionItem.addressDetail,
 				qAuctionItem.appraisedValue, qAuctionItem.auctionStartDate,
 				qAuctionItem.auctionEndDate, qAuctionItem.itemCategory, qAuctionItem.areaSize,
 				qAuctionItem.auctionFailedCount, qAuctionItem.itemSoldState))
-			.leftJoin(qAddress).on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
+			.leftJoin(qAddress).fetchJoin().on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
+			.leftJoin(qManager).fetchJoin().on(qAuctionItem.manager.id.eq(qManager.id))
 			.where(eqAddressCode(filteringAuctionItemRequest.getAddressCode()),
 				loeDate(filteringAuctionItemRequest.getDate()), eqCategory(
 					filteringAuctionItemRequest.getCategory()),
