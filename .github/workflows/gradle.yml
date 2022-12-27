@@ -33,11 +33,12 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build -x test
       
+    - name: web docker login
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: web docker build and push
-      run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-        docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
-        docker push jji0482/auctionttang:latest
+      run: docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
+    - name: web docker push
+      run: docker push jji0482/auctionttang
         
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
@@ -45,7 +46,7 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ubuntu
         key: ${{ secrets.KEY }}
-        script: |
+        script: 
           sudo docker rm -f auctionttang
           sudo docker pull jji0428/auctionttang
           docker run --name auctionttang -d -p 8080:8080 jji0428/auctionttang
