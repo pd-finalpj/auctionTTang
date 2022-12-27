@@ -1,0 +1,52 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+    multipart:
+      enable: true
+      file-size-threshold: 2KB
+      max-file-size: 500MB
+      max-request-size: 515MB
+
+spring:
+  application:
+    name: programmers spring assignments
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    cache-duration: PT1H
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.17.0.1:3306/auctionTTang?serverTimezone=Asia/Seoul&validationQuery="select 1"
+    username: auctionTTang
+    password: auctionTTang
+    platform: mysql
+    initialization-mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database: mysql
+    open-in-view: false
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  profiles:
+    active:
+      - secret
+
+  redis:
+    host: 172.17.0.1
+    port: 6379
+  data:
+    mongodb:
+      uri: mongodb://172.17.0.1:27017
+      database: auctionTTang
