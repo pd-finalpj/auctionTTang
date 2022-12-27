@@ -16,21 +16,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.encore.auction.controller.imagefile.responses.ImageFileCreateResponse;
 import com.encore.auction.controller.imagefile.responses.ImageFileDeleteResponse;
 import com.encore.auction.controller.imagefile.responses.ImageFileListCreateResponse;
 import com.encore.auction.exception.NonExistResourceException;
 import com.encore.auction.exception.WrongRequestException;
-import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.imagefile.ImageFile;
 import com.encore.auction.repository.ImageFileRepository;
-import com.encore.auction.repository.auction.AuctionItemRepository;
 import com.encore.auction.utils.mapper.ImageFileMapper;
 
 @Service
 public class ImageFileService {
-
-	private final AuctionItemRepository auctionItemRepository;
 
 	private final ImageFileRepository imageFileRepository;
 
@@ -42,15 +37,13 @@ public class ImageFileService {
 
 	private final AmazonS3 amazonS3;
 
-	public ImageFileService(AuctionItemRepository auctionItemRepository,
-		ImageFileRepository imageFileRepository, AmazonS3 amazonS3) {
-		this.auctionItemRepository = auctionItemRepository;
+	public ImageFileService(ImageFileRepository imageFileRepository, AmazonS3 amazonS3) {
 		this.imageFileRepository = imageFileRepository;
 		this.amazonS3 = amazonS3;
 	}
 
 	@Transactional
-	public ImageFileListCreateResponse storeAndSaveImageFiles(Long auctionItemId, MultipartFile[] files) throws
+	public ImageFileListCreateResponse storeAndSaveImageFiles(MultipartFile[] files) throws
 		IOException {
 		if (files == null)
 			throw new WrongRequestException("files are null");
@@ -58,9 +51,7 @@ public class ImageFileService {
 		if (files.length == 0)
 			throw new IllegalArgumentException("Files for upload are not selected");
 
-		AuctionItem auctionItem = checkAuctionItemExistAndGetAuctionItem(auctionItemId);
-
-		List<ImageFileCreateResponse> imageFiles = new ArrayList<>();
+		List<String> imageFilesUrlList = new ArrayList<>();
 
 		int imageNumber = 1;
 
@@ -70,15 +61,15 @@ public class ImageFileService {
 
 			String contentType = checkValidationAndGetContentType(file);
 
-			String newFileName = createFileName(auctionItemId.toString(), imageNumber, contentType);
+			String newFileName = createFileName(imageNumber, contentType);
 
-			ImageFile savedImageFile = putImageToS3AndGetImageFile(file, auctionItem, newFileName);
+			ImageFile savedImageFile = putImageToS3AndGetImageFile(file, newFileName);
 
-			imageFiles.add(ImageFileMapper.of().entityToImageFileResponse(savedImageFile));
+			imageFilesUrlList.add(savedImageFile.getUrl());
 
 			imageNumber++;
 		}
-		return new ImageFileListCreateResponse(imageFiles);
+		return new ImageFileListCreateResponse(imageFilesUrlList);
 	}
 
 	public ImageFileDeleteResponse deleteImageFile(Long imageFileId) {
@@ -114,19 +105,12 @@ public class ImageFileService {
 		return contentType;
 	}
 
-	private String createFileName(String auctionItemId, int number, String contentType) {
+	private String createFileName(int number, String contentType) {
 		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-			+ auctionItemId + number + "." + contentType;
+			+ number + "." + contentType;
 	}
 
-	private AuctionItem checkAuctionItemExistAndGetAuctionItem(Long auctionItemId) {
-		return auctionItemRepository.findById(auctionItemId)
-			.orElseThrow(() -> new NonExistResourceException("The auction item does not exist"));
-	}
-
-	private ImageFile putImageToS3AndGetImageFile(MultipartFile file, AuctionItem auctionItem,
-		String newFileName) throws IOException {
-
+	private ImageFile putImageToS3AndGetImageFile(MultipartFile file, String newFileName) throws IOException {
 		ObjectMetadata objMeta = new ObjectMetadata();
 
 		objMeta.setContentLength(file.getInputStream().available());
@@ -138,7 +122,7 @@ public class ImageFileService {
 		String fileUrl = amazonS3.getUrl(bucket + dir, newFileName).toString();
 
 		ImageFile newImageFile = ImageFileMapper.of()
-			.imageFileCreateRequestsToEntity(auctionItem, fileUrl);
+			.imageFileCreateRequestsToEntity(fileUrl);
 
 		return imageFileRepository.save(newImageFile);
 	}

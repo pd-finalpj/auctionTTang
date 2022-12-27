@@ -33,10 +33,9 @@ public class ImageFileController {
 	@Permission
 	@PostMapping
 	public ResponseEntity<ImageFileListCreateResponse> storeImageFiles(@RequestHeader("Token") String token,
-		@Valid @RequestParam("auction-item-id") Long auctionItemId,
 		@Valid @RequestParam("file") MultipartFile[] files) throws IOException {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(imageFileService.storeAndSaveImageFiles(auctionItemId, files));
+			.body(imageFileService.storeAndSaveImageFiles(files));
 	}
 
 	@Permission

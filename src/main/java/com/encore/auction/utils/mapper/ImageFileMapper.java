@@ -1,8 +1,6 @@
 package com.encore.auction.utils.mapper;
 
-import com.encore.auction.controller.imagefile.responses.ImageFileCreateResponse;
 import com.encore.auction.controller.imagefile.responses.ImageFileUrlResponse;
-import com.encore.auction.model.auction.item.AuctionItem;
 import com.encore.auction.model.imagefile.ImageFile;
 
 import lombok.AccessLevel;
@@ -20,13 +18,8 @@ public class ImageFileMapper {
 		return imageFileMapper;
 	}
 
-	public ImageFile imageFileCreateRequestsToEntity(AuctionItem auctionItem, String url) {
-		return ImageFile.builder().auctionItem(auctionItem).url(url).build();
-	}
-
-	public ImageFileCreateResponse entityToImageFileResponse(ImageFile savedImageFile) {
-		return new ImageFileCreateResponse(savedImageFile.getId(), savedImageFile.getAuctionItem().getId(),
-			savedImageFile.getUrl());
+	public ImageFile imageFileCreateRequestsToEntity(String url) {
+		return ImageFile.builder().url(url).build();
 	}
 
 	public ImageFileUrlResponse entityToImageFileUrlResponse(ImageFile e) {

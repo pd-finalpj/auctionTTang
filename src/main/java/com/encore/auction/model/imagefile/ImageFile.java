@@ -30,7 +30,7 @@ public class ImageFile extends BaseEntity {
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(nullable = false, name = "auction_item_id")
+	@JoinColumn(nullable = true, name = "auction_item_id")
 	private AuctionItem auctionItem;
 
 	@Column(nullable = false, length = 100)
@@ -64,5 +64,9 @@ public class ImageFile extends BaseEntity {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, url);
+	}
+
+	public void setAuctionItem(AuctionItem savedAuctionItem) {
+		this.auctionItem = savedAuctionItem;
 	}
 }

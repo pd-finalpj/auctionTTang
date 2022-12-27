@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.encore.auction.controller.auction.requests.AuctionCreateRequest;
 import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
@@ -39,10 +37,9 @@ public class AuctionController {
 	@Permission
 	@PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<AuctionIdResponse> createAuctionItem(@RequestHeader("Token") String token,
-		@Valid @RequestPart("auctionCreateRequest") AuctionCreateRequest auctionCreateRequest,
-		@RequestPart("files") MultipartFile[] files) {
+		@Valid @RequestBody AuctionCreateRequest auctionCreateRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(auctionService.createAuctionItem(auctionCreateRequest, token, files));
+			.body(auctionService.createAuctionItem(auctionCreateRequest, token));
 	}
 
 	@GetMapping("/{auction-item-id}")

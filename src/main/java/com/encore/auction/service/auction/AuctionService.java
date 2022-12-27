@@ -1,12 +1,10 @@
 package com.encore.auction.service.auction;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.encore.auction.controller.auction.requests.AuctionCreateRequest;
 import com.encore.auction.controller.auction.requests.AuctionUpdateRequest;
@@ -33,7 +31,6 @@ import com.encore.auction.repository.bookmark.BookmarkRepository;
 import com.encore.auction.repository.comment.CommentRepository;
 import com.encore.auction.repository.manager.ManagerRepository;
 import com.encore.auction.repository.user.UserRepository;
-import com.encore.auction.service.imagefile.ImageFileService;
 import com.encore.auction.utils.mapper.AuctionMapper;
 import com.encore.auction.utils.mapper.BookmarkMapper;
 import com.encore.auction.utils.mapper.CommentMapper;
@@ -51,13 +48,11 @@ public class AuctionService {
 	private final UserRepository userRepository;
 	private final BookmarkRepository bookmarkRepository;
 	private final JwtProvider jwtProvider;
-	private final ImageFileService imageFileService;
 
 	public AuctionService(ManagerRepository managerRepository, AuctionRepository auctionRepository,
 		AddressRepository addressRepository, CommentRepository commentRepository,
 		ImageFileRepository imageFileRepository,
-		UserRepository userRepository, BookmarkRepository bookmarkRepository, JwtProvider jwtProvider,
-		ImageFileService imageFileService) {
+		UserRepository userRepository, BookmarkRepository bookmarkRepository, JwtProvider jwtProvider) {
 		this.managerRepository = managerRepository;
 		this.auctionRepository = auctionRepository;
 		this.addressRepository = addressRepository;
@@ -66,12 +61,10 @@ public class AuctionService {
 		this.userRepository = userRepository;
 		this.bookmarkRepository = bookmarkRepository;
 		this.jwtProvider = jwtProvider;
-		this.imageFileService = imageFileService;
 	}
 
 	@Transactional
-	public AuctionIdResponse createAuctionItem(AuctionCreateRequest auctionCreateRequest, String token,
-		MultipartFile[] files) {
+	public AuctionIdResponse createAuctionItem(AuctionCreateRequest auctionCreateRequest, String token) {
 		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
 		Manager manager = checkManagerExistAndCheckRole(managerId);
@@ -83,11 +76,9 @@ public class AuctionService {
 
 		AuctionItem savedAuctionItem = auctionRepository.save(newAuctionItem);
 
-		try {
-			imageFileService.storeAndSaveImageFiles(savedAuctionItem.getId(), files);
-		} catch (IOException e) {
-			throw new WrongRequestException(e.getMessage());
-		}
+		List<ImageFile> imageFileList = imageFileRepository.findByUrlIn(auctionCreateRequest.getImageUrlList());
+
+		imageFileList.forEach(e -> e.setAuctionItem(savedAuctionItem));
 
 		return AuctionMapper.of().entityToAuctionItemIdResponse(savedAuctionItem);
 	}
