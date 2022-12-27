@@ -38,7 +38,7 @@ jobs:
     - name: web docker build
       run: docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
     - name: web docker tag 
-      run: docker tag auctionttang jji0428/auctionttang
+      run: docker tag jji0428/auctionttang jji0428/auctionttang
     - name: web docker push
       run: docker push jji0482/auctionttang
         
