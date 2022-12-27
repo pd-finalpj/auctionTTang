@@ -1,14 +1,13 @@
 package com.encore.auction.service.filtering;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import com.encore.auction.controller.filtering.requests.FilteringAuctionItemByManagerIdRequest;
 import com.encore.auction.controller.filtering.requests.FilteringAuctionItemRequest;
-import com.encore.auction.controller.filtering.responses.FilteringItemsListByManagerIdResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsListResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
 import com.encore.auction.model.filtering.Filtering;
@@ -50,7 +49,8 @@ public class FilteringService {
 
 	private FilteringItemsListResponse getFilteringItemsListResponse(
 		FilteringAuctionItemRequest filteringAuctionItemRequest, String redisId) {
-		PageRequest pageRequest = convertPageRequest(filteringAuctionItemRequest);
+		PageRequest pageRequest = convertPageRequest(filteringAuctionItemRequest.getPageNum(),
+			filteringAuctionItemRequest.getAmount());
 
 		Slice<FilteringItemsResponse> filteringItemsResponses = filteringAuctionItemListRepository.filteringAuctionItemList(
 			filteringAuctionItemRequest, pageRequest);
@@ -65,9 +65,9 @@ public class FilteringService {
 			.filteringToResponse(filteringItemsResponses);
 	}
 
-	private static PageRequest convertPageRequest(FilteringAuctionItemRequest filteringAuctionItemRequest) {
-		int pageNum = filteringAuctionItemRequest.getPageNum() != null ? filteringAuctionItemRequest.getPageNum() : 1;
-		int amount = filteringAuctionItemRequest.getAmount() != null ? filteringAuctionItemRequest.getAmount() : 10;
+	private PageRequest convertPageRequest(Integer inputPageNum, Integer inputAmount) {
+		int pageNum = inputPageNum != null ? inputPageNum : 1;
+		int amount = inputAmount != null ? inputAmount : 10;
 
 		return PageRequest.of(pageNum - 1, amount);
 	}
@@ -99,12 +99,15 @@ public class FilteringService {
 		return redisId;
 	}
 
-	public FilteringItemsListByManagerIdResponse findAuctionListByManagerId(String token) {
+	public FilteringItemsListResponse findAuctionListByManagerId(
+		FilteringAuctionItemByManagerIdRequest filteringAuctionItemByManagerIdRequest, String token) {
 		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
 
-		List<FilteringItemsResponse> filteringItemsResponseList = filteringAuctionItemListRepository.filteringAuctionItemListByManagerId(
-			managerId);
+		Slice<FilteringItemsResponse> filteringItemsResponseList = filteringAuctionItemListRepository.filteringAuctionItemListByManagerId(
+			managerId, convertPageRequest(
+				filteringAuctionItemByManagerIdRequest.getPageNum(),
+				filteringAuctionItemByManagerIdRequest.getAmount()));
 
-		return new FilteringItemsListByManagerIdResponse(filteringItemsResponseList);
+		return FilteringMapper.of().filteringToResponse(filteringItemsResponseList);
 	}
 }

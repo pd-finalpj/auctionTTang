@@ -64,8 +64,8 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 	}
 
 	@Override
-	public List<FilteringItemsResponse> filteringAuctionItemListByManagerId(String managerId) {
-		return from(qAuctionItem)
+	public Slice<FilteringItemsResponse> filteringAuctionItemListByManagerId(String managerId, Pageable pageable) {
+		List<FilteringItemsResponse> filteringItemsResponseList = from(qAuctionItem)
 			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qManager.id,
 				qManager.name, qAddress.addressCode, qAuctionItem.auctionItemCaseNumber,
 				qAuctionItem.auctionItemName, qAddress.stateName, qAddress.cityName,
@@ -76,7 +76,17 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 			.leftJoin(qAddress).fetchJoin().on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
 			.leftJoin(qManager).fetchJoin().on(qAuctionItem.manager.id.eq(qManager.id))
 			.where(qManager.id.eq(managerId))
+			.offset(pageable.getOffset())
+			.limit(pageable.getPageSize() + 1)
+			.orderBy(qAuctionItem.id.desc())
 			.fetch();
+
+		boolean hasNext = false;
+		if (filteringItemsResponseList.size() > pageable.getPageSize()) {
+			filteringItemsResponseList.remove(pageable.getPageSize());
+			hasNext = true;
+		}
+		return new SliceImpl<>(filteringItemsResponseList, pageable, hasNext);
 	}
 
 	public BooleanExpression eqAddressCode(String addressCode) {

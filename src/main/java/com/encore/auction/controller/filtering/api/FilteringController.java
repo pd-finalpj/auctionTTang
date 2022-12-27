@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.encore.auction.controller.filtering.requests.FilteringAuctionItemByManagerIdRequest;
 import com.encore.auction.controller.filtering.requests.FilteringAuctionItemRequest;
-import com.encore.auction.controller.filtering.responses.FilteringItemsListByManagerIdResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsListResponse;
 import com.encore.auction.service.filtering.FilteringService;
 import com.encore.auction.utils.security.Permission;
@@ -32,8 +32,10 @@ public class FilteringController {
 
 	@Permission
 	@GetMapping("/by-manager")
-	public ResponseEntity<FilteringItemsListByManagerIdResponse> findAuctionItemListByManagerId(
-		@RequestHeader("Token") String token) {
-		return ResponseEntity.ok().body(filteringService.findAuctionListByManagerId(token));
+	public ResponseEntity<FilteringItemsListResponse> findAuctionItemListByManagerId(
+		@RequestHeader("Token") String token,
+		@ModelAttribute FilteringAuctionItemByManagerIdRequest filteringAuctionItemByManagerIdRequest) {
+		return ResponseEntity.ok()
+			.body(filteringService.findAuctionListByManagerId(filteringAuctionItemByManagerIdRequest, token));
 	}
 }
