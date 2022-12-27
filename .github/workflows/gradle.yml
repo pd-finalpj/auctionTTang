@@ -30,6 +30,17 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         
+    - name: make application-secret.yml
+      run: |
+        ## create application-secret.yml
+        cd ./src/main/resources
+
+        # application-secret.yml 파일 생성
+        touch ./application-secret.yml
+
+        echo "${{ secrets.SECRET }}" >> ./application-secret.yml
+      shell: bash
+        
     - name: Build with Gradle
       run: ./gradlew build -x test
   
