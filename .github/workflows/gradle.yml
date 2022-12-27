@@ -48,8 +48,10 @@ jobs:
         host: ${{ secrets.HOST }}
         username: ubuntu
         key: ${{ secrets.KEY }}
+        port: 22
         script: 
-          sudo docker rm -f auctionttang
-          sudo docker pull jji0428/auctionttang::0.1.0
-          docker run --name auctionttang -d -p 8080:8080 jji0428/auctionttang:0.1.0
+          docker stop auctionttang
+          docker rm auctionttang
+          docker pull jji0428/auctionttang:latest
+          docker run --name auctionttang -d -p 8080:8080 jji0428/auctionttang:latest
           
