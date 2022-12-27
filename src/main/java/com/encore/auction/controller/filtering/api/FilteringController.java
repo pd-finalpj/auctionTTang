@@ -32,7 +32,8 @@ public class FilteringController {
 
 	@Permission
 	@GetMapping("/by-manager")
-	public ResponseEntity<FilteringItemsListByManagerIdResponse> updateManager(@RequestHeader("Token") String token) {
+	public ResponseEntity<FilteringItemsListByManagerIdResponse> findAuctionItemListByManagerId(
+		@RequestHeader("Token") String token) {
 		return ResponseEntity.ok().body(filteringService.findAuctionListByManagerId(token));
 	}
 }
