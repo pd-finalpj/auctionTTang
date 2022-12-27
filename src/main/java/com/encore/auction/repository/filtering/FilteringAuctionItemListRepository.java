@@ -1,5 +1,7 @@
 package com.encore.auction.repository.filtering;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -11,4 +13,5 @@ public interface FilteringAuctionItemListRepository {
 	public Slice<FilteringItemsResponse> filteringAuctionItemList(
 		FilteringAuctionItemRequest filteringAuctionItemRequest, Pageable pageable);
 
+	public List<FilteringItemsResponse> filteringAuctionItemListByManagerId(String managerId);
 }

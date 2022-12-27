@@ -63,6 +63,22 @@ public class QuerydslFilteringAuctionItemListRepository extends QuerydslReposito
 		return new SliceImpl<>(filteringItemsResponseList, pageable, hasNext);
 	}
 
+	@Override
+	public List<FilteringItemsResponse> filteringAuctionItemListByManagerId(String managerId) {
+		return from(qAuctionItem)
+			.select(Projections.constructor(FilteringItemsResponse.class, qAuctionItem.id, qManager.id,
+				qManager.name, qAddress.addressCode, qAuctionItem.auctionItemCaseNumber,
+				qAuctionItem.auctionItemName, qAddress.stateName, qAddress.cityName,
+				qAuctionItem.location, qAuctionItem.lotNumber, qAuctionItem.addressDetail,
+				qAuctionItem.appraisedValue, qAuctionItem.auctionStartDate,
+				qAuctionItem.auctionEndDate, qAuctionItem.itemCategory, qAuctionItem.areaSize,
+				qAuctionItem.auctionFailedCount, qAuctionItem.itemSoldState))
+			.leftJoin(qAddress).fetchJoin().on(qAuctionItem.address.addressCode.eq(qAddress.addressCode))
+			.leftJoin(qManager).fetchJoin().on(qAuctionItem.manager.id.eq(qManager.id))
+			.where(qManager.id.eq(managerId))
+			.fetch();
+	}
+
 	public BooleanExpression eqAddressCode(String addressCode) {
 		return addressCode != null ? qAddress.addressCode.eq(addressCode) : null;
 	}

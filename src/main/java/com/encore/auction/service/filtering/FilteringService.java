@@ -1,5 +1,6 @@
 package com.encore.auction.service.filtering;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
@@ -7,27 +8,27 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import com.encore.auction.controller.filtering.requests.FilteringAuctionItemRequest;
+import com.encore.auction.controller.filtering.responses.FilteringItemsListByManagerIdResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsListResponse;
 import com.encore.auction.controller.filtering.responses.FilteringItemsResponse;
 import com.encore.auction.model.filtering.Filtering;
 import com.encore.auction.repository.filtering.FilteringAuctionItemListRepository;
 import com.encore.auction.repository.filtering.FilteringRedisRepository;
-import com.encore.auction.repository.filtering.FilteringRepository;
 import com.encore.auction.utils.mapper.FilteringMapper;
+import com.encore.auction.utils.token.JwtProvider;
 
 @Service
 public class FilteringService {
 
-	private final FilteringRepository filteringRepository;
 	private final FilteringAuctionItemListRepository filteringAuctionItemListRepository;
 	private final FilteringRedisRepository filteringRedisRepository;
+	private final JwtProvider jwtProvider;
 
-	public FilteringService(FilteringRepository filteringRepository,
-		FilteringAuctionItemListRepository filteringAuctionItemListRepository,
-		FilteringRedisRepository filteringRedisRepository) {
-		this.filteringRepository = filteringRepository;
+	public FilteringService(FilteringAuctionItemListRepository filteringAuctionItemListRepository,
+		FilteringRedisRepository filteringRedisRepository, JwtProvider jwtProvider) {
 		this.filteringAuctionItemListRepository = filteringAuctionItemListRepository;
 		this.filteringRedisRepository = filteringRedisRepository;
+		this.jwtProvider = jwtProvider;
 	}
 
 	public FilteringItemsListResponse getFilteredAuctionItemList(
@@ -59,7 +60,7 @@ public class FilteringService {
 			filteringRedisRepository.save(filteringCache);
 		} catch (Exception ignored) {
 		}
-		
+
 		return FilteringMapper.of()
 			.filteringToResponse(filteringItemsResponses);
 	}
@@ -96,5 +97,14 @@ public class FilteringService {
 			redisId = redisId + filteringAuctionItemRequest.getPageNum();
 
 		return redisId;
+	}
+
+	public FilteringItemsListByManagerIdResponse findAuctionListByManagerId(String token) {
+		String managerId = jwtProvider.checkTokenIsManagerAndGetManagerID(token);
+
+		List<FilteringItemsResponse> filteringItemsResponseList = filteringAuctionItemListRepository.filteringAuctionItemListByManagerId(
+			managerId);
+
+		return new FilteringItemsListByManagerIdResponse(filteringItemsResponseList);
 	}
 }
