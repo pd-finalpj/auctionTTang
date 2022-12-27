@@ -38,9 +38,9 @@ jobs:
     - name: web docker build
       run: docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
     - name: web docker tag 
-      run: docker tag jji0428/auctionttang jji0428/auctionttang
+      run: docker tag jji0428/auctionttang jji0428/auctionttang:0.1.0
     - name: web docker push
-      run: docker push jji0482/auctionttang
+      run: docker push jji0482/auctionttang:0.1.0
         
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
@@ -50,6 +50,6 @@ jobs:
         key: ${{ secrets.KEY }}
         script: 
           sudo docker rm -f auctionttang
-          sudo docker pull jji0428/auctionttang
-          docker run --name auctionttang -d -p 8080:8080 jji0428/auctionttang
+          sudo docker pull jji0428/auctionttang::0.1.0
+          docker run --name auctionttang -d -p 8080:8080 jji0428/auctionttang:0.1.0
           
