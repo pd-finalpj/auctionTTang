@@ -36,11 +36,11 @@ jobs:
     - name: web docker login
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: web docker build
-      run: docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t jji0428/auctionttang .
+      run: docker build --platform amd64 --build-arg DEPENDENCY=build/dependency -t ${{secrets.DOCKER_USERNAME}}/auctionttang .
     - name: web docker tag 
-      run: docker tag jji0428/auctionttang  ${{secrets.DOCKER_USER}}/auctionttang:latest
+      run: docker tag jji0428/auctionttang ${{secrets.DOCKER_USERNAME}}/auctionttang:latest
     - name: web docker push
-      run: docker push jji0482/auctionttang:latest
+      run: docker push ${{secrets.DOCKER_USERNAME}}/auctionttang:latest
         
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
