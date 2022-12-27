@@ -49,7 +49,7 @@ jobs:
         username: ubuntu
         key: ${{ secrets.KEY }}
         port: 22
-        script: 
+        script: |
           docker stop auctionttang
           docker rm auctionttang
           docker pull jji0428/auctionttang:latest
