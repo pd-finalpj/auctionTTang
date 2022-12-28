@@ -21,7 +21,7 @@ spring:
     cache-duration: PT1H
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.17.0.1:3306/auctionTTang?serverTimezone=Asia/Seoul&validationQuery="select 1"
+    url: jdbc:mysql://172.17.0.1:3306/auctionTTang?validationQuery="select 1"
     username: auctionTTang
     password: auctionTTang
     platform: mysql
