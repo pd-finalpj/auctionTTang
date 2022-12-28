@@ -21,7 +21,7 @@ import com.encore.auction.service.imagefile.ImageFileService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping(value = "/image-file", consumes = "multipart/form-data")
+@RequestMapping(value = "/api/image-file", consumes = "multipart/form-data")
 public class ImageFileController {
 
 	private final ImageFileService imageFileService;

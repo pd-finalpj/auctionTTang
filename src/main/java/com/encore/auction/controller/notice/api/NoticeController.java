@@ -22,7 +22,7 @@ import com.encore.auction.controller.notice.responses.NoticeIdResponse;
 import com.encore.auction.service.notice.NoticeService;
 
 @RestController
-@RequestMapping("/notice")
+@RequestMapping("/api/notice")
 public class NoticeController {
 
 	private final NoticeService noticeService;

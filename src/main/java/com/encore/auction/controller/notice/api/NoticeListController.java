@@ -11,7 +11,7 @@ import com.encore.auction.controller.notice.responses.NoticeDetailsListResponse;
 import com.encore.auction.service.notice.NoticeService;
 
 @RestController
-@RequestMapping("/notice-list")
+@RequestMapping("/api/notice-list")
 public class NoticeListController {
 
 	private final NoticeService noticeService;

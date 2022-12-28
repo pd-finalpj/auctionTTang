@@ -14,7 +14,7 @@ import com.encore.auction.service.filtering.FilteringService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/auction-list")
+@RequestMapping("/api/auction-list")
 public class FilteringController {
 
 	private final FilteringService filteringService;
