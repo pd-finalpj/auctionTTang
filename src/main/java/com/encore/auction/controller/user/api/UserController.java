@@ -26,7 +26,7 @@ import com.encore.auction.service.user.UserService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
 	private final UserService userService;
