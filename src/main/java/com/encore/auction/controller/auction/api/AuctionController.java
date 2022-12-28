@@ -25,7 +25,7 @@ import com.encore.auction.service.auction.AuctionService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/auction")
+@RequestMapping("/api/auction")
 public class AuctionController {
 
 	private final AuctionService auctionService;

@@ -26,7 +26,7 @@ import com.encore.auction.service.manager.ManagerService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/manager")
+@RequestMapping("/api/manager")
 public class ManagerController {
 
 	private final ManagerService managerService;

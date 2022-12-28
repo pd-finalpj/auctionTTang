@@ -11,7 +11,7 @@ import com.encore.auction.service.bidding.bidding.BiddingListService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/bidding-list")
+@RequestMapping("/api/bidding-list")
 public class BiddingListController {
 
 	private final BiddingListService biddingListService;

@@ -11,7 +11,7 @@ import com.encore.auction.service.bookmark.BookmarkListService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/bookmark-list")
+@RequestMapping("/api/bookmark-list")
 public class BookmarkListController {
 
 	private final BookmarkListService bookmarkListService;

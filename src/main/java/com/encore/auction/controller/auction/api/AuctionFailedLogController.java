@@ -10,7 +10,7 @@ import com.encore.auction.controller.auction.responses.AuctionFailedLogListRespo
 import com.encore.auction.service.auction.AuctionFailedLogService;
 
 @RestController
-@RequestMapping("/auction-failed-log")
+@RequestMapping("/api/auction-failed-log")
 public class AuctionFailedLogController {
 
 	private final AuctionFailedLogService auctionFailedLogService;

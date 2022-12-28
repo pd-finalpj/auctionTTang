@@ -9,7 +9,7 @@ import com.encore.auction.controller.address.responses.AddressDetailsListRespons
 import com.encore.auction.service.address.AddressService;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/api/address")
 public class AddressController {
 
 	private final AddressService addressService;

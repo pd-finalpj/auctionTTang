@@ -11,7 +11,7 @@ import com.encore.auction.service.bidding.aftbidding.AftBiddingListService;
 import com.encore.auction.utils.security.Permission;
 
 @RestController
-@RequestMapping("/aft-bidding-list")
+@RequestMapping("/api/aft-bidding-list")
 public class AftBiddingListController {
 
 	private final AftBiddingListService aftBiddingListService;
